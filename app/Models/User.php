@@ -12,15 +12,23 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+
+    protected $table = 'usuarios';
+    protected $primaryKey = 'idusuario';
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'usuario',
+        'nombres',
+        'apellidos',
+        'telefono',
+        'correo',
         'password',
+        'estado',
+        'rol'
     ];
 
     /**
@@ -39,6 +47,6 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        /* 'email_verified_at' => 'datetime', */
     ];
 }
