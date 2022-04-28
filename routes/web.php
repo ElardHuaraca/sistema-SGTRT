@@ -16,9 +16,14 @@ use App\Http\Controllers\LoginController;
 
 Route::controller(LoginController::class)->group(function(){
     Route::get('/login', 'index')->name('login');
-    Route::post('/login', 'authenticate')->name('login.authenticate');
+    Route::post('/login', 'authenticate');
+    Route::get('/logout', 'logout')->name('logout');
 });
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    if(Auth::user()->rol == null){
+        Auth::logout();
+        abort(403,'No tiene permisos para acceder a esta página');
+    }
+    return view('home');
+})->middleware('auth')->name('home');

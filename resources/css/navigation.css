@@ -1,0 +1,269 @@
+:root {
+    --bg-navigation: #222d32;
+}
+
+.navigation {
+    background-color: var(--bg-navigation);
+    transition      : transform 0.2s ease-in-out,
+        width 0.3s ease-in-out;
+}
+
+.logo {
+    display        : inline-block;
+    width          : 100%;
+    image-rendering: -webkit-optimize-contrast;
+}
+
+.sidebar {
+    position  : fixed;
+    top       : 0;
+    bottom    : 0;
+    left      : 0;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+    width     : 14rem;
+    z-index   : 600;
+}
+
+@media (max-width: 991.98px) {
+    .sidebar {
+        width: 100%;
+    }
+}
+
+
+
+.text-white-navigation {
+    color: #ffffff !important;
+}
+
+.text-white-navigation:hover {
+    color: #8a8a8a !important;
+}
+
+.inner-addon {
+    position: relative;
+}
+
+.inner-addon .fa {
+    position      : absolute;
+    padding       : 0 .6rem 0 .6rem;
+    pointer-events: none;
+}
+
+.right-addon .fa {
+    right: 0px;
+}
+
+.list-group-item-action.collapsed .fa {
+    transform: rotate(90deg);
+}
+
+.list-group-item-action[aria-expanded="true"] .fa {
+    padding: .2rem .5rem 0rem 0rem;
+}
+
+.fa {
+    transition: all .2s ease;
+}
+
+.navigation-2 {
+    z-index         : 599;
+    height          : 3.5rem;
+    background-color: #3c8dbc;
+    padding-top     : 0;
+    padding-bottom  : 0;
+    min-height      : 3.5rem;
+    position        : relative;
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+a.dropdown-toggle {
+    text-decoration: none;
+    user-select    : none;
+}
+
+a.dropdown-toggle:hover {
+
+    color: #fff !important;
+}
+
+nav>div>ul>li.nav-item:hover {
+    background-color: #31749b;
+}
+
+.dropdown-menu-end.show {
+    position: absolute !important;
+}
+
+.ms-15 {
+    margin-left: 15rem;
+    transition : margin .3s ease-in-out;
+}
+
+.ms-4-5 {
+    margin-left: 4.5rem;
+    transition : margin .3s ease-in-out;
+}
+
+.sidebar-menu>div>a {
+    position   : relative;
+    display    : inline-flex;
+    align-items: center;
+    min-height : 2.5rem;
+}
+
+@media (min-width: 768px) {
+
+    .sidebar-mini.sidebar-collapse {
+        transform: translate(0, 0);
+        width    : 4rem !important;
+    }
+
+
+    .active-hover {
+        position        : relative;
+        width           : 100%;
+        padding-right   : 16rem;
+        z-index         : 540;
+        background-color: var(--bg-navigation) !important;
+    }
+
+    .active-hover>span,
+    .active-hover>.fa {
+        display: block !important;
+        color  : #fff;
+        width  : 3rem;
+    }
+
+    .active-hover>span {
+        right   : 8.5rem;
+        position: absolute;
+    }
+
+    .active-hover>.fa {
+        transform: rotate(0) !important;
+        width    : auto;
+    }
+
+    .sidebar-mini.sidebar-collapse div>a:not(.active-hover)>span,
+    .sidebar-mini.sidebar-collapse div>a:not(.active-hover)>.fa {
+        display : none !important;
+        position: absolute;
+    }
+
+
+    .sidebar-mini.sidebar-collapse div>a:not(.active-hover):hover>span,
+    .sidebar-mini.sidebar-collapse div>a:not(.active-hover):hover>.fa {
+        display: block !important;
+        color  : #fff;
+        width  : 3rem;
+    }
+
+    .sidebar-mini.sidebar-collapse .list-group.list-group-flush>a:not(.active-hover):hover {
+        position        : relative;
+        width           : 100%;
+        padding-right   : 16rem;
+        z-index         : 540;
+        background-color: var(--bg-navigation) !important;
+    }
+
+    .sidebar-mini.sidebar-collapse div>a:not(.active-hover):hover>span {
+        right: 8.5rem;
+    }
+
+    .sidebar-mini.sidebar-collapse div>a:not(.active-hover):hover>.fa {
+        transform: rotate(0);
+        width    : auto;
+    }
+
+    .sidebar-mini.sidebar-collapse .list-group.list-group-flush:hover>ul {
+        position        : absolute;
+        display         : flex !important;
+        margin-left     : 4rem;
+        margin-top      : 2.5rem;
+        background-color: #2c3b41 !important;
+        padding         : 0rem !important;
+    }
+
+    .sidebar-mini.sidebar-collapse .list-group.list-group-flush:hover>ul>li {
+        display: block !important;
+        width  : 13rem;
+        z-index: 520;
+    }
+
+    .sidebar-mini .list-group.list-group-flush>ul>li>a>span {
+        margin-left: .5rem;
+    }
+
+    .sidebar-mini .list-group.list-group-flush>ul>li>a {
+        display   : block;
+        min-height: 1.5rem;
+    }
+
+    .sidebar-mini.sidebar-collapse .list-group.list-group-flush:hover>ul>li>.fa-solid {
+        size: 1rem;
+    }
+
+    .sidebar-mini .list-group.list-group-flush>ul>li>a>span,
+    .sidebar-mini .list-group.list-group-flush>ul>li>a>.fa-solid,
+    .sidebar-mini .list-group.list-group-flush>ul>li>a {
+        text-decoration: none;
+        font-size      : .8rem;
+        color          : #8aa4af;
+    }
+
+    .sidebar-mini .list-group.list-group-flush>ul>li:hover>a>span,
+    .sidebar-mini .list-group.list-group-flush>ul>li:hover>a>.fa-solid {
+        color: #fff;
+    }
+}
+
+.sidebar-mini.sidebar-collapse .sidebar-menu>li>a>span,
+.sidebar-mini.sidebar-collapse .sidebar-menu>li>.treeview-menu,
+.sidebar-mini.sidebar-collapse .sidebar-menu>li>a>.pull-right,
+.sidebar-mini.sidebar-collapse .sidebar-menu li.header {
+    display  : none !important;
+    transform: translateZ(0);
+}
+
+.sidebar-mini.sidebar-collapse .logo {
+    display: none;
+}
+
+.sidebar-mini.sidebar-collapse .list-group-flush .list-group-item .fa-solid {
+    margin     : 0 !important;
+    margin-left: .5rem !important;
+}
+
+.sidebar-mini.sidebar-collapse .list-group-flush .list-group-item .fa-file-lines {
+    margin-left: .7rem !important;
+}
+
+.logo-mini {
+    display: none;
+    height : 0%;
+}
+
+.sidebar-mini.sidebar-collapse .logo-mini {
+    display: inline-block;
+    height : 3.48rem;
+    margin : 0rem !important;
+    padding: 0rem !important;
+}
+
+.sidebar-mini.sidebar-collapse .logo-mini>a>img {
+    height      : 100%;
+    padding-top : .2rem !important;
+    padding-left: .4rem !important;
+}
+
+.sidebar-mini.sidebar-collapse .treeview-menu {
+    display     : none;
+    list-style  : none;
+    padding     : 0;
+    margin      : 0;
+    padding-left: 5px;
+}

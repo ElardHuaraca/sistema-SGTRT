@@ -1,6 +1,13 @@
 {
     "/js/app.js": "/js/app.js",
+    "/js/navigation.js": "/js/navigation.js",
+    "/css/home.css": "/css/home.css",
+    "/css/navigation.css": "/css/navigation.css",
     "/css/auth.css": "/css/auth.css",
     "/css/app.css": "/css/app.css",
-    "/images/fondo-login-min.png": "/images/fondo-login-min.png"
+    "/images/fondo-login-min.png": "/images/fondo-login-min.png",
+    "/images/icono.ico": "/images/icono.ico",
+    "/images/logo-largo.png": "/images/logo-largo.png",
+    "/images/logo-mini.png": "/images/logo-mini.png",
+    "/images/user-anonimo.png": "/images/user-anonimo.png"
 }

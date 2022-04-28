@@ -13,6 +13,10 @@ class LoginController extends Controller
 
     public function index()
     {
+        if(Auth::check()){
+            return redirect()->intended('/');
+        }
+
         return view('auth.login');
     }
 
@@ -23,8 +27,6 @@ class LoginController extends Controller
             'password' => 'required'
         ]);
 
-        Debugbar::error($credentials);
-
         $credentials['estado'] = 1;
 
         if (Auth::attempt($credentials)) {
@@ -32,10 +34,14 @@ class LoginController extends Controller
             return redirect()->intended('/');
         }
 
-
-
         return back()->withErrors([
-            'user' => 'El usuario o contraseña es incorrecto.'
+            'user' => 'Usuario o contraseña incorrecto'
         ])->onlyInput('user');
+    }
+
+    public function logout(Request $request){
+        Auth::logout();
+        $request->session()->invalidate();
+        return redirect()->route('login');
     }
 }

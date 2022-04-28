@@ -16,6 +16,10 @@ mix.js('resources/js/app.js', 'public/js')
         //npm
     ]);
 
+mix.js('resources/js/navigation.js', 'public/js')
+
 mix.postCss('resources/css/auth.css', 'public/css');
+mix.postCss('resources/css/navigation.css', 'public/css');
+mix.postCss('resources/css/home.css', 'public/css');
 
 mix.copyDirectory('resources/images', 'public/images');
