@@ -1,0 +1,62 @@
+<div>
+    <button id="btn-succes-loading" data-bs-toggle="modal" data-bs-target=" #modal-succes-loading"
+        style="display: none">
+    </button>
+    <div class="modal fade" id="modal-succes-loading" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content h-50" id="content-mod">
+                <div class="modal-body text-center py-5">
+                    <div class="spinner-border text-info" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <div class="d-none">
+                    <button data-bs-dismiss="modal" id="btn-close-loading">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button id="btn-succes" data-bs-toggle="modal" data-bs-target="#modal-succes" style="display: none">
+    </button>
+    <div class="modal fade" id="modal-succes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content h-50" id="content-mod">
+                <div class="modal-header justify-content-center">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-check" style="font-size: 3.5rem"></i>
+                    </div>
+                </div>
+                <div class="modal-body text-center py-5">
+                    <h3>Cambio realizado con exito</h3>
+                </div>
+                <div class="modal-footer justify-content-end">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="btn-close-succes">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button id="btn-succes-error" data-bs-toggle="modal" data-bs-target=" #modal-succes-error" style="display: none">
+    </button>
+    <div class="modal fade" id="modal-succes-error" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content h-50" id="content-mod">
+                <div class="modal-header justify-content-center">
+                    <div class="icon-box">
+                        <i class="fa-solid fa-x" style="font-size: 3.5rem"></i>
+                    </div>
+                </div>
+                <div class="modal-body text-center py-5">
+                    <h4>Error al realizar el cambio</h4>
+                </div>
+                <div class="modal-footer justify-content-end">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="btn-close-error">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

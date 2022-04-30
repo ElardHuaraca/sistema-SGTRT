@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\TChangeController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +23,25 @@ Route::controller(LoginController::class)->group(function(){
 });
 
 Route::get('/', function () {
+
     if(Auth::user()->rol == null){
         Auth::logout();
         abort(403,'No tiene permisos para acceder a esta página');
     }
-    return view('home');
+
+    $tChange = TChangeController::getTChange();
+    Debugbar::info($tChange);
+    return view('home',['tChange' => $tChange]);
 })->middleware('auth')->name('home');
+
+Route::controller(TChangeController::class)->group(function(){
+    Route::put('/update/tchange', 'updateTChange')->middleware('auth');
+});
+
+Route::controller(ReportController::class)->group(function(){
+    Route::get('/reports', 'index')->middleware('auth')->name('reports');
+    Route::get('/reports/{id}', 'show')->middleware('auth')->name('reports.grafic');
+    Route::post('/reports/create', 'store')->middleware('auth');
+    Route::put('/reports/update', 'update')->middleware('auth');
+    Route::delete('/reports/delete', 'destroy')->middleware('auth');
+});

@@ -1,53 +1,79 @@
-.container {
-    padding: 0;
-    margin : 0;
-    height : 95%;
+.box-header {
+    color        : #444;
+    display      : block;
+    padding      : 10px;
+    position     : relative;
+    border-bottom: 1px solid #ddd;
 }
 
-.content-header {
-    padding: .8rem 0 .8rem 0;
+.box-header>.fa,
+.box-header>.glyphicon,
+.box-header>.ion,
+.box-header .box-title {
+    display    : inline-block;
+    font-size  : 18px;
+    margin     : 0;
+    line-height: 1;
 }
 
-.content-wrapper>.content-header>h1 {
-    font-size: 1.5rem;
-    margin   : 0;
+.box-header>.box-tools {
+    position: absolute;
+    right   : 10px;
+    top     : 5px;
 }
 
-@media (min-width: 769px) {
-    .container {
-        padding-left: 14rem;
-        transition  : padding-left .3s ease-in-out;
-        width       : 100%;
-        min-width   : 100%;
-    }
+.box-header>.box-tools [data-toggle="tooltip"] {
+    position: relative;
+}
 
-    .container-not-expanded {
-        padding-left: 4rem;
-        width       : 100%;
-        transition  : padding-left .3s ease-in-out;
-    }
+.box-header>.box-tools.pull-right .dropdown-menu {
+    right: 0;
+    left : auto;
+}
 
-    .content-wrapper {
-        background-color: #ecf0f5;
-        min-height      : 100%;
+.box-body.p-3>button:hover {
+    background-color: #3C8DBC;
+}
+
+.btnEditarCambio:hover {
+    background-color: #3C8DBC;
+}
+
+/* Estilos modal */
+
+.bg-primary-custom {
+    background: #3c8dbc;
+}
+
+@media (min-width: 768px) {
+    .modal.fade.show>div>div>div>.modal-title {
+        padding-left: 8rem;
     }
 }
 
-@media (max-width: 768px) {
-    .container {
-        width     : 100%;
-        transition: margin-left .3s ease-in-out;
-    }
+.input-group-addon {
+    border: 1px solid #ccc;
+}
 
-    .container-not-expanded {
-        width     : 100%;
-        transition: margin-left .3s ease-in-out;
-    }
+.input-container {
+    display: flex;
+    width  : 100%;
+}
 
-    .content-wrapper {
-        background-color: #ecf0f5;
-        min-height      : 100%;
-        min-width       : 100%;
-    }
+.icon {
+    padding   : 10px;
+    min-width : 50px;
+    text-align: center;
+}
+
+.input-field {
+    width  : 100%;
+    padding: 10px;
+    outline: none;
+    border : 1px solid #ccc;
+}
+
+.input-field:focus {
+    border: 2px solid rgb(0, 0, 0);
 }
 

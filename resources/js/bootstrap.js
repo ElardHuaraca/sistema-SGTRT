@@ -10,6 +10,8 @@ try {
     window.Popper = require('@popperjs/core');
     window.$ = window.jQuery = require('jquery');
     window.bootstrap = require('bootstrap');
+    require('datatables.net')(window, $);
+    require('datatables.net-responsive')(window, $);
 } catch (e) { }
 
 window.axios = require('axios');

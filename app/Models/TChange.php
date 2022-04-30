@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class TChange extends Model
 {
     use HasFactory;
+
+    protected $table = 'tcambio';
+    protected $primaryKey = 'idtipo';
+
+    protected $fillable = [
+        'valor'
+    ];
 }

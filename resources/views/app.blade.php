@@ -50,7 +50,7 @@
 
                             <ul id="collapse_first" class="collapse list-group list-group-flush treeview-menu">
                                 <li class="list-group-item py-1 bg-transparent">
-                                    <a href="" class="text-reset">
+                                    <a href="{{ route('reports') }}" class="text-reset">
                                         <i class="fa-solid fa-share"></i>
                                         <span>Consumo Recursos TI</span>
                                     </a>
@@ -160,5 +160,6 @@
 @auth
     <script src="{{ asset('js/navigation.js') }}"></script>
 @endauth
+@stack('scripts')
 
 </html>

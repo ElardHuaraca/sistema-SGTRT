@@ -1,6 +1,12 @@
 @import '~bootstrap/scss/bootstrap';
+@import '~datatables.net-bs5/css/dataTables.bootstrap5.css';
+@import '~datatables.net-responsive-bs5/css/responsive.bootstrap5.css';
 
 html,body{
     height: 100%;
     width: 100%;
+}
+
+body{
+    background-color: #ecf0f5;
 }

@@ -17,6 +17,8 @@ mix.js('resources/js/app.js', 'public/js')
     ]);
 
 mix.js('resources/js/navigation.js', 'public/js')
+mix.js('resources/js/home.js', 'public/js')
+mix.js('resources/js/report/resource_it.js', 'public/js/report')
 
 mix.postCss('resources/css/auth.css', 'public/css');
 mix.postCss('resources/css/navigation.css', 'public/css');
