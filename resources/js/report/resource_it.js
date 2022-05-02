@@ -1,22 +1,16 @@
 const { Chart, registerables } = require("chart.js");
 
 $(function () {
-    $('#table-resources-it').DataTable({
-        responsive: true,
-    })
-});
-
-$(function () {
     /* Registrar los controladores default */
     Chart.register(...registerables)
 });
 
 /*Agregar valores a la tabla*/
 $(function () {
+    if ((typeof grafic_default === 'undefined')) return
     var canva = $('#chart-grafic')
     var yValues = grafic_default.map(function (item) { return item.tiempo_ejecucion })
     var xValues = grafic_default.map(function (item) { return item.periodo })
-    console.log(grafic_default)
     var chart = new Chart(canva, {
         type: 'line',
         data: {

@@ -1,0 +1,9 @@
+.not-show-password {
+    display      : inline-block !important;
+    position     : absolute;
+    right        : 0;
+    padding-top  : 0.7rem;
+    padding-right: 0.5rem;
+    cursor       : pointer;
+    z-index      : 1056;
+}

@@ -10,3 +10,22 @@ html,body{
 body{
     background-color: #ecf0f5;
 }
+
+.table.responsive{
+    width: 100% !important;
+}
+
+
+.bg-primary-custom {
+    background: #3c8dbc;
+}
+
+@media (min-width: 768px) {
+    .modal.fade>div>div>div>.modal-title {
+        padding-left: 8rem;
+    }
+}
+
+.input-group-prepend{
+    min-width: 2.75rem;
+}

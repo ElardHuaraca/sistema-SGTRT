@@ -19,9 +19,11 @@ mix.js('resources/js/app.js', 'public/js')
 mix.js('resources/js/navigation.js', 'public/js')
 mix.js('resources/js/home.js', 'public/js')
 mix.js('resources/js/report/resource_it.js', 'public/js/report')
+mix.js('resources/js/user/user-manage.js', 'public/js/user')
 
 mix.postCss('resources/css/auth.css', 'public/css');
 mix.postCss('resources/css/navigation.css', 'public/css');
 mix.postCss('resources/css/home.css', 'public/css');
+mix.postCss('resources/css/user-manage.css', 'public/css');
 
 mix.copyDirectory('resources/images', 'public/images');

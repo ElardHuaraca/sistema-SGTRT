@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TChangeController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,4 +45,13 @@ Route::controller(ReportController::class)->group(function(){
     Route::post('/reports/create', 'store')->middleware('auth');
     Route::put('/reports/update', 'update')->middleware('auth');
     Route::delete('/reports/delete', 'destroy')->middleware('auth');
+});
+
+Route::controller(UserController::class)->group(function(){
+    Route::get('/users', 'index')->middleware('auth')->name('users');
+    Route::get('/users/{id}', 'show')->middleware('auth');
+    Route::post('/users/create', 'store')->middleware('auth');
+    Route::put('/users/update', 'update')->middleware('auth');
+    Route::put('/users/update/status/{id}', 'update_status')->middleware('auth');
+    Route::delete('/users/delete/{id}', 'destroy')->middleware('auth');
 });

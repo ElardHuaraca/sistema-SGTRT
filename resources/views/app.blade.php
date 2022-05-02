@@ -80,7 +80,7 @@
                             </a>
                             <ul id="collapse_second" class="collapse list-group list-group-flush treeview-menu">
                                 <li class="list-group-item py-1 bg-transparent">
-                                    <a href="" class="text-reset">
+                                    <a href="{{ route('users') }}" class="text-reset">
                                         <i class="fa-solid fa-share"></i>
                                         <span>Gestionar Usuario</span>
                                     </a>

@@ -41,16 +41,6 @@
 
 /* Estilos modal */
 
-.bg-primary-custom {
-    background: #3c8dbc;
-}
-
-@media (min-width: 768px) {
-    .modal.fade.show>div>div>div>.modal-title {
-        padding-left: 8rem;
-    }
-}
-
 .input-group-addon {
     border: 1px solid #ccc;
 }

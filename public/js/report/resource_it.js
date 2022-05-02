@@ -13403,17 +13403,13 @@ var _require = __webpack_require__(/*! chart.js */ "./node_modules/chart.js/dist
     registerables = _require.registerables;
 
 $(function () {
-  $('#table-resources-it').DataTable({
-    responsive: true
-  });
-});
-$(function () {
   /* Registrar los controladores default */
   Chart.register.apply(Chart, _toConsumableArray(registerables));
 });
 /*Agregar valores a la tabla*/
 
 $(function () {
+  if (typeof grafic_default === 'undefined') return;
   var canva = $('#chart-grafic');
   var yValues = grafic_default.map(function (item) {
     return item.tiempo_ejecucion;
@@ -13421,7 +13417,6 @@ $(function () {
   var xValues = grafic_default.map(function (item) {
     return item.periodo;
   });
-  console.log(grafic_default);
   var chart = new Chart(canva, {
     type: 'line',
     data: {

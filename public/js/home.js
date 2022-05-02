@@ -28,17 +28,16 @@ $(function () {
       beforeSend: function beforeSend() {
         $('#btn-close').trigger('click');
         $('#btn-succes-loading').trigger('click');
-      },
-      success: function success(data) {
-        $('#btn-close-loading').trigger('click');
-        $('#btn-succes').trigger('click');
-        $('#valor-cambio').text(data.valor);
-      },
-      error: function error(data) {
-        $('#btn-close-loading').trigger('click');
-        $('#btn-succes-error').trigger('click');
-        console.log(data.responseJSON);
       }
+    }).then(function (data) {
+      $('#btn-succes').trigger('click');
+      $('#valor-cambio').text(data.valor);
+    })["catch"](function (data) {
+      $('#btn-succes-error').trigger('click');
+      console.log(data.responseJSON);
+    }).always(function () {
+      $('#modal-succes-loading').modal('toggle');
+      $('#btn-close-loading ,.btn-close-loading').trigger('click');
     });
   });
 });

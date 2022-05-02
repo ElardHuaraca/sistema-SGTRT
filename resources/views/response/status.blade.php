@@ -1,18 +1,21 @@
 <div>
-    <button id="btn-succes-loading" data-bs-toggle="modal" data-bs-target=" #modal-succes-loading"
-        style="display: none">
+    <button id="btn-succes-loading" data-bs-toggle="modal" data-bs-target="#modal-succes-loading" style="display: none">
     </button>
     <div class="modal fade" id="modal-succes-loading" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content h-50" id="content-mod">
+                <div class="modal-header bg-white">
+                    <button type="button" class="btn-close btn-close-loading" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
                 <div class="modal-body text-center py-5">
                     <div class="spinner-border text-info" role="status">
                         <span class="sr-only">Loading...</span>
                     </div>
                 </div>
                 <div class="d-none">
-                    <button data-bs-dismiss="modal" id="btn-close-loading">Cerrar</button>
+                    <button type="button" data-bs-dismiss="modal" id="btn-close-loading">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -20,7 +23,7 @@
     <button id="btn-succes" data-bs-toggle="modal" data-bs-target="#modal-succes" style="display: none">
     </button>
     <div class="modal fade" id="modal-succes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content h-50" id="content-mod">
                 <div class="modal-header justify-content-center">
@@ -38,10 +41,10 @@
             </div>
         </div>
     </div>
-    <button id="btn-succes-error" data-bs-toggle="modal" data-bs-target=" #modal-succes-error" style="display: none">
+    <button id="btn-succes-error" data-bs-toggle="modal" data-bs-target="#modal-succes-error" style="display: none">
     </button>
     <div class="modal fade" id="modal-succes-error" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content h-50" id="content-mod">
                 <div class="modal-header justify-content-center">
@@ -55,6 +58,24 @@
                 <div class="modal-footer justify-content-end">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         id="btn-close-error">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button id="btn-succes-confirmation" data-bs-toggle="modal" data-bs-target="#modal-succes-confirmation"
+        style="display: none">
+    </button>
+    <div class="modal fade" id="modal-succes-confirmation" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content h-50 panel-warning" id="content-mod">
+                <div class="modal-body text-center py-5">
+                    <h4>¿Esta seguro que desea realizar esta accion?</h4>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal"
+                        id="btn-close">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="delete-data">Eliminar</button>
                 </div>
             </div>
         </div>

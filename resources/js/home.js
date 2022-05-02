@@ -20,18 +20,16 @@ $(function () {
             beforeSend: function () {
                 $('#btn-close').trigger('click')
                 $('#btn-succes-loading').trigger('click')
-            },
-            success: function (data) {
-                $('#btn-close-loading').trigger('click')
-                $('#btn-succes').trigger('click')
-                $('#valor-cambio').text(data.valor)
-            },
-            error: function (data) {
-                $('#btn-close-loading').trigger('click')
-                $('#btn-succes-error').trigger('click')
-                console.log(data.responseJSON)
             }
+        }).then(function (data) {
+            $('#btn-succes').trigger('click')
+            $('#valor-cambio').text(data.valor)
+        }).catch(function (data) {
+            $('#btn-succes-error').trigger('click')
+            console.log(data.responseJSON)
+        }).always(function () {
+            $('#modal-succes-loading').modal('toggle')
+            $('#btn-close-loading ,.btn-close-loading').trigger('click')
         })
     })
-
 })
