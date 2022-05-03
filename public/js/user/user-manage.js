@@ -4,7 +4,7 @@ var __webpack_exports__ = {};
   !*** ./resources/js/user/user-manage.js ***!
   \******************************************/
 $(function () {
-  $('.state-user-active, .state-user-inactive').on('click', function (e) {
+  $('#table-resources-it').on('click', '.state-user-active, .state-user-inactive', function (e) {
     var btn = $(this);
     var id = btn.val();
     var status = $(this).hasClass('btn-success') ? 0 : 1;
@@ -55,6 +55,10 @@ $(function () {
   });
   $('#btn-update-create-user').on('click', function () {
     return $('#btn-sumbit-user').trigger('click');
+  });
+  $('#btn-create-user').on('click', function () {
+    _id = null;
+    row = null;
   });
   $('.btn-delete-user').on('click', function () {
     _id = $(this).val();
@@ -217,8 +221,8 @@ $(function () {
     if (btn.attr('id') == 'btn-edit-user') {
       $(this).find('.modal-title').text('Actualizar usuario');
       _id = btn.val();
-      var user = users.find(function (x) {
-        return x.idusuario == _id;
+      var user = users.find(function (user) {
+        return user.idusuario == _id;
       });
       modal.find('#btn-update-create-user').text('Actualizar');
       setDataForm(user);

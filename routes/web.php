@@ -5,6 +5,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\TChangeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,4 +55,12 @@ Route::controller(UserController::class)->group(function(){
     Route::put('/users/update', 'update')->middleware('auth');
     Route::put('/users/update/status/{id}', 'update_status')->middleware('auth');
     Route::delete('/users/delete/{id}', 'destroy')->middleware('auth');
+});
+
+Route::controller(ProjectController::class)->group(function(){
+    Route::get('/projects', 'index')->middleware('auth')->name('projects');
+    Route::get('/projects/{id}', 'show')->middleware('auth');
+    Route::post('/projects/create', 'store')->middleware('auth');
+    Route::put('/projects/update/{id}', 'update')->middleware('auth');
+    Route::delete('/projects/delete/{id}', 'destroy')->middleware('auth');
 });

@@ -15,7 +15,7 @@
             <div class="box" id="box-consumo">
                 <div class="d-flex align-items-center px-lg-5 px-md-4 py-3">
                     {{-- <!-- Buscador cliente --> --}}
-                    <div class="col-lg-2 col-md-4 d-inline-flex">
+                    <div class="col-lg-4 col-md-4 d-inline-flex">
                         <button class="btn btn-info" type="button" data-bs-toggle="modal" data-bs-target=" #modalEditUser"
                             id="btn-create-user">Agregar Usuario</button>
                     </div>

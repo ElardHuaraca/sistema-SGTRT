@@ -102,7 +102,7 @@
                                     </a>
                                 </li>
                                 <li class="list-group-item py-1 bg-transparent">
-                                    <a href="" class="text-reset">
+                                    <a href="{{ route('projects') }}" class="text-reset">
                                         <i class="fa-solid fa-share"></i>
                                         <span>Proyectos</span>
                                     </a>

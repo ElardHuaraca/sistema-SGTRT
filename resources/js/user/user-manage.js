@@ -1,5 +1,5 @@
 $(function () {
-    $('.state-user-active, .state-user-inactive').on('click', function (e) {
+    $('#table-resources-it').on('click', '.state-user-active, .state-user-inactive', function (e) {
         let btn = $(this)
         let id = btn.val()
         let status = $(this).hasClass('btn-success') ? 0 : 1
@@ -47,6 +47,8 @@ $(function () {
     })
 
     $('#btn-update-create-user').on('click', () => $('#btn-sumbit-user').trigger('click'))
+
+    $('#btn-create-user').on('click', () => { _id = null; row = null })
 
     $('.btn-delete-user').on('click', function () {
         _id = $(this).val()
@@ -198,7 +200,7 @@ $(function () {
         if (btn.attr('id') == 'btn-edit-user') {
             $(this).find('.modal-title').text('Actualizar usuario')
             _id = btn.val()
-            let user = users.find(x => x.idusuario == _id)
+            let user = users.find(user => user.idusuario == _id)
             modal.find('#btn-update-create-user').text('Actualizar')
             setDataForm(user)
             $('input[name="password"]').attr('required', false)
