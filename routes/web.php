@@ -6,6 +6,9 @@ use App\Http\Controllers\TChangeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\FourwallController;
+use App\Http\Controllers\NexusController;
+use App\Http\Controllers\HpController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,4 +66,26 @@ Route::controller(ProjectController::class)->group(function(){
     Route::post('/projects/create', 'store')->middleware('auth');
     Route::put('/projects/update/{id}', 'update')->middleware('auth');
     Route::delete('/projects/delete/{id}', 'destroy')->middleware('auth');
+    Route::get('/costs', 'maintenanceCost')->middleware('auth')->name('costs');
+});
+
+Route::controller(FourwallController::class)->group(function(){
+    Route::get('/fourwalls/{id}', 'show')->middleware('auth');
+    Route::post('/fourwalls/create', 'store')->middleware('auth');
+    Route::put('/fourwalls/update/{id}', 'update')->middleware('auth');
+    Route::delete('/fourwalls/delete/{id}', 'destroy')->middleware('auth');
+});
+
+Route::controller(NexusController::class)->group(function(){
+    Route::get('/nexus/{id}', 'show')->middleware('auth');
+    Route::post('/nexus/create', 'store')->middleware('auth');
+    Route::put('/nexus/update/{id}', 'update')->middleware('auth');
+    Route::delete('/nexus/delete/{id}', 'destroy')->middleware('auth');
+});
+
+Route::controller(HpController::class)->group(function(){
+    Route::get('/hps/{id}', 'show')->middleware('auth');
+    Route::post('/hps/create', 'store')->middleware('auth');
+    Route::put('/hps/update/{id}', 'update')->middleware('auth');
+    Route::delete('/hps/delete/{id}', 'destroy')->middleware('auth');
 });

@@ -5,18 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class nexus extends Model
+class Hp extends Model
 {
     use HasFactory;
 
-    protected $table = 'nexus';
+    protected $table = 'hp';
 
-    protected $primaryKey = 'idnexus';
+    protected $primaryKey = 'idhp';
 
     protected $fillable = [
-        'idnexus',
-        'punto_red',
+        'idhp',
+        'equipo',
+        'serie',
         'costo',
+        'fec_inicio',
+        'fec_fin',
         'idproyecto',
         'eliminado'
     ];
@@ -30,4 +33,5 @@ class nexus extends Model
     {
         return $this->belongsTo(Project::class, 'idproyecto');
     }
+
 }

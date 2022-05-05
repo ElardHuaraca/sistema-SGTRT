@@ -15,7 +15,7 @@
             <div class="box" id="box-consumo">
                 <div class="d-flex justify-content-md-between align-items-center px-lg-5 px-md-4 py-3">
                     {{-- <!-- Buscador cliente --> --}}
-                    <div class="col-lg-2 col-md-4 d-inline-flex">
+                    <div class="col-lg-3 col-md-4 d-inline-flex">
                         <h6 id="h6-cliente" class="py-2 m-0 pe-2">Cliente:</h6>
                         <input id="input-buscar-cliente"
                             class="form-control form-control-sm ml-5 w-30 rounded-3 rounded-pill" type="text"

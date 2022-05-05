@@ -16,4 +16,19 @@ class Project extends Model
     protected $fillable = ['nombre'];
 
     protected $hidden = ['created_at','updated_at'];
+
+    public function nexus()
+    {
+        return $this->hasMany(Nexus::class, 'idproyecto');
+    }
+
+    public function fourwall()
+    {
+        return $this->hasMany(Fourwall::class, 'idproyecto');
+    }
+
+    public function hp()
+    {
+        return $this->hasMany(Hp::class, 'idproyecto');
+    }
 }

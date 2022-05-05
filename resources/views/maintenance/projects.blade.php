@@ -17,6 +17,25 @@
                             data-bs-target=" #modalEditProject" id="btn-create-project">Agregar nuevo Proyecto</button>
                     </div>
                 </div>
+                <div
+                    class="d-flex justify-content-lg-between align-items-center flex-md-wrap justify-content-md-evenly py-3 px-2 border-top border-secondary">
+                    <div class="px-md-3 px-lg-0 px-xl-3">
+                        <button class="btn btn-secondary" id="btn-generate-report">Generar reporte</button>
+                    </div>
+                    <div class="d-inline-flex px-md-3 py-md-2  px-lg-0">
+                        {{-- <!-- Fecha inicio--> --}}
+                        <h6 id="h6-1" class="py-2 m-0 pe-2"><b>Fecha Inicio:</b></h6>
+                        <input class="p-lg-1 date-green" type="date">
+                    </div>
+                    <div class="d-inline-flex px-md-3 py-md-2  px-lg-0 ">
+                        {{-- <!-- Fecha fin--> --}}
+                        <h6 id="h6-fin-1" class="py-2 m-0 pe-2"><b>Fecha Fin:</b></h6>
+                        <input class="p-lg-1 date-green" type="date">
+                    </div>
+                    <div class="px-md-3 px-lg-0 px-xl-3">
+                        <button class="btn btn-primary" id="btn-consult">Consultar</button>
+                    </div>
+                </div>
                 <div class="px-3 pt-2 pb-3 border-top border-secondary">
                     <table class="table table-striped responsive" id="table-resources-it">
                         <thead>

@@ -1,6 +1,7 @@
 @import '~bootstrap/scss/bootstrap';
 @import '~datatables.net-bs5/css/dataTables.bootstrap5.css';
 @import '~datatables.net-responsive-bs5/css/responsive.bootstrap5.css';
+@import '/node_modules/vanillajs-datepicker/dist/css/datepicker.min.css';
 
 html,body{
     height: 100%;
@@ -26,6 +27,26 @@ body{
     }
 }
 
-.input-group-prepend{
+.input-group-prepend {
     min-width: 2.75rem;
+}
+
+.text-indent-1 {
+    text-indent: .5rem;
+}
+
+.modal-title-1 {
+    padding-left: 6rem !important;
+}
+
+.modal-title-2 {
+    padding-left: 9rem !important;
+}
+
+.modal-title-3 {
+    padding-left: 10rem !important;
+}
+
+.modal-title-4 {
+    padding-left: 11rem !important;
 }

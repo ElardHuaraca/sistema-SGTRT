@@ -108,7 +108,7 @@
                                     </a>
                                 </li>
                                 <li class="list-group-item py-1 bg-transparent">
-                                    <a href="" class="text-reset">
+                                    <a href="{{ route('costs') }}" class="text-reset">
                                         <i class="fa-solid fa-share"></i>
                                         <span>Costo Mantenimiento</span>
                                     </a>

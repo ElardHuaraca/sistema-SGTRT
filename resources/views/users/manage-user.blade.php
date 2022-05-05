@@ -75,7 +75,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-update-user">
+                    <form class="form-update-user" autocomplete="off">
                         @csrf
                         <input class="d-none" value="">
                         <div class="input-group mb-3">
