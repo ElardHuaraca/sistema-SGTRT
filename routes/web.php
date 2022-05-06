@@ -37,6 +37,7 @@ Route::get('/', function () {
     $tChange = TChangeController::getTChange();
     Debugbar::info($tChange);
     return view('home',['tChange' => $tChange]);
+
 })->middleware('auth')->name('home');
 
 Route::controller(TChangeController::class)->group(function(){

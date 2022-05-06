@@ -101,6 +101,7 @@ $(function () {
         }
         $('.sidebar-toggle.ms-4-5').removeClass('ms-4-5').addClass('ms-15')
         $('.container.main').removeClass('container-not-expanded')
+        $('.w-100.bg-white.fixed-bottom').removeClass('ps-4-custom').addClass('ps-14')
     }
 
     PushMenu.prototype.close = function () {
@@ -114,6 +115,7 @@ $(function () {
         }
         $('.sidebar-toggle.ms-15').removeClass('ms-15').addClass('ms-4-5')
         $('.container.main').addClass('container-not-expanded')
+        $('.w-100.bg-white.fixed-bottom').removeClass('ps-14').addClass('ps-4-custom')
     }
 
     PushMenu.prototype.expandOnHover = function () {

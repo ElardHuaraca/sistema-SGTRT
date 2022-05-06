@@ -17,7 +17,7 @@
             </h1>
 
         </section>
-        <section class="content">
+        <section class="content me-n-2">
 
             <div class="box">
                 <div class="box-header with-border">

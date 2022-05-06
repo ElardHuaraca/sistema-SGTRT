@@ -24,6 +24,7 @@ $(function () {
         }).then(function (data) {
             $('#btn-succes').trigger('click')
             $('#valor-cambio').text(data.valor)
+            $('.fst-italic.fw-bolder').text('T.C: ' + data.valor)
         }).catch(function (data) {
             $('#btn-succes-error').trigger('click')
             console.log(data.responseJSON)
