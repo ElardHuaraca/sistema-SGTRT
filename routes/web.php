@@ -33,9 +33,7 @@ Route::get('/', function () {
         Auth::logout();
         abort(403,'No tiene permisos para acceder a esta página');
     }
-
     $tChange = TChangeController::getTChange();
-    Debugbar::info($tChange);
     return view('home',['tChange' => $tChange]);
 
 })->middleware('auth')->name('home');
