@@ -22,7 +22,7 @@
             <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title" id="TC-INICIO">Tipo de cambio actual:
-                        <b><i id="valor-cambio">{{ number_format($tChange->valor, 2) }}</i></b>
+                        <b><i id="valor-cambio">{{ number_format($exchangeRates->value, 2) }}</i></b>
                     </h3>
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-bs-toggle="collapse"
@@ -32,9 +32,11 @@
                 </div>
                 <div class="show" id="editarCambio">
                     <div class="box-body p-3">
-                        <button class="btn btn-warning btnEditarCambio" idCambio="{{ $tChange->idtipo }}"
-                            data-bs-toggle="modal" data-bs-target=" #modalEditarCambio"></i>
-                            <b>Editar el tipo decambio</b>
+                        <button
+                            class="btn btn-warning btnEditarCambio disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                            idCambio="{{ $exchangeRates->idtipo }}" data-bs-toggle="modal"
+                            data-bs-target=" #modalEditarCambio"></i>
+                            <b>Editar el tipo de cambio</b>
                         </button>
                     </div>
                 </div>
@@ -50,14 +52,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-update-tchange">
+                    <form class="form-update-exchangeRates">
                         @csrf
                         <div class="input-container">
                             <span class="input-group-addon py-1">
                                 <i class="fa fa-regular fa-money-bill-1 icon"></i>
                             </span>
-                            <input class="input-field newtChange" type="number"
-                                value="{{ number_format($tChange->valor, 2) }}" name="valor" step="0.05">
+                            <input class="input-field newtExchangeRates" type="number"
+                                value="{{ number_format($exchangeRates->value, 2) }}" name="valor" step="0.05">
                         </div>
                     </form>
                 </div>

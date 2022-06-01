@@ -31,7 +31,9 @@
                 <div
                     class="d-flex justify-content-lg-between align-items-center flex-md-wrap justify-content-md-evenly py-3 px-2 border-top border-secondary">
                     <div class="px-md-3 px-lg-0 px-xl-3">
-                        <button class="btn btn-secondary" id="btn-generate-report">Generar reporte</button>
+                        <button
+                            class="btn btn-secondary disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                            id="btn-generate-report">Generar reporte</button>
                     </div>
                     <div class="d-inline-flex px-md-3 py-md-2  px-lg-0">
                         {{-- <!-- Fecha inicio--> --}}
@@ -64,20 +66,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($resources as $resource)
+                            @foreach ($servers as $server)
                                 <tr>
                                     <th scope="row">{{ $loop->index + 1 }}</th>
-                                    <td>{{ $resource->activo }}</td>
-                                    <td>{{ $resource->alp }}</td>
-                                    <td>{{ $resource->proyecto }}</td>
-                                    <td>{{ $resource->servidor }}</td>
-                                    <td>{{ $resource->cpu }}</td>
-                                    <td>{{ $resource->memoria }}</td>
-                                    <td>{{ $resource->disco }}</td>
-                                    <td>{{ $resource->servicio }}</td>
+                                    <td>{{ $server->active }}</td>
+                                    <td>{{ $server->idproject }}</td>
+                                    <td>{{ $server->project_name }}</td>
+                                    <td>{{ $server->name }}</td>
+                                    <?php $resources = json_decode($server->resources); ?>
+                                    <td>{{ isset($resources->CPU) ? $resources->CPU : 0 }}</td>
+                                    <td>{{ isset($resources->RAM) ? $resources->RAM : 0 }}</td>
+                                    <?php $SSD = isset($resources->SSD) ? $resources->SSD : 0;
+                                    $HDD = isset($resources->HDD) ? $resources->HDD : 0; ?>
+                                    <td>{{ $SSD + $HDD }}</td>
+                                    <td>{{ $server->sow_name }}</td>
                                     <td>
                                         <a class="btn btn-info" role="button"
-                                            href="{{ route('reports.grafic', $resource->servidor) }}">
+                                            href="{{ route('reports.grafic', $server->idserver) }}">
                                             <i class="fa-solid fa-chart-simple"></i>
                                         </a>
                                     </td>

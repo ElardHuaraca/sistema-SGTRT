@@ -5,7 +5,7 @@ var __webpack_exports__ = {};
   \******************************/
 $(function () {
   /* Evit write more two decimals */
-  $('.newtChange').on('keyup', function () {
+  $('.newtExchangeRates').on('keyup', function () {
     var value = $(this).val();
     var newValue = value.replace(/(\.\d{2})\d+/g, '$1');
     $(this).val(newValue);
@@ -13,7 +13,7 @@ $(function () {
 });
 $(function () {
   $('#updatetChange').on('click', function () {
-    var data = $('.form-update-tchange');
+    var data = $('.form-update-exchangeRates');
     var serializeArray = data.serializeArray();
     $.ajax({
       headers: {
@@ -22,7 +22,7 @@ $(function () {
       type: 'PUT',
       url: '/update/tchange',
       data: {
-        'valor': serializeArray[1].value
+        'value': serializeArray[1].value
       },
       dataType: 'json',
       beforeSend: function beforeSend() {
@@ -31,8 +31,8 @@ $(function () {
       }
     }).then(function (data) {
       $('#btn-succes').trigger('click');
-      $('#valor-cambio').text(data.valor);
-      $('.fst-italic.fw-bolder').text('T.C: ' + data.valor);
+      $('#valor-cambio').text(data.value);
+      $('.fst-italic.fw-bolder').text('T.C: ' + data.value);
     })["catch"](function (data) {
       $('#btn-succes-error').trigger('click');
       console.log(data.responseJSON);

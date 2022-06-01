@@ -5,14 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TChange extends Model
+class ExchangeRates extends Model
 {
     use HasFactory;
 
-    protected $table = 'tcambio';
-    protected $primaryKey = 'idtipo';
+    protected $table = 'exchange_rates';
+
+    protected $primaryKey = 'idex';
 
     protected $fillable = [
-        'valor'
+        'value'
     ];
 }

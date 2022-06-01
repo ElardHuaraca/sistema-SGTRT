@@ -5,26 +5,32 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Nexus extends Model
+class Server extends Model
 {
     use HasFactory;
 
-    protected $table = 'nexus';
+    protected $table = 'servers';
 
-    protected $primaryKey = 'idnexus';
+    protected $primaryKey = 'idserver';
 
     protected $fillable = [
-        'idnexus',
-        'network_point',
-        'cost',
+        'idserver',
+        'name',
+        'active',
         'idproject',
-        'is_deleted'
+        'idsow',
+        'idspla'
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at'
     ];
+
+    public function resourcesHistory()
+    {
+        return $this->hasMany(ResourceHistory::class, 'idserver');
+    }
 
     public function project()
     {

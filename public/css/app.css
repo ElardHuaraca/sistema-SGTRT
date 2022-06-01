@@ -11813,11 +11813,6 @@ body {
   background: #3c8dbc;
 }
 
-@media (min-width: 768px) {
-  .modal.fade > div > div > div > .modal-title {
-    padding-left: 8rem;
-  }
-}
 .input-group-prepend {
   min-width: 2.75rem;
 }
@@ -11840,4 +11835,25 @@ body {
 
 .modal-title-4 {
   padding-left: 11rem !important;
+}
+
+.bg-black-custom {
+  background-color: #383838 !important;
+  color: white;
+}
+
+.bg-blue-custom {
+  background-color: #1b79bf !important;
+  color: white;
+}
+
+.bg-green-custom {
+  background-color: #18864f !important;
+  color: white;
+}
+
+@media (min-width: 768px) {
+  .modal-dialog {
+    min-width: 700px;
+  }
 }

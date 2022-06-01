@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Nexus extends Model
+class SplaLicense extends Model
 {
     use HasFactory;
 
-    protected $table = 'nexus';
+    protected $table = 'spla_licenses';
 
-    protected $primaryKey = 'idnexus';
+    protected $primaryKey = 'idspla';
 
     protected $fillable = [
-        'idnexus',
-        'network_point',
+        'code',
+        'name',
         'cost',
-        'idproject',
+        'type',
         'is_deleted'
     ];
 
@@ -26,8 +26,8 @@ class Nexus extends Model
         'updated_at'
     ];
 
-    public function project()
+    public function servers()
     {
-        return $this->belongsTo(Project::class, 'idproject');
+        return $this->hasMany(Server::class, 'idspla');
     }
 }

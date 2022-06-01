@@ -7,7 +7,7 @@ $(function () {
   $('#table-resources-it').on('click', '.state-user-active, .state-user-inactive', function (e) {
     var btn = $(this);
     var id = btn.val();
-    var status = $(this).hasClass('btn-success') ? 0 : 1;
+    var state = $(this).hasClass('btn-success') ? false : true;
     var data = $('.form-update-user');
     var serializeArray = data.serializeArray();
     var token = serializeArray[0].value;
@@ -16,30 +16,32 @@ $(function () {
         'X-CSRF-TOKEN': token
       },
       type: 'PUT',
-      url: '/users/update/status/' + id,
+      url: '/users/update/state/' + id,
       data: {
-        'status': status
+        'state': state
       },
       dataType: 'json',
       beforeSend: function beforeSend() {
         $('#btn-succes-loading').trigger('click');
       }
     }).then(function (data) {
-      if (data.estado == 1) {
+      if (data.state === "true") {
         btn.removeClass('btn-danger');
         btn.addClass('btn-success');
         btn.text('Activo');
+        console.log('Activo');
       } else {
         btn.removeClass('btn-success');
         btn.addClass('btn-danger');
         btn.text('Inactivo');
+        console.log('Inactivo');
       }
     })["catch"](function (data) {
       $('#btn-close-loading').trigger('click');
       $('#btn-succes-error').trigger('click');
       console.log(data.responseJSON);
     }).always(function () {
-      $('#modal-succes-loading').modal('toggle');
+      $('#modal-succes-loading').hide();
       $('#btn-close-loading ,.btn-close-loading').trigger('click');
     });
   });
@@ -60,7 +62,7 @@ $(function () {
     _id = null;
     row = null;
   });
-  $('.btn-delete-user').on('click', function () {
+  $('#table-resources-it').on('click', '.btn-delete-user', function () {
     _id = $(this).val();
     $('#btn-succes-confirmation').trigger('click');
   });
@@ -86,12 +88,12 @@ $(function () {
     /* get first character of name and only first lastname */
 
     var name = data[1].value.trim();
-    var lastname = data[2].value.trim();
-    var usuario = (name.charAt(0) + lastname.split(' ')[0]).toLowerCase();
+    var last_name = data[2].value.trim();
+    var usuario = (name.charAt(0) + last_name.split(' ')[0]).toLowerCase();
     var email = data[3].value;
-    var phone = data[4].value.replaceAll('-', '');
+    var number_phone = data[4].value.replaceAll('-', '');
     var password = data[5].value;
-    var rol = data[6].value;
+    var role = data[6].value;
     $.ajax({
       headers: {
         'X-CSRF-TOKEN': token
@@ -101,12 +103,12 @@ $(function () {
       data: {
         'id': id,
         'name': name,
-        'lastname': lastname,
+        'last_name': last_name,
         'username': usuario,
         'email': email,
-        'phone': phone,
+        'number_phone': number_phone,
         'password': password,
-        'rol': rol
+        'role': role
       },
       dataType: 'json',
       beforeSend: function beforeSend() {
@@ -115,42 +117,43 @@ $(function () {
     }).then(function (data) {
       $('#btn-succes').trigger('click');
       users.map(function (user) {
-        if (user.idusuario == data.idusuario) {
-          user.nombres = data.nombres;
-          user.apellidos = data.apellidos;
-          user.usuario = data.usuario;
-          user.correo = data.correo;
-          user.telefono = data.telefono;
-          user.rol = data.rol;
+        if (user.iduser == data.iduser) {
+          user.name = data.name;
+          user.last_name = data.last_name;
+          user.username = data.username;
+          user.email = data.email;
+          user.number_phone = data.number_phone;
+          user.role = data.role;
         }
 
         return user;
       });
 
-      if (data.idusuario == id) {
+      if (data.iduser == id) {
         var rowData = $.dataTableInit.row(row).data();
-        rowData[1] = data.usuario;
-        rowData[2] = data.rol;
+        rowData[1] = data.username;
+        rowData[2] = data.role;
         $.dataTableInit.row(row).data(rowData);
+        $(':button').removeClass('disabled');
       } else {
         var rowData = $.dataTableInit.row(0).data();
         rowData[0] = $.dataTableInit.data().length + 1;
-        rowData[1] = data.usuario;
-        rowData[2] = data.rol;
+        rowData[1] = data.username;
+        rowData[2] = data.role;
         /* change value into button betwee rowData[3] and rowData[5] */
 
-        rowData[3] = "<button type=\"button\" class=\"btn btn-success fs-6 state-user-active\" value=\"".concat(data.idusuario, "\">\n                                Activo\n                            </button>");
-        rowData[4] = "<button class=\"btn btn-warning\" id=\"btn-edit-user\" ata-bs-toggle=\"modal\" data-bs-target=\" #modalEditUser\" value=\"".concat(data.idusuario, "\">\n                                Editar\n                            </button>");
-        rowData[5] = "<button class=\"btn btn-danger\" id=\"btn-delete-user\" value=\"".concat(data.idusuario, "\">\n                                Eliminar\n                            </button>");
+        rowData[3] = "<button type=\"button\" class=\"btn btn-success fs-6 state-user-active\" value=\"".concat(data.iduser, "\">\n                                Activo\n                            </button>");
+        rowData[4] = "<button class=\"btn btn-warning\" id=\"btn-edit-user\" data-bs-toggle=\"modal\" data-bs-target=\"#modalEditUser\" value=\"".concat(data.iduser, "\">\n                                Editar\n                            </button>");
+        rowData[5] = "<button class=\"btn btn-danger\" id=\"btn-delete-user\" value=\"".concat(data.iduser, "\" data-bs-toggle=\"modal\" data-bs-target=\"#modal-succes-confirmation\">\n                                Eliminar\n                            </button>");
         $.dataTableInit.row.add(rowData).draw();
         users.push({
-          'idusuario': data.idusuario,
-          'nombres': data.nombres,
-          'apellidos': data.apellidos,
-          'usuario': data.usuario,
-          'correo': data.correo,
-          'telefono': data.telefono,
-          'rol': data.rol
+          'iduser': data.iduser,
+          'name': data.name,
+          'last_name': data.last_name,
+          'username': data.username,
+          'email': data.email,
+          'number_phone': data.number_phone,
+          'role': data.role
         });
       }
     })["catch"](function (data) {
@@ -158,7 +161,7 @@ $(function () {
       $('#btn-succes-error').trigger('click');
       console.log(data.responseJSON);
     }).always(function () {
-      $('#modal-succes-loading').modal('toggle');
+      $('#modal-succes-loading').hide();
       $('#btn-close-loading, .btn-close-loading').trigger('click');
     });
   });
@@ -179,14 +182,14 @@ $(function () {
       $('#btn-succes').trigger('click');
       $.dataTableInit.row(row).remove().draw();
       users = users.filter(function (user) {
-        return user.idusuario != _id;
+        return user.iduser != _id;
       });
     })["catch"](function (data) {
       $('#btn-close-loading').trigger('click');
       $('#btn-succes-error').trigger('click');
       console.log(data.responseJSON);
     }).always(function () {
-      $('#modal-succes-loading').modal('toggle');
+      $('#modal-succes-loading').hide();
       $('#btn-close-loading, .btn-close-loading').trigger('click');
     });
   });
@@ -222,7 +225,7 @@ $(function () {
       $(this).find('.modal-title').text('Actualizar usuario');
       _id = btn.val();
       var user = users.find(function (user) {
-        return user.idusuario == _id;
+        return user.iduser == _id;
       });
       modal.find('#btn-update-create-user').text('Actualizar');
       setDataForm(user);
@@ -236,20 +239,20 @@ $(function () {
 });
 
 function setDataForm(data) {
-  $('input[name="name"]').val(data.nombres);
-  $('input[name="lastname"]').val(data.apellidos);
-  $('input[name="email"]').val(data.correo);
+  $('input[name="name"]').val(data.name);
+  $('input[name="lastname"]').val(data.last_name);
+  $('input[name="email"]').val(data.email);
   /* add '-' after every three numbers*/
 
-  if (data.telefono === null) {
+  if (data.number_phone === null) {
     $('input[name="phone"]').val('');
   } else {
-    $('input[name="phone"]').val(data.telefono.toString().replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3'));
+    $('input[name="phone"]').val(data.number_phone.toString().replace(/(\d{3})(\d{3})(\d{3})/, '$1-$2-$3'));
   }
   /* $('input[name="phone"]').val(data.telefono) */
 
 
-  $('select[name="rol"]').val(data.rol).trigger('change');
+  $('select[name="rol"]').val(data.role).trigger('change');
   $('#input-password').clone().val('').insertAfter('#input-password').prev().remove();
 }
 /* add reqiored attribute to Input */

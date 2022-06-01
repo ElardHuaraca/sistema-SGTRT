@@ -3558,10 +3558,10 @@ $(function () {
 
     if ($(this).val().length === 0) return;
     var codigo_alp = projects.filter(function (project) {
-      return project.idproyecto.toString().indexOf($(_this).val()) > -1;
+      return project.idproject.toString().indexOf($(_this).val()) > -1;
     });
     if (codigo_alp.length === 0) return;else if (codigo_alp.length === 1) {
-      if (codigo_alp[0].idproyecto.toString() === $(this).val()) {
+      if (codigo_alp[0].idproject.toString() === $(this).val()) {
         removeDivWithRecomendations();
         return;
       }
@@ -3573,10 +3573,10 @@ $(function () {
 
     if ($(this).val().length === 0) return;
     var codigo_alp = projects.filter(function (project) {
-      return project.idproyecto.toString().indexOf($(_this2).val()) > -1;
+      return project.idproject.toString().indexOf($(_this2).val()) > -1;
     });
     if (codigo_alp.length === 0) return;else if (codigo_alp.length === 1) {
-      if (codigo_alp[0].idproyecto.toString() === $(this).val()) {
+      if (codigo_alp[0].idproject.toString() === $(this).val()) {
         removeDivWithRecomendations();
         return;
       }
@@ -3588,10 +3588,10 @@ $(function () {
 
     if ($(this).val().length === 0) return;
     var codigo_alp = projects.filter(function (project) {
-      return project.idproyecto.toString().indexOf($(_this3).val()) > -1;
+      return project.idproject.toString().indexOf($(_this3).val()) > -1;
     });
     if (codigo_alp.length === 0) return;else if (codigo_alp.length === 1) {
-      if (codigo_alp[0].idproyecto.toString() === $(this).val()) {
+      if (codigo_alp[0].idproject.toString() === $(this).val()) {
         removeDivWithRecomendations();
         return;
       }
@@ -3613,8 +3613,8 @@ function addDivWithRecomendations(codigo_alp, index) {
     var div_recomendation = document.createElement("div");
     div_recomendation.className = "bg-light p-2 border border-secondary";
     div_recomendation.style = "cursor:pointer; display:block;";
-    div_recomendation.innerHTML = "<span>" + element.idproyecto + " - " + element.nombre + "</span>";
-    div_recomendation.innerHTML += "<input type='hidden' value=" + element.idproyecto + ">";
+    div_recomendation.innerHTML = "<span>" + element.idproject + " - " + element.name + "</span>";
+    div_recomendation.innerHTML += "<input type='hidden' value=" + element.idproject + ">";
     div_recomendation.addEventListener("mouseenter", function (e) {
       var div_target = $(e.target);
       div_target.removeClass("bg-light");
@@ -3681,15 +3681,15 @@ $(function () {
       headers: {
         'X-CSRF-TOKEN': token
       },
-      url: '/fourwalls/create',
+      url: '/maintenance/costs/fourwalls/create',
       type: 'POST',
       data: {
-        'idproyecto': data[0].value,
+        'idproject': data[0].value,
         'equipment': data[1].value,
         'serie': data[2].value,
         'cost': data[3].value,
-        'fech_inicio': data[4].value,
-        'fech_fin': data[5].value
+        'date_start': data[4].value,
+        'date_end': data[5].value
       },
       beforeSend: function beforeSend() {
         $('#btn-succes-loading').trigger('click');
@@ -3716,11 +3716,11 @@ $(function () {
       headers: {
         'X-CSRF-TOKEN': token
       },
-      url: '/nexus/create',
+      url: '/maintenance/costs/nexus/create',
       type: 'POST',
       data: {
-        'idproyecto': data[0].value,
-        'point_red_nexus': data[1].value,
+        'idproject': data[0].value,
+        'network_point': data[1].value,
         'cost': data[2].value
       },
       beforeSend: function beforeSend() {
@@ -3748,15 +3748,15 @@ $(function () {
       headers: {
         'X-CSRF-TOKEN': token
       },
-      url: '/hps/create',
+      url: '/maintenance/costs/hps/create',
       type: 'POST',
       data: {
-        'idproyecto': data[0].value,
+        'idproject': data[0].value,
         'equipment': data[1].value,
         'serie': data[2].value,
         'cost': data[3].value,
-        'fech_inicio': data[4].value,
-        'fech_fin': data[5].value
+        'date_start': data[4].value,
+        'date_end': data[5].value
       },
       beforeSend: function beforeSend() {
         $('#btn-succes-loading').trigger('click');
@@ -3793,12 +3793,12 @@ function setRequiredInputs(modal) {
 
 function updateCost(data, type) {
   var index = $.dataTableInit.data().toArray().findIndex(function (element) {
-    return element[1] === data.idproyecto;
+    return element[1] === data.idproject;
   });
   var row = $.dataTableInit.row(index).data();
-  row[type + 3] = deleteDolar(row[type + 3]) + parseFloat(data.costo);
-  row[6] = deleteDolar(row[6]) + parseFloat(data.costo);
-  row[7] = row[6] * tchange.valor;
+  row[type + 3] = deleteDolar(row[type + 3]) + parseFloat(data.cost);
+  row[6] = deleteDolar(row[6]) + parseFloat(data.cost);
+  row[7] = row[6] * tchange;
   row[type + 3] = '$' + row[type + 3].toFixed(2);
   row[6] = '$' + row[6].toFixed(2);
   row[7] = 'S/.' + row[7].toFixed(2);

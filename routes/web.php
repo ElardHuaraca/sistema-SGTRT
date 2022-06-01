@@ -2,13 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\TChangeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\FourwallController;
-use App\Http\Controllers\NexusController;
-use App\Http\Controllers\HpController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MaintenanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,70 +18,45 @@ use App\Http\Controllers\HpController;
 |
 */
 
-Route::controller(LoginController::class)->group(function(){
+Route::controller(LoginController::class)->group(function () {
     Route::get('/login', 'index')->name('login');
     Route::post('/login', 'authenticate');
     Route::get('/logout', 'logout')->name('logout');
 });
 
-Route::get('/', function () {
-
-    if(Auth::user()->rol == null){
-        Auth::logout();
-        abort(403,'No tiene permisos para acceder a esta página');
-    }
-    $tChange = TChangeController::getTChange();
-    return view('home',['tChange' => $tChange]);
-
-})->middleware('auth')->name('home');
-
-Route::controller(TChangeController::class)->group(function(){
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/', 'index')->middleware('auth')->name('home');
     Route::put('/update/tchange', 'updateTChange')->middleware('auth');
 });
 
-Route::controller(ReportController::class)->group(function(){
-    Route::get('/reports', 'index')->middleware('auth')->name('reports');
-    Route::get('/reports/{id}', 'show')->middleware('auth')->name('reports.grafic');
+Route::controller(ReportController::class)->group(function () {
+    Route::get('/reports', 'resource_consumption')->middleware('auth')->name('reports');
+    Route::get('/reports/{id}', 'resource_consumption_grafic')->middleware('auth')->name('reports.grafic');
     Route::post('/reports/create', 'store')->middleware('auth');
     Route::put('/reports/update', 'update')->middleware('auth');
     Route::delete('/reports/delete', 'destroy')->middleware('auth');
 });
 
-Route::controller(UserController::class)->group(function(){
+Route::controller(UserController::class)->group(function () {
     Route::get('/users', 'index')->middleware('auth')->name('users');
     Route::get('/users/{id}', 'show')->middleware('auth');
     Route::post('/users/create', 'store')->middleware('auth');
     Route::put('/users/update', 'update')->middleware('auth');
-    Route::put('/users/update/status/{id}', 'update_status')->middleware('auth');
+    Route::put('/users/update/state/{id}', 'update_status')->middleware('auth');
     Route::delete('/users/delete/{id}', 'destroy')->middleware('auth');
 });
 
-Route::controller(ProjectController::class)->group(function(){
-    Route::get('/projects', 'index')->middleware('auth')->name('projects');
-    Route::get('/projects/{id}', 'show')->middleware('auth');
-    Route::post('/projects/create', 'store')->middleware('auth');
-    Route::put('/projects/update/{id}', 'update')->middleware('auth');
-    Route::delete('/projects/delete/{id}', 'destroy')->middleware('auth');
-    Route::get('/costs', 'maintenanceCost')->middleware('auth')->name('costs');
-});
-
-Route::controller(FourwallController::class)->group(function(){
-    Route::get('/fourwalls/{id}', 'show')->middleware('auth');
-    Route::post('/fourwalls/create', 'store')->middleware('auth');
-    Route::put('/fourwalls/update/{id}', 'update')->middleware('auth');
-    Route::delete('/fourwalls/delete/{id}', 'destroy')->middleware('auth');
-});
-
-Route::controller(NexusController::class)->group(function(){
-    Route::get('/nexus/{id}', 'show')->middleware('auth');
-    Route::post('/nexus/create', 'store')->middleware('auth');
-    Route::put('/nexus/update/{id}', 'update')->middleware('auth');
-    Route::delete('/nexus/delete/{id}', 'destroy')->middleware('auth');
-});
-
-Route::controller(HpController::class)->group(function(){
-    Route::get('/hps/{id}', 'show')->middleware('auth');
-    Route::post('/hps/create', 'store')->middleware('auth');
-    Route::put('/hps/update/{id}', 'update')->middleware('auth');
-    Route::delete('/hps/delete/{id}', 'destroy')->middleware('auth');
+Route::controller(MaintenanceController::class)->group(function () {
+    Route::get('/maintenance/sows', 'sow')->middleware('auth')->name('maintenance.sow');
+    Route::post('/maintenance/sows/create', 'store_sow')->middleware('auth');
+    Route::put('/maintenance/sows/update/{id}', 'update_sow')->middleware('auth');
+    Route::put('/maintenance/sows/update/status/{id}', 'update_sow_status')->middleware('auth');
+    Route::get('/maintenance/projects', 'project')->middleware('auth')->name('maintenance.projects');
+    Route::post('/maintenance/projects/create', 'store_project')->middleware('auth');
+    Route::put('/maintenance/projects/update/{id}', 'update_project')->middleware('auth');
+    Route::put('/maintenance/projects/update/status/{id}', 'update_project_status')->middleware('auth');
+    Route::get('/maintenance/costs', 'maintenance_cost')->middleware('auth')->name('maintenance.costs');
+    Route::post('/maintenance/costs/fourwalls/create', 'store_fourwall')->middleware('auth');
+    Route::post('/maintenance/costs/nexus/create', 'store_nexus')->middleware('auth');
+    Route::post('/maintenance/costs/hps/create', 'store_hp')->middleware('auth');
 });

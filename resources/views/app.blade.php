@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}" />
     <title>@yield('title')</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('images/icono.ico') }}" />
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @auth
         <link rel="stylesheet" href="{{ asset('css/navigation.css') }}">
@@ -33,7 +33,7 @@
                         </a>
                     </div>
                     <div class="sidebar-menu d-block" data-widget="tree">
-                        @if (Auth::user()->rol == 'Administrador' || Auth::user()->rol == 'Analista')
+                        @if (Auth::user()->role == 'Administrador' || Auth::user()->role == 'Analista' || Auth::user()->role == 'Visitante')
                             <div class="list-group list-group-flush border-bottom border-white">
                                 <a class="list-group-item list-group-item-action collapsed bg-transparent py-2 text-white-navigation inner-addon"
                                     href="/">
@@ -71,7 +71,7 @@
                                 </ul>
                             </div>
                         @endif
-                        @if (Auth::user()->rol == 'Administrador')
+                        @if (Auth::user()->role == 'Administrador')
                             <div class="list-group list-group-flush inner-addon right-addon border-bottom border-white">
                                 <a class="list-group-item list-group-item-action collapsed bg-transparent py-2 text-white-navigation"
                                     data-bs-toggle="collapse" href="#collapse_second" aria-expanded="false"
@@ -88,6 +88,8 @@
                                     </li>
                                 </ul>
                             </div>
+                        @endif
+                        @if (Auth::user()->role == 'Administrador' || Auth::user()->role == 'Visitante')
                             <div class="list-group list-group-flush inner-addon right-addon border-bottom border-white">
                                 <a class="list-group-item list-group-item-action collapsed bg-transparent py-2 text-white-navigation"
                                     data-bs-toggle="collapse" href="#collapse_three" aria-expanded="false"
@@ -96,20 +98,20 @@
                                     <i class="fa fa-solid fa-angle-down text-white-navigation"></i>
                                 </a>
                                 <ul id="collapse_three" class="collapse list-group list-group-flush treeview-menu">
-                                    <li class="list-group-item py-1 bg-transparent treeview">
-                                        <a href="" class="text-reset">
+                                    <li class="list-group-item py-1 bg-transparent">
+                                        <a href="{{ route('maintenance.sow') }}" class="text-reset">
                                             <i class="fa-solid fa-share"></i>
                                             <span>SOW</span>
                                         </a>
                                     </li>
                                     <li class="list-group-item py-1 bg-transparent">
-                                        <a href="{{ route('projects') }}" class="text-reset">
+                                        <a href="{{ route('maintenance.projects') }}" class="text-reset">
                                             <i class="fa-solid fa-share"></i>
                                             <span>Proyectos</span>
                                         </a>
                                     </li>
                                     <li class="list-group-item py-1 bg-transparent">
-                                        <a href="{{ route('costs') }}" class="text-reset">
+                                        <a href="{{ route('maintenance.costs') }}" class="text-reset">
                                             <i class="fa-solid fa-share"></i>
                                             <span>Costo Mantenimiento</span>
                                         </a>
@@ -142,8 +144,8 @@
                                     <img src="{{ asset('images/user-anonimo.png') }}"
                                         class="rounded-circle mx-2 bg-transparent" height="30" width="30"
                                         alt="profile_image">
-                                    <span class="d-none d-sm-block">{{ Auth::user()->nombres ?: 'username' }}
-                                        {{ Auth::user()->apellidos ?: 'last-name' }}</span>
+                                    <span class="d-none d-sm-block">{{ Auth::user()->name ?: 'username' }}
+                                        {{ Auth::user()->last_name ?: 'last-name' }}</span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="options-profile">
                                     <li><a href="{{ route('logout') }}" class="dropdown-item">Cerrar Sesion</a></li>
@@ -158,19 +160,21 @@
             @yield('content')
         </div>
         {{-- Footer --}}
-        <footer class="w-100 bg-white fixed-bottom ps-14 d-flex align-items-center justify-content-between">
-            <div class="py-1">
-                <p class="m-0 py-3 ps-4">
-                    <strong>Copyright © 2022 <span class="text-primary">Canvia.</span></strong>
-                    Todos los derechos reservados.
-                </p>
-            </div>
-            <div class="py-1">
-                <p class="m-0 py-3 pe-4 fst-italic fw-bolder">
-                    T.C: {{ $tchange_footer->valor }}
-                </p>
-            </div>
-        </footer>
+        @auth
+            <footer class="w-100 bg-white fixed-bottom ps-14 d-flex align-items-center justify-content-between">
+                <div class="py-1">
+                    <p class="m-0 py-3 ps-4">
+                        <strong>Copyright © 2022 <span class="text-primary">Canvia.</span></strong>
+                        Todos los derechos reservados.
+                    </p>
+                </div>
+                <div class="py-1">
+                    <p class="m-0 py-3 pe-4 fst-italic fw-bolder">
+                        T.C: {{ number_format($exchangeRates_footer->value, 2) }}
+                    </p>
+                </div>
+            </footer>
+        @endauth
     </div>
 </body>
 <script src="{{ asset('js/app.js') }}"></script>

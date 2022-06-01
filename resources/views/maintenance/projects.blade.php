@@ -13,27 +13,10 @@
                 <div class="d-flex align-items-center px-lg-3 px-md-4 py-3">
                     {{-- <!-- Buscador cliente --> --}}
                     <div class="col-lg-4 col-md-4 d-inline-flex">
-                        <button class="btn btn-info" type="button" data-bs-toggle="modal"
-                            data-bs-target=" #modalEditProject" id="btn-create-project">Agregar nuevo Proyecto</button>
-                    </div>
-                </div>
-                <div
-                    class="d-flex justify-content-lg-between align-items-center flex-md-wrap justify-content-md-evenly py-3 px-2 border-top border-secondary">
-                    <div class="px-md-3 px-lg-0 px-xl-3">
-                        <button class="btn btn-secondary" id="btn-generate-report">Generar reporte</button>
-                    </div>
-                    <div class="d-inline-flex px-md-3 py-md-2  px-lg-0">
-                        {{-- <!-- Fecha inicio--> --}}
-                        <h6 id="h6-1" class="py-2 m-0 pe-2"><b>Fecha Inicio:</b></h6>
-                        <input class="p-lg-1 date-green" type="date">
-                    </div>
-                    <div class="d-inline-flex px-md-3 py-md-2  px-lg-0 ">
-                        {{-- <!-- Fecha fin--> --}}
-                        <h6 id="h6-fin-1" class="py-2 m-0 pe-2"><b>Fecha Fin:</b></h6>
-                        <input class="p-lg-1 date-green" type="date">
-                    </div>
-                    <div class="px-md-3 px-lg-0 px-xl-3">
-                        <button class="btn btn-primary" id="btn-consult">Consultar</button>
+                        <button
+                            class="btn btn-info disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                            type="button" data-bs-toggle="modal" data-bs-target="#modalEditProject"
+                            id="btn-create-project">Agregar nuevo Proyecto</button>
                     </div>
                 </div>
                 <div class="px-3 pt-2 pb-3 border-top border-secondary">
@@ -51,17 +34,24 @@
                             @foreach ($projects as $project)
                                 <tr>
                                     <th scope="row">{{ $loop->index + 1 }}</th>
-                                    <td>{{ $project->idproyecto }}</td>
-                                    <td>{{ $project->nombre }}</td>
+                                    <td>{{ $project->idproject }}</td>
+                                    <td>{{ $project->name }}</td>
                                     <td>
-                                        <button class="btn btn-warning" id="btn-edit-project" data-bs-toggle="modal"
-                                            data-bs-target="#modalEditProject"
-                                            value="{{ $project->idproyecto }}">Editar</button>
+                                        <button
+                                            class="btn btn-warning disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                                            id="btn-edit-project" data-bs-toggle="modal" data-bs-target="#modalEditProject"
+                                            value="{{ $project->idproject }}">Editar</button>
                                     </td>
                                     <td>
-                                        <button class="btn btn-danger btn-delete-project" data-bs-toggle="modal"
-                                            data-bs-target="#modal-succes-confirmation"
-                                            value="{{ $project->idproyecto }}">Eliminar</button>
+                                        @if ($project->is_deleted)
+                                            <button
+                                                class="btn btn-danger btn-update-project disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                                                value="{{ $project->idproject }}">Inactivo</button>
+                                        @else
+                                            <button
+                                                class="btn btn-success btn-update-project disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                                                value="{{ $project->idproject }}">Activo</button>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -80,7 +70,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-update-project">
+                    <form class="form-update-project" autocomplete="off">
                         @csrf
                         <input class="d-none" value="">
                         <div class="input-group mb-3">
@@ -91,7 +81,7 @@
                                 </span>
                             </div>
                             <input type="text" class="form-control col-6" placeholder="Codigo ALP" aria-label="Codigo ALP"
-                                aria-describedby="basic-addon1" name="codigo_alp">
+                                aria-describedby="basic-addon1" name="codigo_alp" maxlength="6">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend col-4">

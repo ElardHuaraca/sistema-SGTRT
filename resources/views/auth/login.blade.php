@@ -14,7 +14,7 @@
                     @csrf
                     <div class="mb-3 inner-addon right-addon">
                         <i class="fa fa-user"></i>
-                        <input type="text" class="form-control" name="usuario" id="exampleInputEmail1"
+                        <input type="text" class="form-control" name="username" id="exampleInputEmail1"
                             placeholder="Usuario" required>
                     </div>
                     <div class="mb-3 inner-addon right-addon">

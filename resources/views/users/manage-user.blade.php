@@ -16,7 +16,9 @@
                 <div class="d-flex align-items-center px-lg-5 px-md-4 py-3">
                     {{-- <!-- Buscador cliente --> --}}
                     <div class="col-lg-4 col-md-4 d-inline-flex">
-                        <button class="btn btn-info" type="button" data-bs-toggle="modal" data-bs-target=" #modalEditUser"
+                        <button
+                            class="btn btn-info disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                            type="button" data-bs-toggle="modal" data-bs-target=" #modalEditUser"
                             id="btn-create-user">Agregar Usuario</button>
                     </div>
                 </div>
@@ -36,27 +38,32 @@
                             @foreach ($users as $user)
                                 <tr>
                                     <th scope="row">{{ $loop->index + 1 }}</th>
-                                    <td>{{ $user->usuario }}</td>
-                                    <td>{{ $user->rol }}</td>
+                                    <td>{{ $user->username }}</td>
+                                    <td>{{ $user->role }}</td>
                                     <td>
-                                        @if ($user->estado == 1)
+                                        @if ($user->state)
                                             <span class="d-none">Activo</span>
-                                            <button type="button" class="btn btn-success fs-6 state-user-active"
-                                                value="{{ $user->idusuario }}">Activo</button>
-                                        @elseif ($user->estado == 0)
+                                            <button type="button"
+                                                class="btn btn-success fs-6 state-user-active disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                                                value="{{ $user->iduser }}">Activo</button>
+                                        @elseif (!$user->state)
                                             <span class="d-none">Inactivo</span>
-                                            <button type="button" class="btn btn-danger fs-6 state-user-inactive"
-                                                value="{{ $user->idusuario }}">Inactivo</button>
+                                            <button type="button"
+                                                class="btn btn-danger fs-6 state-user-inactive disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                                                value="{{ $user->iduser }}">Inactivo</button>
                                         @endif
                                     </td>
                                     <td>
-                                        <button class="btn btn-warning" id="btn-edit-user" data-bs-toggle="modal"
-                                            data-bs-target="#modalEditUser" value="{{ $user->idusuario }}">Editar</button>
+                                        <button
+                                            class="btn btn-warning disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                                            id="btn-edit-user" data-bs-toggle="modal" data-bs-target="#modalEditUser"
+                                            value="{{ $user->iduser }}">Editar</button>
                                     </td>
                                     <td>
-                                        <button class="btn btn-danger btn-delete-user" data-bs-toggle="modal"
-                                            data-bs-target="#modal-succes-confirmation"
-                                            value="{{ $user->idusuario }}">Eliminar</button>
+                                        <button
+                                            class="btn btn-danger btn-delete-user disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                                            data-bs-toggle="modal" data-bs-target="#modal-succes-confirmation"
+                                            value="{{ $user->iduser }}">Eliminar</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -136,6 +143,7 @@
                                 <option value="" selected>Selecciona un rol</option>
                                 <option value="Administrador">Administrador</option>
                                 <option value="Analista">Analista</option>
+                                <option value="Visitante">Visitante</option>
                             </select>
                         </div>
                         <button class="d-none" id="btn-sumbit-user" type="submit"></button>

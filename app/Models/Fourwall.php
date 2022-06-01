@@ -11,17 +11,16 @@ class Fourwall extends Model
 
     protected $table = 'fourwalls';
 
-    protected $primaryKey = 'idfourwalls';
+    protected $primaryKey = 'idfourwall';
 
     protected $fillable = [
-        'idfourwalls',
-        'equipo',
+        'equipment',
         'serie',
-        'costo',
-        'fec_inicio',
-        'fec_fin',
-        'idproyecto',
-        'eliminado'
+        'cost',
+        'date_start',
+        'date_end',
+        'idproject',
+        'is_deleted'
     ];
 
     protected $hidden = [
@@ -31,6 +30,6 @@ class Fourwall extends Model
 
     public function project()
     {
-        return $this->belongsTo(Project::class, 'idproyecto');
+        return $this->belongsTo(Project::class, 'idproject');
     }
 }

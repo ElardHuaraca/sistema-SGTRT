@@ -12,20 +12,30 @@
             <div class="box" id="box-consumo">
                 <div class="d-flex px-lg-4 px-md-4 py-3">
                     {{-- <!-- Buscador cliente --> --}}
-                    <button class="btn btn-success me-4" type="button" data-bs-toggle="modal"
-                        data-bs-target=" #modalCreateFourwall" id="btn-create-fourwall">Agregar costo Fourwall</button>
-                    <button class="btn btn-success me-4" type="button" data-bs-toggle="modal"
-                        data-bs-target=" #modalCreateNexus" id="btn-create-nexus">Agregar costo Nexus</button>
-                    <button class="btn btn-success me-4" type="button" data-bs-toggle="modal"
-                        data-bs-target=" #modalCreateHp" id="btn-create-hp">Agregar costo HP</button>
+                    <button
+                        class="btn btn-success me-4 disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                        type="button" data-bs-toggle="modal" data-bs-target=" #modalCreateFourwall"
+                        id="btn-create-fourwall">Agregar costo Fourwall</button>
+                    <button
+                        class="btn btn-success me-4 disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                        type="button" data-bs-toggle="modal" data-bs-target=" #modalCreateNexus"
+                        id="btn-create-nexus">Agregar costo Nexus</button>
+                    <button
+                        class="btn btn-success me-4 disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                        type="button" data-bs-toggle="modal" data-bs-target=" #modalCreateHp" id="btn-create-hp">Agregar
+                        costo HP</button>
                 </div>
                 <div class="d-flex justify-content-between px-lg-4 px-md-4 py-3 border-top border-secondary">
                     {{-- <!-- Buscador cliente --> --}}
                     <div class="d-flex align-items-center col-auto col-md-6 col-lg-5">
-                        <input class="form-control me-3" type="file" id="fileUnique"
+                        <input
+                            class="form-control me-3 disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                            type="file" id="fileUnique"
                             accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
-                        <button class="btn btn-success col-4" type="button" data-bs-toggle="modal"
-                            data-bs-target="#modalAddNexus" id="btn-create-nexus">Cargar Datos</button>
+                        <button
+                            class="btn btn-success col-4 disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                            type="button" data-bs-toggle="modal" data-bs-target="#modalAddNexus"
+                            id="btn-create-nexus">Cargar Datos</button>
                     </div>
                     <div class="d-flex align-items-center col-auto">
                         {{-- getTime now --}}
@@ -53,8 +63,8 @@
                             @foreach ($projects as $project)
                                 <tr>
                                     <th scope="row">{{ $loop->index + 1 }}</th>
-                                    <td> {{ $project->idproyecto }}</td>
-                                    <td> {{ $project->nombre }}</td>
+                                    <td> {{ $project->idproject }}</td>
+                                    <td> {{ $project->name }}</td>
                                     <td>$
                                         {{ $project->costofourwalls == 0 ? number_format(0, 2) : number_format($project->costofourwalls, 2) }}
                                     </td>
@@ -67,9 +77,9 @@
                                     <td>$
                                         {{ number_format($project->costofourwalls + $project->costonexus + $project->costohp, 2) }}
                                     </td>
-                                    {{ $sum = $project->costofourwalls + $project->costonexus + $project->costohp }}
+                                    <?php $sum = $project->costofourwalls + $project->costonexus + $project->costohp; ?>
                                     <td> S/.
-                                        {{ $sum == 0 ? number_format(0, 2) : number_format($sum * $tchange->valor, 2) }}
+                                        {{ $sum == 0 ? number_format(0, 2) : number_format($sum * $exchangeRates_footer->value, 2) }}
                                     </td>
                                 </tr>
                             @endforeach
@@ -298,7 +308,7 @@
 @endsection
 <script>
     var projects = @json($projects);
-    var tchange = @json($tchange);
+    var tchange = @json($exchangeRates_footer->value);
 </script>
 @push('scripts')
     <script src="{{ asset('js/maintenance/cost.js') }}"></script>

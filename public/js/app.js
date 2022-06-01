@@ -5719,6 +5719,73 @@ $(function () {
     $('#input-password').trigger('blur').clone().prop('type', type).insertAfter($('#input-password')).prev().remove();
   });
 });
+/* Remove button class disabled on load document complete */
+
+$(function () {
+  $.fn.removeDisabled = function () {
+    $(this).removeClass('disabled');
+  };
+
+  $('.remove-disable').removeDisabled();
+});
+$(function () {
+  /* Evit insert text on press key into input double and detect when focus retired on input*/
+  $.fn.evitWriteTextCost = function () {
+    $(this).on('keypress', function (e) {
+      if (e.key.match(/[0-9\./]/) === null) {
+        e.preventDefault();
+      }
+    });
+    $(this).on('focusout', function () {
+      var value = $(this).val();
+      var refor = value.split('.');
+
+      if (refor.length == 1 && refor[0] != '') {
+        refor = refor[0] + '.00';
+      } else if (refor.length > 1) {
+        if (refor[1] !== '') {
+          if (refor[1].length == 1) {
+            refor = refor[0] + '.' + refor[1] + '0';
+          } else if (refor[1].length > 2) {
+            refor = refor[0] + '.' + refor[1].substring(1, 3);
+          } else {
+            refor = refor[0] + '.' + refor[1];
+          }
+        } else if (refor[1] === '') {
+          refor = refor[0] + '.00';
+        }
+      }
+
+      $(this).val(refor);
+    });
+  };
+
+  $.fn.evitWriteTextOnVersion = function () {
+    $(this).on('keypress', function (e) {
+      if (e.key.match(/[0-9\./]/) === null) {
+        e.preventDefault();
+      }
+    });
+    $(this).on('focusout', function () {
+      var value = $(this).val();
+      var refor = value.split('.');
+
+      if (refor.length >= 2) {
+        if (refor[1] === '') refor = refor[0];else refor = refor[0] + '.' + refor[1];
+      }
+
+      $(this).val(refor);
+    });
+  };
+
+  $.fn.evitWriteText = function () {
+    $(this).on('keypress', function (e) {
+      if (e.key.match(/[0-9]/) === null) {
+        e.preventDefault();
+      }
+    });
+  };
+});
 
 /***/ }),
 

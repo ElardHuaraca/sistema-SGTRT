@@ -13,17 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id('iduser');
-            $table->string('username')->uninque();
+        Schema::create('resources_history', function (Blueprint $table) {
+            $table->id('idresource');
             $table->string('name');
-            $table->string('last_name');
-            $table->string('number_phone');
-            $table->string('email');
-            $table->string('password');
-            $table->boolean('state')->default(false);
-            $table->string('role');
+            $table->integer('amount');
+            $table->date('date');
+            $table->integer('idserver');
             $table->timestamps();
+
+            $table->foreign('idserver')->references('idserver')->on('servers');
         });
     }
 
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('resources_history');
     }
 };

@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('hp', function (Blueprint $table) {
-            $table->timestamp('updated_at')->nullable();
-            $table->timestamp('created_at')->nullable();
+        Schema::create('exchange_rates', function (Blueprint $table) {
+            $table->id('idex');
+            $table->decimal('value', 8, 2);
+            $table->timestamps();
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('exchange_rates');
     }
 };

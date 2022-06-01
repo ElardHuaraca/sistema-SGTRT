@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('personal_access_tokens', function (Blueprint $table) {
-            $table->id();
-            $table->morphs('tokenable');
+        Schema::create('spla_licenses', function (Blueprint $table) {
+            $table->id('idspla');
+            $table->string('code')->unique();
             $table->string('name');
-            $table->string('token', 64)->unique();
-            $table->text('abilities')->nullable();
-            $table->timestamp('last_used_at')->nullable();
+            $table->decimal('cost', 8, 2)->nullable(false);
+            $table->string('type')->nullable(false);
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('personal_access_tokens');
+        Schema::dropIfExists('spla_licenses');
     }
 };

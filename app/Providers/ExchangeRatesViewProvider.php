@@ -4,9 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
-use App\Http\Controllers\TChangeController;
+use App\Http\Controllers\HomeController;
 
-class TChangeViewProvider extends ServiceProvider
+class ExchangeRatesViewProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -25,6 +25,6 @@ class TChangeViewProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::share('tchange_footer', TChangeController::getTChange());
+        View::share('exchangeRates_footer', HomeController::getExchangeRates());
     }
 }

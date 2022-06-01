@@ -9,26 +9,37 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $table = 'proyecto';
+    protected $table = 'projects';
 
-    protected $primaryKey = 'idproyecto';
+    protected $primaryKey = 'idproject';
 
-    protected $fillable = ['nombre'];
+    protected $fillable = [
+        'name',
+        'is_deleted'
+    ];
 
-    protected $hidden = ['created_at','updated_at'];
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 
     public function nexus()
     {
-        return $this->hasMany(Nexus::class, 'idproyecto');
+        return $this->hasMany(Nexus::class, 'idproject');
     }
 
-    public function fourwall()
+    public function fourwalls()
     {
-        return $this->hasMany(Fourwall::class, 'idproyecto');
+        return $this->hasMany(Fourwall::class, 'idproject');
     }
 
-    public function hp()
+    public function hps()
     {
-        return $this->hasMany(Hp::class, 'idproyecto');
+        return $this->hasMany(Hp::class, 'idproject');
+    }
+
+    public function servers()
+    {
+        return $this->hasMany(Server::class, 'idproject');
     }
 }
