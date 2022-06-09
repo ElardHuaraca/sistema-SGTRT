@@ -19,13 +19,11 @@ return new class extends Migration
             $table->string('active')->unique();
             $table->integer('idproject')->unsigned();
             $table->integer('idsow')->unsigned()->nullable(true);
-            $table->integer('idspla')->unsigned()->nullable(true);
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
 
             $table->foreign('idproject')->references('idproject')->on('projects');
             $table->foreign('idsow')->references('idsow')->on('sows');
-            $table->foreign('idspla')->references('idspla')->on('spla_licenses');
         });
     }
 

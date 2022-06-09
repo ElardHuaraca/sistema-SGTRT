@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('resources_history', function (Blueprint $table) {
-            $table->id('idresource');
-            $table->string('name');
-            $table->integer('amount');
-            $table->date('date');
-            $table->integer('idserver')->unsigned();
+        Schema::create('spla_assigned_discounts', function (Blueprint $table) {
+            $table->id('iddiscount');
+            $table->integer('percentage');
+            $table->integer('idserver');
+            $table->integer('idspla');
             $table->timestamps();
 
             $table->foreign('idserver')->references('idserver')->on('servers');
+            $table->foreign('idspla')->references('idspla')->on('spla_licenses');
         });
     }
 
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('resources_history');
+        Schema::dropIfExists('spla_assigned_discounts');
     }
 };

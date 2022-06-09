@@ -16,4 +16,9 @@ class ExchangeRates extends Model
     protected $fillable = [
         'value'
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
 }

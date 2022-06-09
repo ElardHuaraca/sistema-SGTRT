@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id('idproject');
-            $table->string('name')->nullable(false);
+            $table->string('name');
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
