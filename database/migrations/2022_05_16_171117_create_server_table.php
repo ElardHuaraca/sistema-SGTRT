@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('servers', function (Blueprint $table) {
             $table->id('idserver');
-            $table->string('name')->unique()->nullable(false);
-            $table->string('active')->unique()->nullable(false);
+            $table->string('name')->unique();
+            $table->string('active')->unique();
             $table->integer('idproject')->unsigned();
-            $table->integer('idsow')->unsigned();
-            $table->integer('idspla')->unsigned();
+            $table->integer('idsow')->unsigned()->nullable(true);
+            $table->integer('idspla')->unsigned()->nullable(true);
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
 

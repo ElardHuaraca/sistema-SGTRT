@@ -321,7 +321,7 @@ function addSowsToDataTable(response, type) {
             row_data[6] = `<button type="button" class="btn btn-success fs-6 btn-status-sow"  value="${sow.idsow}">
                                 Activo
                             </button>`
-            $.dataTableInit.row.add(row_data).draw(true)
+            $.dataTableInit.row.add(row_data).draw()
             sows.push(sow)
         }
     } else if (type === 'update') {

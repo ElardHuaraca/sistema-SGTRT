@@ -324,7 +324,7 @@ function addSowsToDataTable(response, type) {
       row_data[4] = transformDate(new Date(sow.updated_at));
       row_data[5] = "<button class=\"btn btn-warning\" id=\"btn-edit-sow\" data-bs-toggle=\"modal\" data-bs-target=\"#modalCreateEditSow\" value=\"".concat(sow.idsow, "\">\n                                Editar\n                            </button>");
       row_data[6] = "<button type=\"button\" class=\"btn btn-success fs-6 btn-status-sow\"  value=\"".concat(sow.idsow, "\">\n                                Activo\n                            </button>");
-      $.dataTableInit.row.add(row_data).draw(true);
+      $.dataTableInit.row.add(row_data).draw();
       sows.push(sow);
     }
   } else if (type === 'update') {

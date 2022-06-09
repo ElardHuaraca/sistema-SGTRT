@@ -1,8 +1,10 @@
+const { delay } = require('lodash');
+
 require('./bootstrap');
 require('datatables.net-bs5');
 require('datatables.net-responsive-bs5');
 
-$(function() {
+$(function () {
 
     $.dataTableInit = $('#table-resources-it').DataTable({
         responsive: true,
@@ -23,19 +25,19 @@ $(function() {
     })
 })
 
-$(function() {
-    $('#btn-close-succes').on('click', function() {
+$(function () {
+    $('#btn-close-succes').on('click', function () {
         $('#btn-close-loading').trigger('click')
     })
-    $('#btn-close-error').on('click', function() {
+    $('#btn-close-error').on('click', function () {
         $('#btn-close-succes').trigger('click')
         $('#btn-close-loading').trigger('click')
     })
 })
 
 /* change icon edge after click not-show-password */
-$(function() {
-    $('.not-show-password').on('click', function() {
+$(function () {
+    $('.not-show-password').on('click', function () {
         if ($(this).hasClass('fa-eye')) {
             $(this).removeClass('fa-eye').addClass('fa-eye-slash')
         } else {
@@ -47,25 +49,25 @@ $(function() {
 })
 
 /* Remove button class disabled on load document complete */
-$(function() {
-    $.fn.removeDisabled = function() {
+$(function () {
+    $.fn.removeDisabled = function () {
         $(this).removeClass('disabled')
     }
 
     $('.remove-disable').removeDisabled()
 })
 
-$(function() {
+$(function () {
     /* Evit insert text on press key into input double and detect when focus retired on input*/
-    $.fn.evitWriteTextCost = function() {
+    $.fn.evitWriteTextCost = function () {
 
-        $(this).on('keypress', function(e) {
+        $(this).on('keypress', function (e) {
             if (e.key.match(/[0-9\./]/) === null) {
                 e.preventDefault()
             }
         })
 
-        $(this).on('focusout', function() {
+        $(this).on('focusout', function () {
             var value = $(this).val()
             var refor = value.split('.')
             if (refor.length == 1 && refor[0] != '') {
@@ -87,14 +89,14 @@ $(function() {
         })
     }
 
-    $.fn.evitWriteTextOnVersion = function() {
-        $(this).on('keypress', function(e) {
+    $.fn.evitWriteTextOnVersion = function () {
+        $(this).on('keypress', function (e) {
             if (e.key.match(/[0-9\./]/) === null) {
                 e.preventDefault()
             }
         })
 
-        $(this).on('focusout', function() {
+        $(this).on('focusout', function () {
             var value = $(this).val()
             var refor = value.split('.')
             if (refor.length >= 2) {
@@ -105,11 +107,48 @@ $(function() {
         })
     }
 
-    $.fn.evitWriteText = function() {
-        $(this).on('keypress', function(e) {
+    $.fn.evitWriteText = function () {
+        $(this).on('keypress', function (e) {
             if (e.key.match(/[0-9]/) === null) {
                 e.preventDefault()
             }
+        })
+    }
+
+    /* Update State and change state to 'Activo' or 'Inactivo' */
+
+    $.fn.updateState = function (url, token, relatedTarget) {
+        $('#table-resources-it').on('click', relatedTarget, function () {
+            const state = $(this).hasClass('btn-success')
+            const btn = $(this)
+            console.log($(this))
+            $.ajax({
+                headers: { 'X-CSRF-TOKEN': token },
+                url: url + btn.val(),
+                type: 'PUT',
+                data: {
+                    'is_deleted': state
+                },
+                dataType: 'json',
+                beforeSend: function () {
+                    $('#btn-succes-loading').trigger('click')
+                }
+            }).then(function (response) {
+                if (response.is_deleted === 'false') {
+                    btn.removeClass('btn-danger').addClass('btn-success').text('Activo')
+                } else {
+                    btn.removeClass('btn-success').addClass('btn-danger').text('Inactivo')
+                }
+            }).catch(function (error) {
+                $('#btn-close-loading').trigger('click')
+                $('#btn-succes-error').trigger('click')
+                console.log(error)
+            }).always(function () {
+                setTimeout(function () {
+                    $('#btn-close-loading, .btn-close-loading').trigger('click')
+                    $('#modal-succes-loading').hide()
+                }, 50)
+            })
         })
     }
 })

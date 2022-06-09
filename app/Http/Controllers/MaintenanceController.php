@@ -8,6 +8,7 @@ use App\Models\Fourwall;
 use App\Models\Nexus;
 use App\Models\Hp;
 use App\Models\Sow;
+use App\Models\SplaLicense;
 
 class MaintenanceController extends Controller
 {
@@ -191,5 +192,44 @@ class MaintenanceController extends Controller
         $hp->save();
 
         return response()->json($hp, 200);
+    }
+
+    public function licence_spla()
+    {
+        $licences = SplaLicense::all();
+        return view('maintenance.licence-spla', ['licences' => $licences]);
+    }
+
+    public function store_licence_spla(Request $request)
+    {
+        $licence = new SplaLicense();
+        $licence->code = $request->code;
+        $licence->name = $request->name;
+        $licence->cost = $request->cost;
+        $licence->type = $request->type;
+        $licence->save();
+
+        return response()->json($licence, 200);
+    }
+
+    public function update_licence_spla($id, Request $request)
+    {
+        $licence = SplaLicense::find($id);
+        $licence->code = $request->code;
+        $licence->name = $request->name;
+        $licence->cost = $request->cost;
+        $licence->type = $request->type;
+        $licence->save();
+
+        return response()->json($licence, 200);
+    }
+
+    public function update_status_licence_spla($id, Request $request)
+    {
+        $licence = SplaLicense::find($id);
+        $licence->is_deleted = $request->is_deleted;
+        $licence->save();
+
+        return response()->json($licence, 200);
     }
 }

@@ -22,6 +22,7 @@ mix.js('resources/js/user/user-manage.js', 'public/js/user')
 mix.js('resources/js/maintenance/project.js', 'public/js/maintenance')
 mix.js('resources/js/maintenance/cost.js', 'public/js/maintenance')
 mix.js('resources/js/maintenance/sow.js', 'public/js/maintenance')
+mix.js('resources/js/maintenance/licence_spla.js', 'public/js/maintenance')
 
 mix.postCss('resources/css/auth.css', 'public/css');
 mix.postCss('resources/css/navigation.css', 'public/css');

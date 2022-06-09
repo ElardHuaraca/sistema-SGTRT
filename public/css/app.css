@@ -11796,7 +11796,8 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
 }
@@ -11856,4 +11857,8 @@ body {
   .modal-dialog {
     min-width: 700px;
   }
+}
+.h1-titulo {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: 600;
 }

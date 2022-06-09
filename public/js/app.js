@@ -5671,6 +5671,9 @@ module.exports = {
   \*****************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
+var _require = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"),
+    delay = _require.delay;
+
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 __webpack_require__(/*! datatables.net-bs5 */ "./node_modules/datatables.net-bs5/js/dataTables.bootstrap5.js");
@@ -5783,6 +5786,45 @@ $(function () {
       if (e.key.match(/[0-9]/) === null) {
         e.preventDefault();
       }
+    });
+  };
+  /* Update State and change state to 'Activo' or 'Inactivo' */
+
+
+  $.fn.updateState = function (url, token, relatedTarget) {
+    $('#table-resources-it').on('click', relatedTarget, function () {
+      var state = $(this).hasClass('btn-success');
+      var btn = $(this);
+      console.log($(this));
+      $.ajax({
+        headers: {
+          'X-CSRF-TOKEN': token
+        },
+        url: url + btn.val(),
+        type: 'PUT',
+        data: {
+          'is_deleted': state
+        },
+        dataType: 'json',
+        beforeSend: function beforeSend() {
+          $('#btn-succes-loading').trigger('click');
+        }
+      }).then(function (response) {
+        if (response.is_deleted === 'false') {
+          btn.removeClass('btn-danger').addClass('btn-success').text('Activo');
+        } else {
+          btn.removeClass('btn-success').addClass('btn-danger').text('Inactivo');
+        }
+      })["catch"](function (error) {
+        $('#btn-close-loading').trigger('click');
+        $('#btn-succes-error').trigger('click');
+        console.log(error);
+      }).always(function () {
+        setTimeout(function () {
+          $('#btn-close-loading, .btn-close-loading').trigger('click');
+          $('#modal-succes-loading').hide();
+        }, 50);
+      });
     });
   };
 });

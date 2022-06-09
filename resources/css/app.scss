@@ -3,16 +3,17 @@
 @import '~datatables.net-responsive-bs5/css/responsive.bootstrap5.css';
 @import '/node_modules/vanillajs-datepicker/dist/css/datepicker.min.css';
 
-html,body{
+html,
+body {
     height: 100%;
     width: 100%;
 }
 
-body{
+body {
     background-color: #ecf0f5;
 }
 
-.table.responsive{
+.table.responsive {
     width: 100% !important;
 }
 
@@ -64,4 +65,9 @@ body{
     .modal-dialog {
         min-width: 700px;
     }
+}
+
+.h1-titulo {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 600;
 }

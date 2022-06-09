@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\ResourceConsumption;
 use App\Models\Grafic;
 use App\Models\Server;
-use ArrayObject;
 
 class ReportController extends Controller
 {
