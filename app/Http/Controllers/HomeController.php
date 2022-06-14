@@ -28,7 +28,12 @@ class HomeController extends Controller
 
     public static function getExchangeRates()
     {
-        $exchangeRates = ExchangeRates::first();
+        $exchangeRates = null;
+        try {
+            $exchangeRates = ExchangeRates::first();
+        } catch (\Throwable $th) {
+            return new ExchangeRates(['value' => 00.00]);
+        }
         return $exchangeRates;
     }
 }

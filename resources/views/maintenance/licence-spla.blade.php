@@ -126,7 +126,9 @@
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                             id="btn-close">Cerrar</button>
-                        <button type="button" class="btn btn-primary" id="btn-update-create-licence_spla">Guardar</button>
+                        <button type="button"
+                            class="btn btn-primary disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                            id="btn-update-create-licence_spla">Guardar</button>
                     </div>
                 </div>
             </div>

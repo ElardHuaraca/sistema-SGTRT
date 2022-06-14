@@ -61,8 +61,7 @@
             </div>
         </section>
     </div>
-    <div class="modal fade" id="modalEditProject" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="modalEditProject" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" id="content-mod">
                 <div class="modal-header bg-primary-custom">
@@ -72,7 +71,6 @@
                 <div class="modal-body">
                     <form class="form-update-project" autocomplete="off">
                         @csrf
-                        <input class="d-none" value="">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend col-4">
                                 <span class="input-group-text h-100" id="basic-addon1">
@@ -81,7 +79,7 @@
                                 </span>
                             </div>
                             <input type="text" class="form-control col-6" placeholder="Codigo ALP" aria-label="Codigo ALP"
-                                aria-describedby="basic-addon1" name="codigo_alp" maxlength="6">
+                                aria-describedby="basic-addon1" name="codigo_alp" maxlength="6" />
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend col-4">
@@ -91,7 +89,7 @@
                                 </span>
                             </div>
                             <input type="text" class="form-control col-8" placeholder="Proyecto" aria-label="Proyecto"
-                                aria-describedby="basic-addon1" name="proyecto">
+                                aria-describedby="basic-addon1" name="proyecto" />
                         </div>
                         <button class="d-none" id="btn-sumbit-project" type="submit"></button>
                     </form>

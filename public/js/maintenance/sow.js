@@ -333,7 +333,7 @@ function addSowsToDataTable(response, type) {
     row_data[2] = response.name + ' ' + response.type + ' ' + response.version;
     row_data[3] = transformDate(new Date(response.created_at));
     row_data[4] = transformDate(new Date(response.updated_at));
-    row_data[6] = "<button type=\"button\" class=\"btn ".concat(response.is_deleted === 'false' ? 'btn-success' : 'btn-danger', " fs-6 btn-status-sow\"  value=\"").concat(response.idsow, "\">\n                            ").concat(response.is_deleted === 'false' ? 'Activo' : 'Inactivo', "\n                        </button>");
+    row_data[6] = "<button type=\"button\" class=\"btn ".concat(response.is_deleted === false ? 'btn-success' : 'btn-danger', " fs-6 btn-status-sow\"  value=\"").concat(response.idsow, "\">\n                            ").concat(response.is_deleted === false ? 'Activo' : 'Inactivo', "\n                        </button>");
     $.dataTableInit.row(row).data(row_data).draw(false);
     sows.map(function (sow, index) {
       if (sow.idsow === response.idsow) {

@@ -136,8 +136,10 @@ $(function () {
       $('#btn-succes-error').trigger('click');
       console.log(error);
     }).always(function () {
-      $('#btn-close-loading, .btn-close-loading').trigger('click');
-      $('#modal-succes-loading').hide();
+      setTimeout(function () {
+        $('#btn-close-loading, .btn-close-loading').trigger('click');
+        $('#modal-succes-loading').hide();
+      }, 100);
     });
   });
   /*     $('#delete-data').on('click', function() {
