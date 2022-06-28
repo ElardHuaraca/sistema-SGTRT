@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssignService;
 use App\Models\Grafic;
 use App\Models\Server;
+use App\Models\Sow;
+use App\Models\SplaAssignedDiscount;
+use App\Models\SplaLicense;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class ReportController extends Controller
 {
@@ -27,6 +33,7 @@ class ReportController extends Controller
                 $join->on('sows.idsow', '=', 'servers.idsow');
             })
             ->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'sow_name'])->get();
+
         return view('reports.IT-resources-consumption', ['servers' => $servers]);
     }
 
@@ -34,5 +41,97 @@ class ReportController extends Controller
     {
         $grafic = Grafic::all();
         return view('reports.grafics', ['grafic' => $grafic, 'name' => $id]);
+    }
+
+    public function server_summary()
+    {
+        $servers = Server::selectRaw(
+            'servers.idserver, servers.name AS server_name,servers.machine_name,servers.hostname,servers.service,
+            servers.active,servers.is_deleted,projects.name AS project_name,projects.idproject as alp,
+            sows.name AS sow_name,sows.version,sows.type,sows.idsow'
+        )->join('projects', function ($join) {
+            $join->on('projects.idproject', '=', 'servers.idproject');
+        })->leftJoin('sows', function ($join) {
+            $join->on('sows.idsow', '=', 'servers.idsow');
+        })->orderBy('servers.is_deleted', 'asc')->get();
+
+        $licences = SplaLicense::select('idspla', 'name', 'type')->where('is_deleted', '=', false)->orderBy('type', 'asc')->get();
+        $sows = Sow::select('idsow', 'name', 'version', 'type')->where('is_deleted', '=', false)->get();
+
+        $resources = Server::selectRaw('servers.idserver,jsonb_object_agg(resources_history.name,resources_history.amount) as resources')
+            ->join('resources_history', function ($join) {
+                $join->on('resources_history.idserver', '=', 'servers.idserver');
+                $join->orderBy('resources_history.date', 'desc');
+                $join->limit(4);
+            })->groupBy('servers.idserver')->get();
+
+        $assign_services = AssignService::select('assign_services.idserver', 'is_backup', 'is_additional', 'is_additional_spla', 'is_windows_license', 'is_antivirus', 'is_vcpu', 'is_linux_license')
+            ->join('servers', function ($join) {
+                $join->on('servers.idserver', '=', 'assign_services.idserver');
+            })->get();
+
+        $assign_splas = SplaAssignedDiscount::select('iddiscount', 'percentage', 'idserver', 'spla_licences.type', 'spla_licences.idspla')
+            ->join('spla_licences', function ($join) {
+                $join->on('spla_licences.idspla', '=', 'spla_assigned_discounts.idspla');
+            })->get();
+
+        return view('reports.server-summary', [
+            'servers' => $servers, 'licences' => $licences,
+            'sows' => $sows, 'resources' => $resources, 'assign_services' => $assign_services, 'assign_splas' => $assign_splas
+        ]);
+    }
+
+    public function update_server_summary($id, Request $request)
+    {
+        $server = Server::find($id);
+        $server->idsow = $request['server']['idsow'] === null ? null : intval($request['server']['idsow']);
+        $server->save();
+
+        $assign_services = AssignService::where('idserver', '=', $id)->first();
+        if ($assign_services === null) {
+            $assign_services = new AssignService();
+            $assign_services->idserver = $id;
+        }
+        $assign_services->is_backup = $request['assign_service']['is_backup'];
+        $assign_services->is_additional = $request['assign_service']['is_additional'];
+        $assign_services->is_windows_license = $request['assign_service']['is_windows_license'];
+        $assign_services->is_antivirus = $request['assign_service']['is_antivirus'];
+        $assign_services->is_vcpu = $request['assign_service']['is_vcpu'];
+        $assign_services->is_linux_license = $request['assign_service']['is_linux_license'];
+        $assign_services->is_additional_spla = $request['assign_service']['is_additional_spla'];
+        $assign_services->save();
+
+        $assign_splas = SplaAssignedDiscount::join('spla_licences', 'spla_licences.idspla', '=', 'spla_assigned_discounts.idspla')->where('idserver', '=', $id)->get();
+        $keys = array_keys($request['assign_spla_licences']);
+        for ($index = 0; $index < sizeof($keys); $index++) {
+            if (sizeof($assign_splas) > 0) {
+                $spla = collect($assign_splas)->where('type', $keys[$index])->first();
+                if ($spla === null) {
+                    $this->save_assign_spla($request, $id, $keys[$index]);
+                } else {
+                    if ($request['assign_spla_licences'][$keys[$index]]['idspla'] === null) $spla->delete();
+                    else {
+                        $spla->idspla = $request['assign_spla_licences'][$keys[$index]]['idspla'];
+                        $spla->percentage = $request['assign_spla_licences'][$keys[$index]]['percentage'];
+                        $spla->save();
+                    }
+                }
+            } else $this->save_assign_spla($request, $id, $keys[$index]);
+        }
+        $assign_splas = SplaAssignedDiscount::select('iddiscount', 'percentage', 'idserver', 'spla_licences.type', 'spla_licences.idspla')
+            ->join('spla_licences', function ($join) {
+                $join->on('spla_licences.idspla', '=', 'spla_assigned_discounts.idspla');
+            })->where('idserver', '=', $id)->get();
+        return response()->json(['server' => $server, 'assign_services' => $assign_services, 'assign_splas' => $assign_splas]);
+    }
+
+    private function save_assign_spla($request, $id, $key)
+    {
+        if ($request['assign_spla_licences'][$key]['idspla'] === null) return;
+        $assign_spla = new SplaAssignedDiscount();
+        $assign_spla->idserver = $id;
+        $assign_spla->idspla = $request['assign_spla_licences'][$key]['idspla'];
+        $assign_spla->percentage = $request['assign_spla_licences'][$key]['percentage'];
+        $assign_spla->save();
     }
 }

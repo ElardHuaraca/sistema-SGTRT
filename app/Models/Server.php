@@ -17,6 +17,9 @@ class Server extends Model
         'idserver',
         'name',
         'active',
+        'machine_name',
+        'hostname',
+        'service',
         'idproject',
         'idsow',
         'idspla'

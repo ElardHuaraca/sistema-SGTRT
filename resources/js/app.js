@@ -151,4 +151,50 @@ $(function () {
             })
         })
     }
+
+    /* add option to find proyect or sow , etc */
+    $.fn.addRecomendations = function addDivWithRecomendations(array, index, relatedTarget, span_item, values, style, col, seccond_input, second_input_value) {
+        $('').removeRecomendations()
+        var div = document.createElement("div")
+        div.className = `col-${col}`
+        div.id = "div_recomendations"
+        div.style = "position: absolute;" + style
+        array.forEach(element => {
+            var div_recomendation = document.createElement("div")
+            div_recomendation.className = "bg-light p-2 border border-secondary"
+            div_recomendation.style = "cursor:pointer; display:block;"
+            div_recomendation.innerHTML = span_item(element)
+
+            div_recomendation.addEventListener("mouseenter", function (e) {
+                var div_target = $(e.target)
+                div_target.removeClass("bg-light")
+                div_target.addClass("bg-secondary")
+            })
+
+            div_recomendation.addEventListener("mouseleave", function (e) {
+                var div_target = $(e.target)
+                div_target.removeClass("bg-secondary")
+                div_target.addClass("bg-light")
+            })
+
+            div_recomendation.addEventListener("click", function () {
+                var input = index !== null ? $(relatedTarget)[index] : $(relatedTarget)
+                $(input).val(values(element))
+                seccond_input !== null ? $(seccond_input).val(second_input_value(element)) : ''
+                $(input).removeRecomendations()
+            })
+
+            div.appendChild(div_recomendation)
+        })
+        var recomendations = document.getElementsByClassName("recomendations")
+        index !== null ? recomendations[index].appendChild(div) : recomendations[0].appendChild(div)
+    }
+
+    /* function remove recomendation div */
+    $.fn.removeRecomendations = function removeDivWithRecomendations() {
+        var recomendations = document.getElementById("div_recomendations")
+        if (recomendations == null) return
+        recomendations.remove()
+    }
+
 })

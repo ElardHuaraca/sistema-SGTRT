@@ -116,7 +116,7 @@
                                     <option value="SO">SO</option>
                                     <option value="Office">Office</option>
                                     <option value="SQL Server">SQL Server</option>
-                                    <option value="Remote">Remote</option>
+                                    <option value="Remote Desktop">Remote Desktop</option>
                                     <option value="SQL Server 2">SQL Server 2</option>
                                 </select>
                             </div>

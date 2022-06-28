@@ -1,8 +1,8 @@
 <div>
     <button id="btn-succes-loading" data-bs-toggle="modal" data-bs-target="#modal-succes-loading" style="display: none">
     </button>
-    <div class="modal fade" id="modal-succes-loading" data-bs-backdrop="static" data-bs-keyboard="false"
-        tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="modal-succes-loading" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content h-50" id="content-mod">
                 <div class="modal-header bg-white">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div class="modal-body text-center py-5">
-                    <h4>Error al realizar el cambio</h4>
+                    <h4 id="error_body">Error al realizar el cambio</h4>
                 </div>
                 <div class="modal-footer justify-content-end">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"

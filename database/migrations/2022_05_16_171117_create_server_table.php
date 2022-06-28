@@ -17,6 +17,9 @@ return new class extends Migration
             $table->id('idserver');
             $table->string('name')->unique();
             $table->string('active')->unique();
+            $table->string('machine_name');
+            $table->string('hostname');
+            $table->string('service');
             $table->integer('idproject')->unsigned();
             $table->integer('idsow')->unsigned()->nullable(true);
             $table->boolean('is_deleted')->default(false);

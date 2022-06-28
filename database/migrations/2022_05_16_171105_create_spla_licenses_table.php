@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('spla_licenses', function (Blueprint $table) {
+        Schema::create('spla_licences', function (Blueprint $table) {
             $table->id('idspla');
             $table->string('code');
             $table->string('name');

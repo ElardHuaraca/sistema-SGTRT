@@ -63,7 +63,7 @@
                                         </a>
                                     </li>
                                     <li class="list-group-item py-1 bg-transparent">
-                                        <a href="" class="text-reset">
+                                        <a href="{{ route('reports.server.summary') }}" class="text-reset">
                                             <i class="fa-solid fa-share"></i>
                                             <span>Resumen de Servidores</span>
                                         </a>
@@ -156,7 +156,7 @@
                 </nav>
             </header>
         @endauth
-        <div class="container main">
+        <div class="container main" style="max-width: 100%">
             @yield('content')
         </div>
         {{-- Footer --}}

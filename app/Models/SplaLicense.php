@@ -9,7 +9,7 @@ class SplaLicense extends Model
 {
     use HasFactory;
 
-    protected $table = 'spla_licenses';
+    protected $table = 'spla_licences';
 
     protected $primaryKey = 'idspla';
 

@@ -35,6 +35,8 @@ Route::controller(ReportController::class)->group(function () {
     Route::post('/reports/create', 'store')->middleware('auth');
     Route::put('/reports/update', 'update')->middleware('auth');
     Route::delete('/reports/delete', 'destroy')->middleware('auth');
+    Route::get('/reports/server/summary', 'server_summary')->middleware('auth')->name('reports.server.summary');
+    Route::post('/reports/server/summary/{id}', 'update_server_summary')->middleware('auth');
 });
 
 Route::controller(UserController::class)->group(function () {

@@ -71,3 +71,29 @@ body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: 600;
 }
+
+
+/* Custom switch color */
+.custom-control-input:focus~.custom-control-label::before {
+    border-color: rgb(182, 182, 47) !important;
+    box-shadow: 0 0 0 0.2rem rgba(182, 255, 47, 0.25) !important;
+}
+
+.custom-control-input:checked~.custom-control-label::before {
+    border-color: rgb(182, 182, 47) !important;
+    background-color: rgb(182, 182, 47) !important;
+}
+
+.custom-control-input:active~.custom-control-label::before {
+    background-color: rgb(182, 182, 47) !important;
+    border-color: rgb(182, 182, 47) !important;
+}
+
+.custom-control-input:focus:not(:checked)~.custom-control-label::before {
+    border-color: rgb(182, 182, 47) !important;
+}
+
+.custom-control-input-green:not(:disabled):active~.custom-control-label::before {
+    background-color: rgb(182, 182, 47) !important;
+    border-color: rgb(182, 182, 47) !important;
+}
