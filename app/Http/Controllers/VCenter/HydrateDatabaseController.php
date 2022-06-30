@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\VCenter;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
 class HydrateDatabaseController extends Controller
 {
-    public static function hydrateDatabase()
+    public function hydrateDatabase()
     {
         $hydrate = DB::connection('psgl2')
             ->select('SELECT

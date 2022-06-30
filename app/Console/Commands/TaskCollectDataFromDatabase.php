@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Controllers\HydrateDatabaseController;
+use App\Http\Controllers\VCenter\HydrateDatabaseController;
 use DateTime;
 use Illuminate\Console\Command;
 use Illuminate\Database\QueryException;
@@ -37,7 +37,8 @@ class TaskCollectDataFromDatabase extends Command
         /* End */
 
         try {
-            $results = HydrateDatabaseController::hydrateDatabase();
+            $results = new HydrateDatabaseController();
+            $results = $results->hydrateDatabase();
             foreach ($results as $result) {
                 $this->info($result->datacenter_id . ' ' . $result->id . ' ' .
                     $result->name . ' ' . $result->guest_family . ' ' . $result->memory_ram_2 . ' ' . $result->cpu_cores_2 .
