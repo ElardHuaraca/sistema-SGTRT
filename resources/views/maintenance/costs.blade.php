@@ -5,7 +5,7 @@
         {{-- <!-- Content Header (Page header) --> --}}
         <section class="content-header text-center">
             <h1 class="h1-titulo">
-                PROYECTOS
+                MANTENIMIENTO - COSTOS
             </h1>
         </section>
         <section class="content">
@@ -106,8 +106,9 @@
                                     Codigo ALP
                                 </span>
                             </div>
-                            <input type="text" class="form-control col-6" placeholder="Codigo ALP" aria-label="Codigo ALP"
-                                aria-describedby="basic-addon1" name="codigo_alp" style="z-index: 102" maxlength="6">
+                            <input type="text" class="form-control col-6" placeholder="Codigo ALP"
+                                aria-label="Codigo ALP" aria-describedby="basic-addon1" name="codigo_alp"
+                                style="z-index: 102" maxlength="6">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend col-4">
@@ -136,8 +137,8 @@
                                     Costo 4wall
                                 </span>
                             </div>
-                            <input type="text" class="form-control col-8" placeholder="Costo 4wall" aria-label="Costo 4wall"
-                                aria-describedby="basic-addon1" name="cost_fourwall">
+                            <input type="text" class="form-control col-8" placeholder="Costo 4wall"
+                                aria-label="Costo 4wall" aria-describedby="basic-addon1" name="cost_fourwall">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend col-4">
@@ -147,8 +148,8 @@
                                 </span>
                             </div>
                             <input type="text" class="form-control col-8" placeholder="Seleccione una fecha"
-                                onkeydown="return false" aria-label="Seleccione una fecha" aria-describedby="basic-addon1"
-                                name="date_start" id="date_start_fourwall">
+                                onkeydown="return false" aria-label="Seleccione una fecha"
+                                aria-describedby="basic-addon1" name="date_start" id="date_start_fourwall">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend col-4">
@@ -158,14 +159,15 @@
                                 </span>
                             </div>
                             <input type="text" class="form-control col-8" placeholder="Seleccione una fecha"
-                                onkeydown="return false" aria-label="Seleccione una fecha" aria-describedby="basic-addon1"
-                                name="date_end" id="date_end_fourwall">
+                                onkeydown="return false" aria-label="Seleccione una fecha"
+                                aria-describedby="basic-addon1" name="date_end" id="date_end_fourwall">
                         </div>
                         <button class="d-none" id="btn-sumbit-fourwall" type="submit"></button>
                     </form>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn-close">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="btn-close">Cerrar</button>
                     <button type="button" class="btn btn-primary" id="btn-update-create-fourwall">Guardar</button>
                 </div>
             </div>
@@ -188,8 +190,9 @@
                                     Codigo ALP
                                 </span>
                             </div>
-                            <input type="text" class="form-control col-6" placeholder="Codigo ALP" aria-label="Codigo ALP"
-                                aria-describedby="basic-addon1" name="codigo_alp" style="z-index: 102">
+                            <input type="text" class="form-control col-6" placeholder="Codigo ALP"
+                                aria-label="Codigo ALP" aria-describedby="basic-addon1" name="codigo_alp"
+                                style="z-index: 102">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend col-4">
@@ -208,14 +211,15 @@
                                     Costo Nexus
                                 </span>
                             </div>
-                            <input type="text" class="form-control col-8" placeholder="Costo Nexus" aria-label="Costo Nexus"
-                                aria-describedby="basic-addon1" name="cost_nexus">
+                            <input type="text" class="form-control col-8" placeholder="Costo Nexus"
+                                aria-label="Costo Nexus" aria-describedby="basic-addon1" name="cost_nexus">
                         </div>
                         <button class="d-none" id="btn-sumbit-nexus" type="submit"></button>
                     </form>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn-close">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="btn-close">Cerrar</button>
                     <button type="button" class="btn btn-primary" id="btn-update-create-nexus">Guardar</button>
                 </div>
             </div>
@@ -238,8 +242,9 @@
                                     Codigo ALP
                                 </span>
                             </div>
-                            <input type="text" class="form-control col-6" placeholder="Codigo ALP" aria-label="Codigo ALP"
-                                aria-describedby="basic-addon1" name="codigo_alp" style="z-index: 102">
+                            <input type="text" class="form-control col-6" placeholder="Codigo ALP"
+                                aria-label="Codigo ALP" aria-describedby="basic-addon1" name="codigo_alp"
+                                style="z-index: 102">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend col-4">
@@ -258,8 +263,8 @@
                                     Serie HP
                                 </span>
                             </div>
-                            <input type="text" class="form-control col-8" placeholder="Serie HP" aria-label="Serie HP"
-                                aria-describedby="basic-addon1" name="serie_hp">
+                            <input type="text" class="form-control col-8" placeholder="Serie HP"
+                                aria-label="Serie HP" aria-describedby="basic-addon1" name="serie_hp">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend col-4">
@@ -268,8 +273,8 @@
                                     Costo HP
                                 </span>
                             </div>
-                            <input type="text" class="form-control col-8" placeholder="Costo HP" aria-label="Costo HP"
-                                aria-describedby="basic-addon1" name="cost_hp">
+                            <input type="text" class="form-control col-8" placeholder="Costo HP"
+                                aria-label="Costo HP" aria-describedby="basic-addon1" name="cost_hp">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend col-4">
@@ -279,8 +284,8 @@
                                 </span>
                             </div>
                             <input type="text" class="form-control col-8" placeholder="Seleccione una fecha"
-                                onkeydown="return false" aria-label="Seleccione una fecha" aria-describedby="basic-addon1"
-                                name="date_start" id="date_start_hp">
+                                onkeydown="return false" aria-label="Seleccione una fecha"
+                                aria-describedby="basic-addon1" name="date_start" id="date_start_hp">
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend col-4">
@@ -290,14 +295,15 @@
                                 </span>
                             </div>
                             <input type="text" class="form-control col-8" placeholder="Seleccione una fecha"
-                                onkeydown="return false" aria-label="Seleccione una fecha" aria-describedby="basic-addon1"
-                                name="date_end" id="date_end_hp">
+                                onkeydown="return false" aria-label="Seleccione una fecha"
+                                aria-describedby="basic-addon1" name="date_end" id="date_end_hp">
                         </div>
                         <button class="d-none" id="btn-sumbit-hp" type="submit"></button>
                     </form>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn-close">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="btn-close">Cerrar</button>
                     <button type="button" class="btn btn-primary" id="btn-update-create-hp">Guardar</button>
                 </div>
             </div>

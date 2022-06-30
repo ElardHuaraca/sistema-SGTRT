@@ -4,7 +4,7 @@
     <div class="content-wrapper">
         <section class="content-header text-center">
             <h1 class="h1-titulo">
-                SOWS
+                MANTENIMIENTO - SOWS
             </h1>
         </section>
         <section class="content">
@@ -648,7 +648,8 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn-close">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="btn-close">Cerrar</button>
                     <button type="button" class="btn btn-primary" id="btn-next">Siguiente</button>
                 </div>
             </div>

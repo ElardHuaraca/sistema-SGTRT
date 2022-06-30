@@ -5,7 +5,7 @@
         {{-- <!-- Content Header (Page header) --> --}}
         <section class="content-header text-center">
             <h1 class="h1-titulo">
-                PROYECTOS
+                MANTENIMIENTO - PROYECTOS
             </h1>
         </section>
         <section class="content">
@@ -78,8 +78,8 @@
                                     Codigo ALP
                                 </span>
                             </div>
-                            <input type="text" class="form-control col-6" placeholder="Codigo ALP" aria-label="Codigo ALP"
-                                aria-describedby="basic-addon1" name="codigo_alp" maxlength="6" />
+                            <input type="text" class="form-control col-6" placeholder="Codigo ALP"
+                                aria-label="Codigo ALP" aria-describedby="basic-addon1" name="codigo_alp" maxlength="6" />
                         </div>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend col-4">
