@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fourwall;
+use App\Models\Hp;
+use App\Models\Nexus;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\Server;
 
 class ProjectController extends Controller
 {
@@ -28,6 +32,31 @@ class ProjectController extends Controller
         $project->idproject = $request->idproject;
         $project->name = $request->name;
         $project->save();
+
+        $nexus = Nexus::all();
+        foreach ($nexus as $nexu) {
+            $nexu->idproject = $project->idproject;
+            $nexu->save();
+        }
+
+        $hps = Hp::all();
+        foreach ($hps as $hp) {
+            $hp->idproject = $project->idproject;
+            $hp->save();
+        }
+
+        $fourwalls = Fourwall::all();
+        foreach ($fourwalls as $fourwall) {
+            $fourwall->idproject = $project->idproject;
+            $fourwall->save();
+        }
+
+        $servers = Server::where('idproject', $project->idproject)->get();
+        foreach ($servers as $server) {
+            $server->idproject = $project->idproject;
+            $server->save();
+        }
+
         return response()->json($project, 200);
     }
 
