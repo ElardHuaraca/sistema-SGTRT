@@ -9,7 +9,7 @@ class HydrateDatabaseController extends Controller
 {
     public function hydrateDatabase()
     {
-        $hydrate = DB::connection('psgl2')
+        $hydrate = DB::connection('pgsql2')
             ->select('SELECT
                         vpx_vm.datacenter_id,vpx_vm.id, vpx_non_orm_vm_config_info."name",
                         vpx_vm.guest_family,vpx_vm.mem_size_mb, vpx_vm.num_vcpu,
