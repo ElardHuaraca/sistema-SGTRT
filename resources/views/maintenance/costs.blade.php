@@ -65,14 +65,23 @@
                                     <th scope="row">{{ $loop->index + 1 }}</th>
                                     <td> {{ $project->idproject }}</td>
                                     <td> {{ $project->name }}</td>
-                                    <td>$
-                                        {{ $project->costofourwalls == 0 ? number_format(0, 2) : number_format($project->costofourwalls, 2) }}
+                                    <td>
+                                        <a href="#">
+                                            $
+                                            {{ $project->costofourwalls == 0 ? number_format(0, 2) : number_format($project->costofourwalls, 2) }}
+                                        </a>
                                     </td>
-                                    <td>$
-                                        {{ $project->costonexus == 0 ? number_format(0, 2) : number_format($project->costonexus, 2) }}
+                                    <td>
+                                        <a href="#">
+                                            $
+                                            {{ $project->costonexus == 0 ? number_format(0, 2) : number_format($project->costonexus, 2) }}
+                                        </a>
                                     </td>
-                                    <td>$
-                                        {{ $project->costohp == 0 ? number_format(0, 2) : number_format($project->costohp, 2) }}
+                                    <td>
+                                        <a href="#">
+                                            $
+                                            {{ $project->costohp == 0 ? number_format(0, 2) : number_format($project->costohp, 2) }}
+                                        </a>
                                     </td>
                                     <td>$
                                         {{ number_format($project->costofourwalls + $project->costonexus + $project->costohp, 2) }}
