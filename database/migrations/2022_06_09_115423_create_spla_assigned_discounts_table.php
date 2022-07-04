@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('idspla')->nullable(true);
             $table->timestamps();
 
-            $table->foreign('idserver')->references('idserver')->on('servers');
+            $table->foreign('idserver')->references('idserver')->on('servers')->onUpdate('cascade');
             $table->foreign('idspla')->references('idspla')->on('spla_licenses');
         });
     }

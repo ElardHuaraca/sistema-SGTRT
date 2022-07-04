@@ -21,7 +21,7 @@ return new class extends Migration
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();
 
-            $table->foreign('idproject')->references('idproject')->on('projects');
+            $table->foreign('idproject')->references('idproject')->on('projects')->onUpdate('cascade');
         });
     }
 

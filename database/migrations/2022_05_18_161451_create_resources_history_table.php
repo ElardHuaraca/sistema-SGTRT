@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('idserver')->unsigned();
             $table->timestamps();
 
-            $table->foreign('idserver')->references('idserver')->on('servers');
+            $table->foreign('idserver')->references('idserver')->on('servers')->onUpdate('cascade');
         });
     }
 

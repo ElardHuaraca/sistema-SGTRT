@@ -65,4 +65,7 @@ Route::controller(MaintenanceController::class)->group(function () {
     Route::post('/maintenance/licence/spla/create', 'store_licence_spla')->middleware('auth');
     Route::put('/maintenance/licence/spla/update/{id}', 'update_licence_spla')->middleware('auth');
     Route::put('/maintenance/licence/spla/update/status/{id}', 'update_status_licence_spla')->middleware('auth');
+    Route::get('/maintenance/costs/fourwall/{id}', 'fourwall_details')->middleware('auth')->name('fourwall.details');
+    Route::get('/maintenance/costs/nexus/{id}', 'nexus_details')->middleware('auth')->name('nexus.details');
+    Route::get('/maintenance/costs/hp/{id}', 'hp_details')->middleware('auth')->name('hp.details');
 });

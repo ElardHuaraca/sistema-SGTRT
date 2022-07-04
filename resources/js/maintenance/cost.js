@@ -311,10 +311,11 @@ function setRequiredInputs(modal) {
 function updateCost(data, type) {
     var index = $.dataTableInit.data().toArray().findIndex(element => element[1] === data.idproject)
     var row = $.dataTableInit.row(index).data()
+    let href = $(row[type + 3]).attr('href')
     row[type + 3] = (deleteDolarAndHreft(row[type + 3]) + parseFloat(data.cost))
     row[6] = deleteDolar(row[6]) + parseFloat(data.cost)
     row[7] = row[6] * tchange
-    row[type + 3] = `<a href="#">$ ${row[type + 3].toFixed(2)}</a>`
+    row[type + 3] = `<a href="${href}">$ ${row[type + 3].toFixed(2)}</a>`
     row[6] = '$' + row[6].toFixed(2)
     row[7] = 'S/.' + row[7].toFixed(2)
     $.dataTableInit.row(index).data(row).draw()

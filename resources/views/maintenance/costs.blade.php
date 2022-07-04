@@ -66,19 +66,19 @@
                                     <td> {{ $project->idproject }}</td>
                                     <td> {{ $project->name }}</td>
                                     <td>
-                                        <a href="#">
+                                        <a href="{{ route('fourwall.details', $project->idproject) }}">
                                             $
                                             {{ $project->costofourwalls == 0 ? number_format(0, 2) : number_format($project->costofourwalls, 2) }}
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="#">
+                                        <a href="{{ route('nexus.details', $project->idproject) }}">
                                             $
                                             {{ $project->costonexus == 0 ? number_format(0, 2) : number_format($project->costonexus, 2) }}
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="#">
+                                        <a href="{{ route('hp.details', $project->idproject) }}">
                                             $
                                             {{ $project->costohp == 0 ? number_format(0, 2) : number_format($project->costohp, 2) }}
                                         </a>
