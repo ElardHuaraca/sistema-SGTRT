@@ -16,12 +16,12 @@ return new class extends Migration
         Schema::create('spla_assigned_discounts', function (Blueprint $table) {
             $table->id('iddiscount');
             $table->decimal('percentage', 8, 2);
-            $table->integer('idserver');
-            $table->integer('idspla')->nullable(true);
+            $table->integer('idserver')->unsigned();
+            $table->integer('idspla')->unsigned();
             $table->timestamps();
 
             $table->foreign('idserver')->references('idserver')->on('servers')->onUpdate('cascade');
-            $table->foreign('idspla')->references('idspla')->on('spla_licenses');
+            $table->foreign('idspla')->references('idspla')->on('spla_licences');
         });
     }
 
