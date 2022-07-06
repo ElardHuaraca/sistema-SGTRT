@@ -18,6 +18,10 @@ $(function () {
         row = relatedTarget.hasClass('btn-edit-licence-spla') ? $(relatedTarget).parents('tr')[0] : null
         id = relatedTarget.hasClass('btn-edit-licence-spla') ? relatedTarget.val() : null
         action = relatedTarget.hasClass('btn-edit-licence-spla') ? 'update' : 'create'
+
+        if (relatedTarget.hasClass('btn-edit-licence-spla')) $('#staticBackdropLabel').text('Editar Licencia SPLA')
+        else $('#staticBackdropLabel').text('Crear Licencia SPLA')
+
         if (row !== null) {
             var licence_spla = licences.filter(x => `${x.idspla}` === relatedTarget.val())[0]
             $('.form-update-create-licence_spla').find('input,select').each((_index, element) => {
