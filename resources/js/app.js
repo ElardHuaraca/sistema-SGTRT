@@ -1,4 +1,5 @@
 const { delay } = require('lodash');
+const { Datepicker } = require("vanillajs-datepicker")
 
 require('./bootstrap');
 require('datatables.net-bs5');
@@ -62,9 +63,7 @@ $(function () {
     $.fn.evitWriteTextCost = function () {
 
         $(this).on('keypress', function (e) {
-            if (e.key.match(/[0-9\./]/) === null) {
-                e.preventDefault()
-            }
+            if (e.key.match(/[0-9\./]/) === null) e.preventDefault()
         })
 
         $(this).on('focusout', function () {
@@ -77,7 +76,7 @@ $(function () {
                     if (refor[1].length == 1) {
                         refor = refor[0] + '.' + refor[1] + '0'
                     } else if (refor[1].length > 2) {
-                        refor = refor[0] + '.' + refor[1].substring(1, 3)
+                        refor = refor[0] + '.' + refor[1].substring(0, 3)
                     } else {
                         refor = refor[0] + '.' + refor[1]
                     }
@@ -198,3 +197,90 @@ $(function () {
     }
 
 })
+
+$(function () {
+
+    Object.assign(Datepicker.locales, language)
+
+    /* Implement datepicker */
+    var element = document.getElementById("date_selected")
+    $('#date_selected').on('keydown', function (e) { if (e.key === 'Backspace') $(this).val('') })
+    if (element !== undefined && element !== null) {
+        new Datepicker(element, {
+            minDate: new Date(2019, 0, 1),
+            maxDate: new Date(2030, 11, 31),
+            pickLevel: 0,
+            startView: 1,
+            language: 'es',
+            todayHighlight: true,
+        })
+    }
+
+    var date_start_fourwall = document.getElementById("date_start_fourwall")
+    $('#date_start_fourwall').on('keydown', function (e) { if (e.key === 'Backspace') $(this).val('') })
+    if (date_start_fourwall !== undefined && date_start_fourwall !== null) {
+        new Datepicker(date_start_fourwall, {
+            minDate: new Date(2019, 0, 1),
+            maxDate: new Date(2030, 11, 31),
+            pickLevel: 0,
+            startView: 1,
+            language: 'es',
+            todayHighlight: true,
+        })
+    }
+
+    var date_end_fourwall = document.getElementById("date_end_fourwall")
+    $('#date_end_fourwall').on('keydown', function (e) { if (e.key === 'Backspace') $(this).val('') })
+    if (date_end_fourwall !== undefined && date_end_fourwall !== null) {
+        new Datepicker(date_end_fourwall, {
+            minDate: new Date(2019, 0, 1),
+            maxDate: new Date(2030, 11, 31),
+            pickLevel: 0,
+            startView: 1,
+            language: 'es',
+            todayHighlight: true,
+        })
+    }
+
+    var date_start_hp = document.getElementById("date_start_hp")
+    $('#date_start_hp').on('keydown', function (e) { if (e.key === 'Backspace') $(this).val('') })
+    if (date_start_hp !== undefined && date_start_hp !== null) {
+        new Datepicker(date_start_hp, {
+            minDate: new Date(2019, 0, 1),
+            maxDate: new Date(2030, 11, 31),
+            pickLevel: 0,
+            startView: 1,
+            language: 'es',
+            todayHighlight: true,
+        })
+    }
+
+    var date_end_hp = document.getElementById("date_end_hp")
+    $('#date_end_hp').on('keydown', function (e) { if (e.key === 'Backspace') $(this).val('') })
+    if (date_end_hp !== undefined && date_end_hp !== null) {
+        new Datepicker(date_end_hp, {
+            minDate: new Date(2019, 0, 1),
+            maxDate: new Date(2030, 11, 31),
+            pickLevel: 0,
+            startView: 1,
+            language: 'es',
+            todayHighlight: true,
+        })
+    }
+})
+
+
+const language = {
+    es: {
+        days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+        daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+        daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+        months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+        monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+        today: "Hoy",
+        monthsTitle: "Meses",
+        clear: "Borrar",
+        weekStart: 1,
+        format: "dd/mm/yyyy"
+    }
+}

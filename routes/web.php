@@ -68,4 +68,10 @@ Route::controller(MaintenanceController::class)->group(function () {
     Route::get('/maintenance/costs/fourwall/{id}', 'fourwall_details')->middleware('auth')->name('fourwall.details');
     Route::get('/maintenance/costs/nexus/{id}', 'nexus_details')->middleware('auth')->name('nexus.details');
     Route::get('/maintenance/costs/hp/{id}', 'hp_details')->middleware('auth')->name('hp.details');
+    Route::put('/maintenance/costs/fourwall/update/{id}', 'update_fourwall')->middleware('auth');
+    Route::put('/maintenance/costs/nexus/update/{id}', 'update_nexus')->middleware('auth');
+    Route::put('/maintenance/costs/hp/update/{id}', 'update_hp')->middleware('auth');
+    Route::put('/maintenance/costs/fourwall/update/status/{id}', 'update_fourwall_status')->middleware('auth');
+    Route::put('/maintenance/costs/nexus/update/status/{id}', 'update_nexus_status')->middleware('auth');
+    Route::put('/maintenance/costs/hp/update/status/{id}', 'update_hp_status')->middleware('auth');
 });

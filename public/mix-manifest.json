@@ -9,6 +9,7 @@
     "/js/maintenance/sow.js": "/js/maintenance/sow.js",
     "/js/maintenance/licence_spla.js": "/js/maintenance/licence_spla.js",
     "/js/report/server_summary.js": "/js/report/server_summary.js",
+    "/js/maintenance/cost_additionals.js": "/js/maintenance/cost_additionals.js",
     "/css/app.css": "/css/app.css",
     "/css/user-manage.css": "/css/user-manage.css",
     "/css/home.css": "/css/home.css",

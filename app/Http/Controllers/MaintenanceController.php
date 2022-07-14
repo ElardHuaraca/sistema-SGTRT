@@ -232,4 +232,97 @@ class MaintenanceController extends Controller
 
         return response()->json($licence, 200);
     }
+
+    public function fourwall_details($id)
+    {
+        $fourwalls = Fourwall::selectRaw('
+            idfourwall,equipment,serie,cost,date_start,date_end,fourwalls.idproject,fourwalls.is_deleted,name
+        ')->join('projects', 'projects.idproject', '=', 'fourwalls.idproject')
+            ->where('projects.idproject', $id)
+            ->orderBy('is_deleted')->get();
+        return view('maintenance.fourwalls', ['fourwalls' => $fourwalls]);
+    }
+
+    public function nexus_details($id)
+    {
+        $nexus = Nexus::selectRaw('
+            idnexus,network_point,cost,nexus.idproject,nexus.is_deleted,name
+        ')->join('projects', 'projects.idproject', '=', 'nexus.idproject')
+            ->where('projects.idproject', $id)
+            ->orderBy('is_deleted')->get();
+        return view('maintenance.nexus', ['nexus' => $nexus]);
+    }
+
+    public function hp_details($id)
+    {
+        $hps = Hp::selectRaw('
+            idhp,equipment,serie,cost,date_start,date_end,hps.idproject,hps.is_deleted,name
+        ')->join('projects', 'projects.idproject', '=', 'hps.idproject')
+            ->where('projects.idproject', $id)
+            ->orderBy('is_deleted')->get();
+        return view('maintenance.hps', ['hps' => $hps]);
+    }
+
+    public function update_fourwall($id, Request $request)
+    {
+        $fourwall = Fourwall::find($id);
+        $fourwall->equipment = $request->equipment;
+        $fourwall->serie = $request->serie;
+        $fourwall->cost = $request->cost;
+        $fourwall->date_start = $request->date_start;
+        if ($request->date_end != null) $fourwall->date_end = $request->date_end;
+        $fourwall->save();
+
+        return response()->json($fourwall, 200);
+    }
+
+    public function update_nexus($id, Request $request)
+    {
+        $nexus = Nexus::find($id);
+        $nexus->network_point = $request->network_point;
+        $nexus->cost = $request->cost;
+        $nexus->save();
+
+        return response()->json($nexus, 200);
+    }
+
+    public function update_hp($id, Request $request)
+    {
+        $hp = Hp::find($id);
+        $hp->equipment = $request->equipment;
+        $hp->serie = $request->serie;
+        $hp->cost = $request->cost;
+        $hp->date_start = $request->date_start;
+        if ($request->date_end != null) $hp->date_end = $request->date_end;
+        $hp->save();
+
+        return response()->json($hp, 200);
+    }
+
+    public function update_fourwall_status($id)
+    {
+        $fourwall = Fourwall::find($id);
+        $fourwall->is_deleted = true;
+        $fourwall->save();
+
+        return response()->json($fourwall, 200);
+    }
+
+    public function update_nexus_status($id)
+    {
+        $nexus = Nexus::find($id);
+        $nexus->is_deleted = true;
+        $nexus->save();
+
+        return response()->json($nexus, 200);
+    }
+
+    public function update_hp_status($id)
+    {
+        $hp = Hp::find($id);
+        $hp->is_deleted = true;
+        $hp->save();
+
+        return response()->json($hp, 200);
+    }
 }

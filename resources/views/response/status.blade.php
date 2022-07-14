@@ -70,7 +70,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content h-50 panel-warning" id="content-mod">
                 <div class="modal-body text-center py-5">
-                    <h4>¿Esta seguro que desea realizar esta accion?</h4>
+                    <h4 id="title_action_perform">¿Esta seguro que desea realizar esta accion?</h4>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-warning" data-bs-dismiss="modal"
