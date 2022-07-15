@@ -120,7 +120,7 @@ $(function () {
         'date_end': form.filter(function (x) {
           return x.name == 'date_end';
         })[0].value === '' ? null : form.filter(function (x) {
-          return x.name == 'date_end_fourwall';
+          return x.name == 'date_end';
         })[0].value
       },
       beforeSend: function beforeSend() {

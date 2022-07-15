@@ -86,7 +86,7 @@ $(function () {
                 'serie': form.filter(x => x.name == 'serie_fourwall')[0].value,
                 'cost': form.filter(x => x.name == 'cost_fourwall')[0].value,
                 'date_start': form.filter(x => x.name == 'date_start')[0].value,
-                'date_end': form.filter(x => x.name == 'date_end')[0].value === '' ? null : form.filter(x => x.name == 'date_end_fourwall')[0].value
+                'date_end': form.filter(x => x.name == 'date_end')[0].value === '' ? null : form.filter(x => x.name == 'date_end')[0].value
             },
             beforeSend: function () {
                 $('#btn-succes-loading').trigger('click')
