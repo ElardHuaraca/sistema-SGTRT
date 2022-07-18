@@ -92,6 +92,7 @@ $(function () {
                 $('#btn-succes-loading').trigger('click')
             }
         }).then(function (response) {
+            console.log(response)
             $('#btn-succes').trigger('click')
             response_date_start = reestructureDate(response.date_start)
             response_date_end = response.date_end === null ? null : reestructureDate(response.date_end)

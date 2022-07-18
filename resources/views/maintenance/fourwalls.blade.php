@@ -37,7 +37,7 @@
                                     <td> $ {{ $fourwall->cost }}</td>
                                     <td> {{ date('d/m/Y', strtotime($fourwall->date_start)) }}</td>
                                     <td>
-                                        {{ $fourwall->date_end === null ? 'N.E.' : date('Y-m-d', strtotime($fourwall->date_end)) }}
+                                        {{ $fourwall->date_end === null ? 'N.E.' : date('d/m/Y', strtotime($fourwall->date_end)) }}
                                     </td>
                                     <td>
                                         <a data-bs-toggle="modal" href="#modalUpdateFourwall"

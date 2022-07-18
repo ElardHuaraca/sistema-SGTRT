@@ -270,7 +270,7 @@ class MaintenanceController extends Controller
         $fourwall->serie = $request->serie;
         $fourwall->cost = $request->cost;
         $fourwall->date_start = $request->date_start;
-        if ($request->date_end != null) $fourwall->date_end = $request->date_end;
+        $fourwall->date_end = $request->date_end;
         $fourwall->save();
 
         return response()->json($fourwall, 200);
@@ -293,7 +293,7 @@ class MaintenanceController extends Controller
         $hp->serie = $request->serie;
         $hp->cost = $request->cost;
         $hp->date_start = $request->date_start;
-        if ($request->date_end != null) $hp->date_end = $request->date_end;
+        $hp->date_end = $request->date_end;
         $hp->save();
 
         return response()->json($hp, 200);
