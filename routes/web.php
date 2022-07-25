@@ -31,6 +31,10 @@ Route::controller(HomeController::class)->group(function () {
 
 Route::controller(ReportController::class)->group(function () {
     Route::get('/reports', 'resource_consumption')->middleware('auth')->name('reports');
+    Route::get('/reports/filter/project/name', 'resource_consumption_for_project_name')->middleware('auth');
+    Route::get('/reports/filter/hostname/vmware', 'resource_consumption_for_hostname_or_vmware')->middleware('auth');
+    Route::get('/reports/filter/btween/dates', 'resource_consumption_btween_dates')->middleware('auth');
+    Route::get('/reports/generate/excel', 'generate_excel')->middleware('auth')->name('generate_excel');
     Route::get('/reports/{id}', 'resource_consumption_grafic')->middleware('auth')->name('reports.grafic');
     Route::post('/reports/create', 'store')->middleware('auth');
     Route::put('/reports/update', 'update')->middleware('auth');

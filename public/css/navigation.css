@@ -348,7 +348,7 @@ nav>div>ul>li.nav-item:hover {
     margin-bottom: 5rem;
 }
 
-@media (min-width: 769px) {
+@media (min-width: 992px) {
     .container {
         padding-left: 14rem;
         transition  : padding-left .3s ease-in-out;

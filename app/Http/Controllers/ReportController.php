@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\AssignService;
-use App\Models\Grafic;
 use App\Models\Server;
 use App\Models\Sow;
 use App\Models\SplaAssignedDiscount;
 use App\Models\SplaLicense;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
@@ -19,28 +18,85 @@ class ReportController extends Controller
             'servers.idserver, servers.name,
             servers.active, servers.idproject,
             projects.name AS project_name, jsonb_object_agg(resources_history.name,resources_history.amount) as resources,
-            sows.name AS sow_name'
-        )
-            ->join('projects', function ($join) {
-                $join->on('projects.idproject', '=', 'servers.idproject');
-            })
-            ->join('resources_history', function ($join) {
-                $join->on('resources_history.idserver', '=', 'servers.idserver');
-                $join->orderBy('resources_history.date', 'desc');
-                $join->limit(4);
-            })
-            ->join('sows', function ($join) {
-                $join->on('sows.idsow', '=', 'servers.idsow');
-            })
-            ->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'sow_name'])->get();
+            servers.service'
+        )->join('projects', function ($join) {
+            $join->on('projects.idproject', '=', 'servers.idproject');
+        })->join('resources_history', function ($join) {
+            $join->on('resources_history.idserver', '=', 'servers.idserver');
+            $join->orderBy('resources_history.date', 'desc');
+            $join->limit(4);
+        })->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service'])->get();
 
         return view('reports.IT-resources-consumption', ['servers' => $servers]);
     }
 
+    public function resource_consumption_for_project_name(Request $request)
+    {
+        $servers = Server::selectRaw(
+            'servers.idserver, servers.name,
+            servers.active, servers.idproject,
+            projects.name AS project_name, jsonb_object_agg(resources_history.name,resources_history.amount) as resources,
+            servers.service'
+        )->join('projects', function ($join) {
+            $join->on('projects.idproject', '=', 'servers.idproject');
+        })->join('resources_history', function ($join) {
+            $join->on('resources_history.idserver', '=', 'servers.idserver');
+            $join->orderBy('resources_history.date', 'desc');
+            $join->limit(4);
+        })->where('projects.name', 'like', '%' . strtoupper($request->name) . '%')
+            ->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service'])->get();
+
+        return response()->json($servers);
+    }
+
+    public function resource_consumption_for_hostname_or_vmware(Request $request)
+    {
+        $servers = Server::selectRaw(
+            'servers.idserver, servers.name,
+            servers.active, servers.idproject,
+            projects.name AS project_name, jsonb_object_agg(resources_history.name,resources_history.amount) as resources,
+            servers.service'
+        )->join('projects', function ($join) {
+            $join->on('projects.idproject', '=', 'servers.idproject');
+        })->join('resources_history', function ($join) {
+            $join->on('resources_history.idserver', '=', 'servers.idserver');
+            $join->orderBy('resources_history.date', 'desc');
+            $join->limit(4);
+        })->where('servers.hostname',            'like',            '%' . strtoupper($request->name) . '%')
+            ->orWhere('servers.machine_name',            'like',            '%' . strtoupper($request->name) . '%')
+            ->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service'])->get();
+
+        return response()->json($servers);
+    }
+
+    public function resource_consumption_btween_dates(Request $request)
+    {
+        $servers = Server::selectRaw(
+            'servers.idserver, servers.name,
+            servers.active, servers.idproject,
+            projects.name AS project_name, jsonb_object_agg(resources_history.name,resources_history.amount) as resources,
+            servers.service'
+        )->join('projects', function ($join) {
+            $join->on('projects.idproject', '=', 'servers.idproject');
+        })->join('resources_history', function ($join) {
+            $join->on('resources_history.idserver', '=', 'servers.idserver');
+            $join->orderBy('resources_history.date', 'desc');
+            $join->limit(4);
+        })->whereBetween('resources_history.date', [$request->date_start, $request->date_end])
+            ->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service'])->get();
+
+        return response()->json($servers);
+    }
+
+    public function generate_excel()
+    {
+        return Excel::download([], 'servers.xlsx');
+    }
+
     public function resource_consumption_grafic($id)
     {
-        $grafic = Grafic::all();
-        return view('reports.grafics', ['grafic' => $grafic, 'name' => $id]);
+        /* $grafic = Grafic::all(); */
+        return view('reports.grafics', ['grafic' => [], 'name' => $id]);
     }
 
     public function server_summary()

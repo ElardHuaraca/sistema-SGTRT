@@ -97,3 +97,24 @@ body {
     background-color: rgb(182, 182, 47) !important;
     border-color: rgb(182, 182, 47) !important;
 }
+
+/* Styles for spiner load */
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border-left-color: rgb(243, 154, 38);
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

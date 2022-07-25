@@ -5683,9 +5683,12 @@ __webpack_require__(/*! datatables.net-bs5 */ "./node_modules/datatables.net-bs5
 
 __webpack_require__(/*! datatables.net-responsive-bs5 */ "./node_modules/datatables.net-responsive-bs5/js/responsive.bootstrap5.js");
 
+var timeout = null;
+var oldData = null;
 $(function () {
   $.dataTableInit = $('#table-resources-it').DataTable({
     responsive: true,
+    searching: false,
     language: {
       search: 'Buscar:',
       lengthMenu: 'Mostrar _MENU_ registros por página',
@@ -5871,6 +5874,34 @@ $(function () {
     if (recomendations == null) return;
     recomendations.remove();
   };
+  /* Only firs on load data */
+
+
+  oldData = $.dataTableInit.rows().data();
+  /* function on search */
+
+  $.fn.searchData = function loadDataOnDataTable(text, _function) {
+    clearTimeout(timeout);
+    timeout = setTimeout(function () {
+      removeOnTextIsEmptyOrLoadComplete(text);
+
+      if (text !== '') {
+        $.dataTableInit.clear().draw();
+        $('.odd td').html('<div class="spinner"></div>');
+
+        _function(text, removeOnTextIsEmptyOrLoadComplete);
+      } else {
+        $.dataTableInit.clear().draw();
+        $.dataTableInit.rows.add(oldData).draw();
+      }
+
+      clearTimeout(timeout);
+    }, 800);
+  };
+
+  function removeOnTextIsEmptyOrLoadComplete(text) {
+    text === '' ? $('#table-resources-it .spinner').last().addClass('d-none') : '';
+  }
 });
 $(function () {
   Object.assign(Datepicker.locales, language);
@@ -5955,6 +5986,36 @@ $(function () {
       todayHighlight: true
     });
   }
+
+  var date_start_resources = document.getElementById("date_start_resources");
+  $('#date_start_resources').on('keydown', function (e) {
+    if (e.key === 'Backspace') $(this).val('');
+  });
+
+  if (date_start_resources !== undefined && date_start_resources !== null) {
+    new Datepicker(date_start_resources, {
+      minDate: new Date(2019, 0, 1),
+      pickLevel: 0,
+      startView: 1,
+      language: 'es',
+      todayHighlight: true
+    });
+  }
+
+  var date_end_resources = document.getElementById("date_end_resources");
+  $('#date_end_resources').on('keydown', function (e) {
+    if (e.key === 'Backspace') $(this).val('');
+  });
+
+  if (date_end_resources !== undefined && date_end_resources !== null) {
+    new Datepicker(date_end_resources, {
+      minDate: new Date(2019, 0, 1),
+      pickLevel: 0,
+      startView: 1,
+      language: 'es',
+      todayHighlight: true
+    });
+  }
 });
 var language = {
   es: {
@@ -5969,6 +6030,11 @@ var language = {
     weekStart: 1,
     format: "dd/mm/yyyy"
   }
+};
+
+window.reestructureDate = function (date) {
+  var date_reestructure = date.split('/');
+  return new Date(date_reestructure[2], date_reestructure[1] - 1, date_reestructure[0]);
 };
 
 /***/ }),
