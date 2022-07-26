@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('idserver')->references('idserver')->on('servers')->onUpdate('cascade');
-            $table->foreign('idspla')->references('idspla')->on('spla_licences');
+            $table->foreign('idspla')->references('idspla')->on('spla_licenses');
         });
     }
 

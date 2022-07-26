@@ -11,10 +11,13 @@ $(function () {
 
 /* Add values to table */
 $(function () {
-    if ((typeof grafic_default === 'undefined')) return
+    if ((typeof server === 'undefined')) return
     var canva = $('#chart-grafic')
-    var yValues = grafic_default.map(function (item) { return item.tiempo_ejecucion })
-    var xValues = grafic_default.map(function (item) { return item.periodo })
+    var yValues = server.filter(x => x.resource_name === 'CPU').map(x => x.amount)
+    var xValues = server.filter(x => x.resource_name === 'CPU').map(x => x.date)
+    console.log(xValues)
+    console.log(yValues)
+    console.log(server)
     var chart = new Chart(canva, {
         type: 'line',
         data: {
@@ -45,7 +48,6 @@ $(function () {
         var selected = $('option:selected', this).val();
         chart.options.plugins.title.text = selected.toString()
         if (selected === 'CPU') {
-            ;
         }
         chart.update()
     })
@@ -53,10 +55,9 @@ $(function () {
 
 
 $(function () {
-    console.log(servers)
     /* On find reload datatable with new array */
     $('#input-buscar-cliente').on('keyup', function (e) {
-        var text = $(this).val()
+        const text = $(this).val()
         $(this).searchData(text, (text, removeOnTextIsEmptyOrLoadComplete) => {
             $.ajax({
                 url: '/reports/filter/project/name',
@@ -74,7 +75,7 @@ $(function () {
     })
 
     $('#input-buscar-hostname').on('keyup', function (e) {
-        var text = $(this).val()
+        const text = $(this).val()
         $(this).searchData(text, (text, removeOnTextIsEmptyOrLoadComplete) => {
             $.ajax({
                 url: '/reports/filter/hostname/vmware',

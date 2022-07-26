@@ -62,8 +62,8 @@ class ReportController extends Controller
             $join->on('resources_history.idserver', '=', 'servers.idserver');
             $join->orderBy('resources_history.date', 'desc');
             $join->limit(4);
-        })->where('servers.hostname',            'like',            '%' . strtoupper($request->name) . '%')
-            ->orWhere('servers.machine_name',            'like',            '%' . strtoupper($request->name) . '%')
+        })->where('servers.hostname', 'like', '%' . strtoupper($request->name) . '%')
+            ->orWhere('servers.machine_name', 'like', '%' . strtoupper($request->name) . '%')
             ->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service'])->get();
 
         return response()->json($servers);
@@ -95,8 +95,13 @@ class ReportController extends Controller
 
     public function resource_consumption_grafic($id)
     {
-        /* $grafic = Grafic::all(); */
-        return view('reports.grafics', ['grafic' => [], 'name' => $id]);
+        $server = Server::selectRaw('
+            servers.name, resources_history.name as resource_name ,resources_history.amount,resources_history.date
+        ')->join('resources_history', function ($join) {
+            $join->on('resources_history.idserver', '=', 'servers.idserver');
+            $join->orderBy('resources_history.date', 'desc');
+        })->where('servers.idserver', $id)->get();
+        return view('reports.grafics', ['server' => $server, 'name' => $server[0]->name]);
     }
 
     public function server_summary()
@@ -111,10 +116,10 @@ class ReportController extends Controller
             $join->on('sows.idsow', '=', 'servers.idsow');
         })->orderBy('servers.is_deleted', 'asc')->get();
 
-        $licences = SplaLicense::select('idspla', 'name', 'type')->where('is_deleted', '=', false)->orderBy('type', 'asc')->get();
+        $licenses = SplaLicense::select('idspla', 'name', 'type')->where('is_deleted', '=', false)->orderBy('type', 'asc')->get();
         $sows = Sow::select('idsow', 'name', 'version', 'type')->where('is_deleted', '=', false)->get();
 
-        $resources = Server::selectRaw('servers.idserver,jsonb_object_agg(resources_history.name,resources_history.amount) as resources')
+        $resources = $resources = Server::selectRaw('servers.idserver,jsonb_object_agg(resources_history.name,resources_history.amount) as resources')
             ->join('resources_history', function ($join) {
                 $join->on('resources_history.idserver', '=', 'servers.idserver');
                 $join->orderBy('resources_history.date', 'desc');
@@ -126,15 +131,25 @@ class ReportController extends Controller
                 $join->on('servers.idserver', '=', 'assign_services.idserver');
             })->get();
 
-        $assign_splas = SplaAssignedDiscount::select('iddiscount', 'percentage', 'idserver', 'spla_licences.type', 'spla_licences.idspla')
-            ->join('spla_licences', function ($join) {
-                $join->on('spla_licences.idspla', '=', 'spla_assigned_discounts.idspla');
+        $assign_splas = SplaAssignedDiscount::select('iddiscount', 'percentage', 'idserver', 'spla_licenses.type', 'spla_licenses.idspla')
+            ->join('spla_licenses', function ($join) {
+                $join->on('spla_licenses.idspla', '=', 'spla_assigned_discounts.idspla');
             })->get();
 
         return view('reports.server-summary', [
-            'servers' => $servers, 'licences' => $licences,
+            'servers' => $servers, 'licenses' => $licenses,
             'sows' => $sows, 'resources' => $resources, 'assign_services' => $assign_services, 'assign_splas' => $assign_splas
         ]);
+    }
+
+    public function server_summary_for_proyect(Request $request)
+    {
+        $servers = Server::selectRaw('servers.idserver,jsonb_object_agg(resources_history.name,resources_history.amount) as resources')
+            ->join('resources_history', function ($join) {
+                $join->on('resources_history.idserver', '=', 'servers.idserver');
+                $join->orderBy('resources_history.date', 'desc');
+                $join->limit(4);
+            })->where('servers.hostname', 'like', '%' . strtoupper($request->name) . '%')->groupBy('servers.idserver')->get();
     }
 
     public function update_server_summary($id, Request $request)
@@ -157,7 +172,7 @@ class ReportController extends Controller
         $assign_services->is_additional_spla = $request['assign_service']['is_additional_spla'];
         $assign_services->save();
 
-        $assign_splas = SplaAssignedDiscount::join('spla_licences', 'spla_licences.idspla', '=', 'spla_assigned_discounts.idspla')->where('idserver', '=', $id)->get();
+        $assign_splas = SplaAssignedDiscount::join('spla_licenses', 'spla_licenses.idspla', '=', 'spla_assigned_discounts.idspla')->where('idserver', '=', $id)->get();
         $keys = array_keys($request['assign_spla_licences']);
         for ($index = 0; $index < sizeof($keys); $index++) {
             if (sizeof($assign_splas) > 0) {
@@ -174,9 +189,9 @@ class ReportController extends Controller
                 }
             } else $this->save_assign_spla($request, $id, $keys[$index]);
         }
-        $assign_splas = SplaAssignedDiscount::select('iddiscount', 'percentage', 'idserver', 'spla_licences.type', 'spla_licences.idspla')
-            ->join('spla_licences', function ($join) {
-                $join->on('spla_licences.idspla', '=', 'spla_assigned_discounts.idspla');
+        $assign_splas = SplaAssignedDiscount::select('iddiscount', 'percentage', 'idserver', 'spla_licenses.type', 'spla_licenses.idspla')
+            ->join('spla_licenses', function ($join) {
+                $join->on('spla_licenses.idspla', '=', 'spla_assigned_discounts.idspla');
             })->where('idserver', '=', $id)->get();
         return response()->json(['server' => $server, 'assign_services' => $assign_services, 'assign_splas' => $assign_splas]);
     }

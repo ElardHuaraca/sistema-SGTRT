@@ -2,7 +2,14 @@ _id = null
 row = null
 
 const KEYS = ['SO', 'SQL Server', 'Remote Desktop', 'Office']
-var SPLA_REMOVED = []
+const OLD_SERVER = servers
+const OLD_SOWS = sows
+const OLD_LICENSES = licenses
+const OLD_RESOURCES = resources
+const OLD_ASSING_SERVICES = assing_services
+const OLD_ASSING_SPLAS = assing_splas
+
+let SPLA_REMOVED = []
 
 $(function () {
 
@@ -362,4 +369,20 @@ $(function () {
         }
         return additional_spla
     }
+
+    /* Find client / hostname */
+
+    $('#input-buscar-cliente').on('keyup', function () {
+        const text = $(this).val()
+        $(this).searchData(text, (text, removeOnTextIsEmptyOrLoadComplete) => {
+            console.log(text)
+        })
+    })
+
+    $('#input-buscar-hostname').on('keyup', function () {
+        const text = $(this).val()
+        $(this).searchData(text, (text, removeOnTextIsEmptyOrLoadComplete) => {
+            console.log(text)
+        })
+    })
 })

@@ -30650,14 +30650,21 @@ $(function () {
 /* Add values to table */
 
 $(function () {
-  if (typeof grafic_default === 'undefined') return;
+  if (typeof server === 'undefined') return;
   var canva = $('#chart-grafic');
-  var yValues = grafic_default.map(function (item) {
-    return item.tiempo_ejecucion;
+  var yValues = server.filter(function (x) {
+    return x.resource_name === 'CPU';
+  }).map(function (x) {
+    return x.amount;
   });
-  var xValues = grafic_default.map(function (item) {
-    return item.periodo;
+  var xValues = server.filter(function (x) {
+    return x.resource_name === 'CPU';
+  }).map(function (x) {
+    return x.date;
   });
+  console.log(xValues);
+  console.log(yValues);
+  console.log(server);
   var chart = new Chart(canva, {
     type: 'line',
     data: {
@@ -30687,17 +30694,13 @@ $(function () {
     var selected = $('option:selected', this).val();
     chart.options.plugins.title.text = selected.toString();
 
-    if (selected === 'CPU') {
-      ;
-    }
+    if (selected === 'CPU') {}
 
     chart.update();
   });
 });
 $(function () {
-  console.log(servers);
   /* On find reload datatable with new array */
-
   $('#input-buscar-cliente').on('keyup', function (e) {
     var text = $(this).val();
     $(this).searchData(text, function (text, removeOnTextIsEmptyOrLoadComplete) {

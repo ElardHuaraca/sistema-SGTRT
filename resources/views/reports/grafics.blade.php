@@ -49,7 +49,7 @@
     </div>
 @endsection
 <script>
-    var grafic_default = @json($grafic);
+    var server = @json($server);
 </script>
 @push('scripts')
     <script src="{{ asset('js/report/resource_it.js') }}"></script>

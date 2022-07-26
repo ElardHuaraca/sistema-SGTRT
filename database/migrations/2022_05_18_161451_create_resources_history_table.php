@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id('idresource');
             $table->string('name');
             $table->integer('amount');
-            $table->date('date');
+            $table->dateTime('date');
             $table->integer('idserver')->unsigned();
             $table->timestamps();
 

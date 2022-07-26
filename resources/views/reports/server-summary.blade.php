@@ -25,10 +25,6 @@
                         <input id="input-buscar-hostname" class="form-control form-control-sm ml-5 w-30 rounded-pill"
                             type="text" placeholder="  Buscar por VMware" aria-label="Search">
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-4">
-                        {{-- Consultar servidor --}}
-                        <button class="btn btn-primary" id="btn-consult">Consultar</button>
-                    </div>
                 </div>
                 <div class="px-3 pt-2 pb-3">
                     <table class="table table-striped responsive" id="table-resources-it">
@@ -213,7 +209,7 @@
                                                 <div class="col-12 col-sm-6">
                                                     <select class="form-control" name="SO" disabled>
                                                         <option value="" selected>Seleccionar</option>
-                                                        @foreach ($licences as $license)
+                                                        @foreach ($licenses as $license)
                                                             @if ($license->type == 'SO')
                                                                 <option value="{{ $license->idspla }}">
                                                                     {{ $license->name }}
@@ -244,7 +240,7 @@
                                                 <div class="col-12 col-sm-6">
                                                     <select class="form-control" name="SQL Server" disabled>
                                                         <option value="" selected>Seleccionar</option>
-                                                        @foreach ($licences as $license)
+                                                        @foreach ($licenses as $license)
                                                             @if ($license->type == 'SQL Server')
                                                                 <option value="{{ $license->idspla }}">
                                                                     {{ $license->name }}
@@ -275,7 +271,7 @@
                                                 <div class="col-12 col-sm-6">
                                                     <select class="form-control" name="Remote Desktop" disabled>
                                                         <option value="" selected>Seleccionar</option>
-                                                        @foreach ($licences as $license)
+                                                        @foreach ($licenses as $license)
                                                             @if ($license->type == 'Remote Desktop')
                                                                 <option value="{{ $license->idspla }}">
                                                                     {{ $license->name }}
@@ -306,7 +302,7 @@
                                                 <div class="col-12 col-sm-6">
                                                     <select class="form-control" name="Office" disabled>
                                                         <option value="" selected>Seleccionar</option>
-                                                        @foreach ($licences as $license)
+                                                        @foreach ($licenses as $license)
                                                             @if ($license->type == 'Office')
                                                                 <option value="{{ $license->idspla }}">
                                                                     {{ $license->name }}
@@ -351,7 +347,7 @@
 @endsection
 <script>
     let sows = @json($sows);
-    let licences = @json($licences);
+    let licenses = @json($licenses);
     let servers = @json($servers);
     let resources = @json($resources);
     let assign_services = @json($assign_services);
