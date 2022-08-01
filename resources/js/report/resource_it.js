@@ -15,9 +15,6 @@ $(function () {
     var canva = $('#chart-grafic')
     var yValues = server.filter(x => x.resource_name === 'CPU').map(x => x.amount)
     var xValues = server.filter(x => x.resource_name === 'CPU').map(x => x.date)
-    console.log(xValues)
-    console.log(yValues)
-    console.log(server)
     var chart = new Chart(canva, {
         type: 'line',
         data: {

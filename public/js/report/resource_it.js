@@ -30662,9 +30662,6 @@ $(function () {
   }).map(function (x) {
     return x.date;
   });
-  console.log(xValues);
-  console.log(yValues);
-  console.log(server);
   var chart = new Chart(canva, {
     type: 'line',
     data: {

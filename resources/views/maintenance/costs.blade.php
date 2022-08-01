@@ -52,7 +52,7 @@
                                 <th scope="col" class="col-1">Nº</th>
                                 <th scope="col">ALP</th>
                                 <th scope="col">Proyecto</th>
-                                <th scope="col">Costo Mensual Fourwall</th>
+                                <th scope="col">Costo Mensual 4wall</th>
                                 <th scope="col">Costo Nexus</th>
                                 <th scope="col">Costo HP DC Care</th>
                                 <th scope="col" class="col-1">Total Dolares</th>
