@@ -14,7 +14,7 @@ class MaintenanceController extends Controller
 {
     public function sow()
     {
-        $sows = Sow::all();
+        $sows = Sow::orderBy('created_at', 'desc')->get();
         return view('maintenance.sow', ['sows' => $sows]);
     }
 
