@@ -34,6 +34,6 @@ class HydrateDatabaseController extends Controller
         }
         /* get path from databases.json */
         $path = Storage::disk('json')->get('databases.json');
-        return $path;
+        return json_decode($path, true);
     }
 }
