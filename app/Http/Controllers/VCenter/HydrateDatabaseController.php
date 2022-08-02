@@ -30,7 +30,8 @@ class HydrateDatabaseController extends Controller
     {
         $disk = null;
         if (!Storage::disk('json')->exists('databases.json')) {
-            $disk = Storage::disk('json')->put('databases.json', '');
+            /* if not exist file created */
+            $disk = Storage::disk('json')->put('databases.json', '{}');
         } else {
             $disk = Storage::disk('json')->get('databases.json');
         }
