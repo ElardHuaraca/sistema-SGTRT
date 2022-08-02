@@ -30,7 +30,18 @@ class HydrateDatabaseController extends Controller
     {
         if (!Storage::disk('json')->exists('databases.json')) {
             /* if not exist file created */
-            Storage::disk('json')->put('databases.json', '{}');
+            Storage::disk('json')->put('databases.json', '{
+                [
+                    {
+                        "host": "ipexample",
+                        "port": "5432",
+                        "database": "vcenter",
+                        "username": "postgres",
+                        "password": "postgres",
+                        "schema": "public"
+                    }
+                ]
+            }');
         }
         /* get path from databases.json */
         $path = Storage::disk('json')->get('databases.json');

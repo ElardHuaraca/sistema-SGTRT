@@ -30,12 +30,12 @@ class TaskCollectDataFromDatabase extends Command
      */
     public function handle()
     {
-        $this->info(PHP_EOL . 'Creating file if not exist databases.json in resources/json' . PHP_EOL);
+        $this->info(PHP_EOL . 'Creating file if not exist databases.json in storage/json' . PHP_EOL);
         /* generate json file if not exist */
         $diskFile = HydrateDatabaseController::createFileJsonDatabasesAndGet();
-        if (sizeof($diskFile) == 0) {
+        if ($diskFile[0]->host === 'ipexample') {
             $this->info('Please write data in database vcenter json file and run again' . PHP_EOL);
-            return 0;
+            return -1;
         }
         /* Get date now */
         $date = new DateTime();
