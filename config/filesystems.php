@@ -43,6 +43,10 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'json' => [
+            'driver' => 'local',
+            'root' => storage_path('app/storage/json'),
+        ],
 
         's3' => [
             'driver' => 's3',
