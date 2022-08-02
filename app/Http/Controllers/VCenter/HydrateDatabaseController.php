@@ -28,13 +28,12 @@ class HydrateDatabaseController extends Controller
 
     public static function createFileJsonDatabasesAndGet()
     {
-        $disk = null;
         if (!Storage::disk('json')->exists('databases.json')) {
             /* if not exist file created */
-            $disk = Storage::disk('json')->put('databases.json', '{}');
-        } else {
-            $disk = Storage::disk('json')->get('databases.json');
+            Storage::disk('json')->put('databases.json', '{}');
         }
-        return json_decode($disk . storage_path(), true);
+        /* get path from databases.json */
+        $path = Storage::disk('json')->get('databases.json');
+        return $path;
     }
 }

@@ -45,7 +45,7 @@ return [
         ],
         'json' => [
             'driver' => 'local',
-            'root' => storage_path('app/storage/json'),
+            'root' => storage_path('./json'),
         ],
 
         's3' => [
@@ -75,7 +75,6 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        public_path('json') => storage_path('app/storage/vcenter'),
     ],
 
 ];
