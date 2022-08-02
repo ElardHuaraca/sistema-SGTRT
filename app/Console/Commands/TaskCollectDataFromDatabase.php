@@ -30,24 +30,27 @@ class TaskCollectDataFromDatabase extends Command
      */
     public function handle()
     {
+        $this->info(PHP_EOL . 'Creating file if not exist databases.json in resources/json' . PHP_EOL);
+        /* generate json file if not exist */
+        $diskFile = HydrateDatabaseController::createFileJsonDatabasesAndGet();
+        if (sizeof($diskFile) == 0) {
+            $this->info('Please write data in database vcenter json file and run again' . PHP_EOL);
+            return 0;
+        }
         /* Get date now */
         $date = new DateTime();
         /* Print into log file start task*/
-        $this->info('Collect data from database vcenter ' . $date->format('d-M-Y H:m:s'));
+        $this->info('<-----------------------------Start task collect data from database vcenter----------------------------->' . PHP_EOL);
+        $this->info('Collect data from database vcenter ' . $date->format('d-M-Y H:m:s') . PHP_EOL);
         /* End */
-
         try {
-            $results = new HydrateDatabaseController();
-            $results = $results->hydrateDatabase();
-            foreach ($results as $result) {
-                $this->info($result->datacenter_id . ' ' . $result->id . ' ' .
-                    $result->name . ' ' . $result->guest_family . ' ' . $result->memory_ram_2 . ' ' . $result->cpu_cores_2 .
-                    ' ' . $result->aggr_unshared_storage_space);
-            }
+            HydrateDatabaseController::hydrateDatabase($diskFile);
         } catch (QueryException $th) {
             $this->error('Ocurred error ' . $th);
             return -1;
         }
+        /* Print into log file end task*/
+        $this->info(PHP_EOL . '<-----------------------------End task collect data from database vcenter----------------------------->' . PHP_EOL);
         return 0;
     }
 }
