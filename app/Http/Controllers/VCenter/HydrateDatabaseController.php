@@ -4,6 +4,7 @@ namespace App\Http\Controllers\VCenter;
 
 use App\Helpers\DatabaseConnectionHelper;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class HydrateDatabaseController extends Controller
@@ -24,7 +25,7 @@ class HydrateDatabaseController extends Controller
                         FROM vpx_vm
                         JOIN vpx_non_orm_vm_config_info on vpx_non_orm_vm_config_info.id=vpx_vm.id');
             foreach ($vms as $vm) {
-                info('Informacion : ' . $vm->datacenter_id);
+                Log::info('Informacion : ' . $vm->datacenter_id);
             }
         }
     }
