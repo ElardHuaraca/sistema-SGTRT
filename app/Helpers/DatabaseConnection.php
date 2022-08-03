@@ -8,14 +8,14 @@ class DatabaseConnectionHelper
 {
     public static function setConnection($params)
     {
-        Config(['database.connections.onthefly' => [
+        config(['database.connections.onthefly' => [
             'driver' => $params->driver,
             'host' => $params->host,
             'port' => $params->port,
             'database' => $params->database,
             'username' => $params->username,
             'password' => $params->password,
-            'schema' => $params->schema
+            'search_path' => $params->schema
         ]]);
 
         return DB::connection('onthefly');
