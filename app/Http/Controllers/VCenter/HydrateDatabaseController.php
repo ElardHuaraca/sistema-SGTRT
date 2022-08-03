@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\VCenter;
 
+use App\Helpers\DatabaseConnectionHelper;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class HydrateDatabaseController extends Controller
@@ -11,9 +11,9 @@ class HydrateDatabaseController extends Controller
     public static function hydrateDatabase($diskFile)
     {
         foreach ($diskFile as $vcenter) {
-            # code...
-            $hydrate = DB::connection('pgsql2')
-                ->select('SELECT
+
+            $connection = DatabaseConnectionHelper::setConnection($vcenter);
+            $hydrate = $connection->select('SELECT
                             vpx_vm.datacenter_id,
                             vpx_vm.id,vpx_non_orm_vm_config_info."name",
                             vpx_vm.guest_family,vpx_vm.mem_size_mb, vpx_vm.num_vcpu,
@@ -30,21 +30,22 @@ class HydrateDatabaseController extends Controller
     {
         if (!Storage::disk('json')->exists('databases.json')) {
             /* if not exist file created */
-            Storage::disk('json')->put('databases.json', '{
-                [
-                    {
-                        "host": "ipexample",
-                        "port": "5432",
-                        "database": "vcenter",
-                        "username": "postgres",
-                        "password": "postgres",
-                        "schema": "public"
-                    }
-                ]
-            }');
+            Storage::disk('json')->put('databases.json', '
+            [
+                {
+                    "driver": "pgsql",
+                    "host": "ipexample",
+                    "port": "5432",
+                    "database": "vcenter",
+                    "username": "postgres",
+                    "password": "postgres",
+                    "schema": "public"
+                }
+            ]
+            ');
         }
         /* get path from databases.json */
         $path = Storage::disk('json')->get('databases.json');
-        return json_decode($path, true);
+        return json_decode($path);
     }
 }
