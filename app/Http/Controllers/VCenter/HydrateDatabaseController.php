@@ -13,7 +13,7 @@ class HydrateDatabaseController extends Controller
         foreach ($diskFile as $vcenter) {
 
             $connection = DatabaseConnectionHelper::setConnection($vcenter);
-            $hydrate = $connection->select('SELECT
+            $vms = $connection->select('SELECT
                             vpx_vm.datacenter_id,
                             vpx_vm.id,vpx_non_orm_vm_config_info."name",
                             vpx_vm.guest_family,vpx_vm.mem_size_mb, vpx_vm.num_vcpu,
@@ -23,6 +23,9 @@ class HydrateDatabaseController extends Controller
                             vpx_non_orm_vm_config_info.annotation
                         FROM vpx_vm
                         JOIN vpx_non_orm_vm_config_info on vpx_non_orm_vm_config_info.id=vpx_vm.id');
+            foreach ($vms as $vm) {
+                info('Informacion : ' . $vm->datacenter_id);
+            }
         }
     }
 
