@@ -15,7 +15,7 @@
                     <button
                         class="btn btn-success me-4 disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
                         type="button" data-bs-toggle="modal" data-bs-target=" #modalCreateFourwall"
-                        id="btn-create-fourwall">Agregar costo 4Wall</button>
+                        id="btn-create-fourwall">Agregar costo 4 Wall</button>
                     <button
                         class="btn btn-success me-4 disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
                         type="button" data-bs-toggle="modal" data-bs-target=" #modalCreateNexus"
