@@ -5,11 +5,7 @@ var __webpack_exports__ = {};
   \******************************/
 $(function () {
   /* Evit write more two decimals */
-  $('.newtExchangeRates').on('keyup', function () {
-    var value = $(this).val();
-    var newValue = value.replace(/(\.\d{2})\d+/g, '$1');
-    $(this).val(newValue);
-  });
+  $('.newtExchangeRates').evitWriteTextCost();
 });
 $(function () {
   $('#updatetChange').on('click', function () {
