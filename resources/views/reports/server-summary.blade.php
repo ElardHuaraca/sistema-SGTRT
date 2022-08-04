@@ -166,14 +166,6 @@
                                     </div>
                                     <div class="form-check form-switch d-flex justify-content-center align-items-center">
                                         <input class="custom-control-input form-check-input me-3 py-2 col-6" disabled
-                                            style="transform: scale(1.2)" type="checkbox" id="switchVCPU"
-                                            name="vcpu">
-                                        <label class="custom-control-label form-check-label py-2 col-6" for="switchVCPU">
-                                            Vcpu
-                                        </label>
-                                    </div>
-                                    <div class="form-check form-switch d-flex justify-content-center align-items-center">
-                                        <input class="custom-control-input form-check-input me-3 py-2 col-6" disabled
                                             style="transform: scale(1.2)" type="checkbox" id="switchLicenseLinux"
                                             name="linux_license">
                                         <label class="custom-control-label form-check-label py-2 col-6"
