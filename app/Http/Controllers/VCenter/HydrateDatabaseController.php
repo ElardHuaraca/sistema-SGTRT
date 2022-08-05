@@ -15,12 +15,12 @@ class HydrateDatabaseController extends Controller
     public static function hydrateDatabase($diskFile)
     {
         /* register a generic project for servers that do not have information in the annotations */
-        $project_generic = Project::find('000000');
+        $project_generic = Project::find('999999');
         if (!$project_generic) {
             Log::info('Creating generic project');
             $project_generic = new Project();
-            $project_generic->idproject = '000000';
-            $project_generic->name = 'Generic Project';
+            $project_generic->idproject = '999999';
+            $project_generic->name = 'GENERIC PROJECTT';
             $project_generic->save();
         }
 
