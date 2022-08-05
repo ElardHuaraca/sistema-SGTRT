@@ -40,7 +40,8 @@ class HydrateDatabaseController extends Controller
                                         LEFT JOIN vpx_vm_ds_space ON vpx_vm_ds_space.vm_id = vpx_vm.id
                                         LEFT JOIN vpx_datastore ON vpx_datastore.id = vpx_vm_ds_space.ds_id');
             foreach ($vms as $vm) {
-                $server = Server::where('name', $vm->name)->first();
+                $server = Server::where('name', $vm->name)->get()->first();
+                Log::info('Processing server ' . $server);
                 if (is_null($server)) {
                     Log::info('Server not found: ' . $vm->name);
                     $project = $vm->annotation;
