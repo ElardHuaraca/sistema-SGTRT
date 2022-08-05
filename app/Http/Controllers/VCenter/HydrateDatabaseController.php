@@ -41,7 +41,7 @@ class HydrateDatabaseController extends Controller
             foreach ($vms as $vm) {
                 $server = Server::where('name', strtoupper($vm->name))->first();
 
-                if (is_null($server)) {
+                if (!$server) {
                     $project = $vm->annotation;
 
                     $explode_project = sizeof(explode('-', $project)) === 0 ? explode('_', $project) : explode('-', $project);
@@ -60,7 +60,7 @@ class HydrateDatabaseController extends Controller
                 $resource_comsuption_ram = new ResourceHistory();
                 $resource_comsuption_ram->idserver = $server->idserver;
                 $resource_comsuption_ram->name = 'RAM';
-                $resource_comsuption_ram->amount = round($vm->memory_ram / 1024, 2);
+                $resource_comsuption_ram->amount = round($vm->memory_ram / 1024);
                 $resource_comsuption_ram->date = Carbon::now();
                 $resource_comsuption_ram->save();
 
