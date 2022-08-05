@@ -60,14 +60,14 @@ class HydrateDatabaseController extends Controller
 
                 $resource_comsuption_ram = new ResourceHistory();
                 $resource_comsuption_ram->idserver = $server->idserver;
-                $resource_comsuption_ram->resource_type = 'RAM';
+                $resource_comsuption_ram->name = 'RAM';
                 $resource_comsuption_ram->amount = $vm->memory_ram;
                 $resource_comsuption_ram->date = Carbon::now();
                 $resource_comsuption_ram->save();
 
                 $resource_comsuption_vcpu = new ResourceHistory();
                 $resource_comsuption_vcpu->idserver = $server->idserver;
-                $resource_comsuption_vcpu->resource_type = 'CPU';
+                $resource_comsuption_vcpu->name = 'CPU';
                 $resource_comsuption_vcpu->amount = $vm->num_vcpu;
                 $resource_comsuption_vcpu->date = Carbon::now();
                 $resource_comsuption_vcpu->save();
