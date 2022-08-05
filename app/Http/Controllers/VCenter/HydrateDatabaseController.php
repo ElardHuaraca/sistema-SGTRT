@@ -41,7 +41,7 @@ class HydrateDatabaseController extends Controller
             foreach ($vms as $vm) {
                 $server = Server::where('name', strtoupper($vm->name))->first();
 
-                if (!$server) {
+                if (is_null($server)) {
                     $project = $vm->annotation;
 
                     $explode_project = sizeof(explode('-', $project)) === 0 ? explode('_', $project) : explode('-', $project);
