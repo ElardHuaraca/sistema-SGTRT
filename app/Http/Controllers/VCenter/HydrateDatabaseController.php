@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\ResourceHistory;
 use App\Models\Server;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -20,7 +22,7 @@ class HydrateDatabaseController extends Controller
             Log::info('Creating generic project');
             $project_generic = new Project();
             $project_generic->idproject = '999999';
-            $project_generic->name = 'GENERIC PROJECTT';
+            $project_generic->name = 'GENERIC PROJECT';
             $project_generic->save();
         }
 
@@ -45,9 +47,30 @@ class HydrateDatabaseController extends Controller
                     $project = $vm->annotation;
 
                     $explode_project = sizeof(explode('-', $project)) === 0 ? explode('_', $project) : explode('-', $project);
-                    if (count($explode_project) === 0) {
-                    }
+                    if (count($explode_project) === 0) $explode_project = '999999';
+
+                    $server = new Server();
+                    $server->name = strtoupper($vm->name);
+                    $server->active = strtoupper('999999' . $vm->name);
+                    $server->machine_name = strtoupper($vm->name);
+                    $server->hostname = strtoupper($vm->name);
+                    $server->service = 'BRONCE';
+                    $server->idproject = '999999';
                 }
+
+                $resource_comsuption_ram = new ResourceHistory();
+                $resource_comsuption_ram->idserver = $server->idserver;
+                $resource_comsuption_ram->resource_type = 'RAM';
+                $resource_comsuption_ram->amount = $vm->memory_ram;
+                $resource_comsuption_ram->date = Carbon::now();
+                $resource_comsuption_ram->save();
+
+                $resource_comsuption_vcpu = new ResourceHistory();
+                $resource_comsuption_vcpu->idserver = $server->idserver;
+                $resource_comsuption_vcpu->resource_type = 'CPU';
+                $resource_comsuption_vcpu->amount = $vm->num_vcpu;
+                $resource_comsuption_vcpu->date = Carbon::now();
+                $resource_comsuption_vcpu->save();
             }
         }
     }
