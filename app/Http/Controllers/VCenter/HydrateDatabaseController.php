@@ -56,6 +56,7 @@ class HydrateDatabaseController extends Controller
                     $server->hostname = strtoupper($vm->name);
                     $server->service = 'BRONCE';
                     $server->idproject = '999999';
+                    $server->save();
                 }
 
                 $resource_comsuption_ram = new ResourceHistory();
