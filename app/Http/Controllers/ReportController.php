@@ -144,12 +144,34 @@ class ReportController extends Controller
 
     public function server_summary_for_proyect(Request $request)
     {
-        $servers = Server::selectRaw('servers.idserver,jsonb_object_agg(resources_history.name,resources_history.amount) as resources')
-            ->join('resources_history', function ($join) {
-                $join->on('resources_history.idserver', '=', 'servers.idserver');
-                $join->orderBy('resources_history.date', 'desc');
-                $join->limit(4);
-            })->where('servers.hostname', 'like', '%' . strtoupper($request->name) . '%')->groupBy('servers.idserver')->get();
+        $servers = Server::selectRaw(
+            'servers.idserver, servers.name AS server_name,servers.machine_name,servers.hostname,servers.service,
+            servers.active,servers.is_deleted,projects.name AS project_name,projects.idproject as alp,
+            sows.name AS sow_name,sows.version,sows.type,sows.idsow'
+        )->join('projects', function ($join) {
+            $join->on('projects.idproject', '=', 'servers.idproject');
+        })->leftJoin('sows', function ($join) {
+            $join->on('sows.idsow', '=', 'servers.idsow');
+        })->where('projects.name', 'like', '%' . strtoupper($request->name) . '%')->orderBy('servers.is_deleted', 'asc')->get();
+
+        return response()->json($servers);
+    }
+
+    public function server_summary_for_hostname_or_vmware(Request $request)
+    {
+        $servers = Server::selectRaw(
+            'servers.idserver, servers.name AS server_name,servers.machine_name,servers.hostname,servers.service,
+            servers.active,servers.is_deleted,projects.name AS project_name,projects.idproject as alp,
+            sows.name AS sow_name,sows.version,sows.type,sows.idsow'
+        )->join('projects', function ($join) {
+            $join->on('projects.idproject', '=', 'servers.idproject');
+        })->leftJoin('sows', function ($join) {
+            $join->on('sows.idsow', '=', 'servers.idsow');
+        })->where('servers.machine_name', 'like', '%' . strtoupper($request->name) . '%')
+            ->orWhere('servers.hostname', 'like', '%' . strtoupper($request->name) . '%')
+            ->orderBy('servers.is_deleted', 'asc')->get();
+
+        return response()->json($servers);
     }
 
     public function update_server_summary($id, Request $request)

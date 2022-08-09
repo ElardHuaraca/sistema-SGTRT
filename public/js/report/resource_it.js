@@ -30713,6 +30713,7 @@ $(function () {
         var data = formatResponse(response);
         $.dataTableInit.rows.add(data).draw();
       })["catch"](function (error) {
+        $('.odd td').html('No se encontraron registros');
         console.log(error);
       });
     });
@@ -30732,6 +30733,7 @@ $(function () {
         var data = formatResponse(response);
         $.dataTableInit.rows.add(data).draw();
       })["catch"](function (error) {
+        $('.odd td').html('No se encontraron registros');
         console.log(error);
       });
     });

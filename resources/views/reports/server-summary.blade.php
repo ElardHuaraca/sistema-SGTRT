@@ -17,13 +17,13 @@
                         <h6 id="h6-cliente" class="py-2 m-0 pe-2">Cliente:</h6>
                         <input id="input-buscar-cliente"
                             class="form-control form-control-sm ml-5 w-30 rounded-3 rounded-pill" type="text"
-                            placeholder="  Buscar por cliente" aria-label="Search">
+                            placeholder="  Buscar por cliente" aria-label="Search" autocomplete="off">
                     </div>
                     <div class="col-lg-5 col-md-5 d-inline-flex pb-2 pb-sm-0">
                         {{-- <!-- Buscador Hostname --> --}}
                         <h6 id="h6-buscador-hostname" class="py-2 m-0 pe-2">Hostname/VMware:</h6>
                         <input id="input-buscar-hostname" class="form-control form-control-sm ml-5 w-30 rounded-pill"
-                            type="text" placeholder="  Buscar por VMware" aria-label="Search">
+                            type="text" placeholder="  Buscar por VMware" aria-label="Search" autocomplete="off">
                     </div>
                 </div>
                 <div class="px-3 pt-2 pb-3">
@@ -47,11 +47,11 @@
                                     <td>{{ $server->alp }}</td>
                                     <td>{{ $server->project_name }}</td>
                                     <td>{{ $server->server_name }}</td>
-                                    <td>{{ $server->version === null ? 'N.A.' : $server->version . ' ' . $server->sow_name }}
+                                    <td>{{ $server->version === null ? 'N.A.' : $server->version . ' ' . $server->sow_name . ' ' . $server->type }}
                                     </td>
                                     <td>
-                                        <a data-bs-toggle="modal" href="#modalEditServer" role="button"
-                                            value="{{ $server->idserver }}">
+                                        <a data-bs-toggle="modal" class="btn btn-warning" href="#modalEditServer"
+                                            role="button" value="{{ $server->idserver }}">
                                             Ver Detalle
                                         </a>
                                     </td>

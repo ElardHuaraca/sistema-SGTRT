@@ -40,6 +40,8 @@ Route::controller(ReportController::class)->group(function () {
     Route::put('/reports/update', 'update')->middleware('auth');
     Route::delete('/reports/delete', 'destroy')->middleware('auth');
     Route::get('/reports/server/summary', 'server_summary')->middleware('auth')->name('reports.server.summary');
+    Route::get('/reports/filter/server/project/name', 'server_summary_for_proyect')->middleware('auth');
+    Route::get('/reports/filter/server/hostname/vmware', 'server_summary_for_hostname_or_vmware')->middleware('auth');
     Route::post('/reports/server/summary/{id}', 'update_server_summary')->middleware('auth');
 });
 

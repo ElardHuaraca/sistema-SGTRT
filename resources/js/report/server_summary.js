@@ -2,12 +2,8 @@ _id = null
 row = null
 
 const KEYS = ['SO', 'SQL Server', 'Remote Desktop', 'Office']
-const OLD_SERVER = servers
-const OLD_SOWS = sows
-const OLD_LICENSES = licenses
-const OLD_RESOURCES = resources
-const OLD_ASSING_SERVICES = assing_services
-const OLD_ASSING_SPLAS = assing_splas
+
+const OLD_SERVERS = servers
 
 let SPLA_REMOVED = []
 
@@ -372,17 +368,62 @@ $(function () {
 
     /* Find client / hostname */
 
-    $('#input-buscar-cliente').on('keyup', function () {
+    $('#input-buscar-cliente').on('keyup', function (e) {
         const text = $(this).val()
+
+        if (text === '' && e.key === 'Backslash') servers = OLD_SERVERS
+
         $(this).searchData(text, (text, removeOnTextIsEmptyOrLoadComplete) => {
-            console.log(text)
+            $.ajax({
+                url: '/reports/filter/server/project/name',
+                type: 'GET',
+                data: { 'name': text },
+            }).then(function (response) {
+                console.log(response)
+                if (response.length === 0) return $('.odd td').html('No se encontraron registros')
+                var data = formatResponse(response)
+                removeOnTextIsEmptyOrLoadComplete('')
+                $.dataTableInit.rows.add(data).draw()
+                servers = response
+            }).catch(function (error) {
+                $('.odd td').html('No se encontraron registros')
+                console.log(error)
+            })
         })
     })
 
-    $('#input-buscar-hostname').on('keyup', function () {
+    $('#input-buscar-hostname').on('keyup', function (e) {
         const text = $(this).val()
         $(this).searchData(text, (text, removeOnTextIsEmptyOrLoadComplete) => {
-            console.log(text)
+            $.ajax({
+                url: '/reports/filter/server/hostname/vmware',
+                type: 'GET',
+                data: { 'name': text },
+            }).then(function (response) {
+                if (response.length === 0) return $('.odd td').html('No se encontraron registros')
+                var data = formatResponse(response)
+                removeOnTextIsEmptyOrLoadComplete('')
+                $.dataTableInit.rows.add(data).draw()
+            }).catch(function (error) {
+                $('.odd td').html('No se encontraron registros')
+                console.log(error)
+            })
         })
     })
+
+    function formatResponse(response) {
+        return response.map(function (item, index) {
+            return {
+                0: index + 1,
+                1: item.active,
+                2: item.alp,
+                3: item.project_name,
+                4: item.server_name,
+                5: `${item.version} ${item.sow_name} ${item.type}`,
+                6: `<a data-bs-toggle="modal" class="btn btn-warning" href="#modalEditServer" role="button" value="${item.idserver}">
+                        Ver Detalle
+                    </a>`
+            };
+        });
+    }
 })
