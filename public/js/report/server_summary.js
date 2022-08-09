@@ -449,7 +449,6 @@ $(function () {
           'name': text
         }
       }).then(function (response) {
-        console.log(response);
         if (response.length === 0) return $('.odd td').html('No se encontraron registros');
         var data = formatResponse(response);
         removeOnTextIsEmptyOrLoadComplete('');
