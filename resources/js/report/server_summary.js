@@ -418,7 +418,7 @@ $(function () {
                 2: item.alp,
                 3: item.project_name,
                 4: item.server_name,
-                5: `${item.version} ${item.sow_name} ${item.type}`,
+                5: item.version === null ? 'N.A.' : `${item.version} ${item.sow_name} ${item.type}`,
                 6: `<a data-bs-toggle="modal" class="btn btn-warning" href="#modalEditServer" role="button" value="${item.idserver}">
                         Ver Detalle
                     </a>`

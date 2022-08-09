@@ -489,7 +489,7 @@ $(function () {
         2: item.alp,
         3: item.project_name,
         4: item.server_name,
-        5: "".concat(item.version, " ").concat(item.sow_name, " ").concat(item.type),
+        5: item.version === null ? 'N.A.' : "".concat(item.version, " ").concat(item.sow_name, " ").concat(item.type),
         6: "<a data-bs-toggle=\"modal\" class=\"btn btn-warning\" href=\"#modalEditServer\" role=\"button\" value=\"".concat(item.idserver, "\">\n                        Ver Detalle\n                    </a>")
       };
     });
