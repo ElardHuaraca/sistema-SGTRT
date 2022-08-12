@@ -143,7 +143,6 @@ $(function () {
                 'is_additional': form.filter(x => x.name === 'additional_service').length > 0,
                 'is_windows_license': form.filter(x => x.name === 'windows_license').length > 0,
                 'is_antivirus': form.filter(x => x.name === 'antivirus').length > 0,
-                'is_vcpu': form.filter(x => x.name === 'vcpu').length > 0,
                 'is_linux_license': form.filter(x => x.name === 'linux_license').length > 0,
                 'is_additional_spla': form.filter(x => x.name === 'additional_spla_service').length > 0,
             },
@@ -222,7 +221,6 @@ $(function () {
 
         $('input[name="windows_license"]').prop('checked', assign_service.is_windows_license !== undefined ? assign_service.is_windows_license : false)
         $('input[name="antivirus"]').prop('checked', assign_service.is_antivirus !== undefined ? assign_service.is_antivirus : false)
-        $('input[name="vcpu"]').prop('checked', assign_service.is_vcpu !== undefined ? assign_service.is_vcpu : false)
         $('input[name="linux_license"]').prop('checked', assign_service.is_linux_license !== undefined ? assign_service.is_linux_license : false)
     }
 
@@ -330,7 +328,6 @@ $(function () {
         old_additional.is_additional_spla = JSON.parse(new_additional.is_additional_spla)
         old_additional.is_windows_license = JSON.parse(new_additional.is_windows_license)
         old_additional.is_antivirus = JSON.parse(new_additional.is_antivirus)
-        old_additional.is_vcpu = JSON.parse(new_additional.is_vcpu)
         old_additional.is_linux_license = JSON.parse(new_additional.is_linux_license)
         return old_additional
     }
@@ -343,7 +340,6 @@ $(function () {
             is_additional_spla: JSON.parse(new_additional.is_additional_spla),
             is_windows_license: JSON.parse(new_additional.is_windows_license),
             is_antivirus: JSON.parse(new_additional.is_antivirus),
-            is_vcpu: JSON.parse(new_additional.is_vcpu),
             is_linux_license: JSON.parse(new_additional.is_linux_license)
         }
         return additional_service

@@ -19,7 +19,6 @@ return new class extends Migration
             $table->boolean('is_additional')->default(false);
             $table->boolean('is_windows_license')->default(false);
             $table->boolean('is_antivirus')->default(false);
-            $table->boolean('is_vcpu')->default(false);
             $table->boolean('is_linux_license')->default(false);
             $table->boolean('is_additional_spla')->default(false);
             $table->integer('idserver')->unsigned();

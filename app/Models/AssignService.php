@@ -18,7 +18,6 @@ class AssignService extends Model
         'is_additional',
         'is_windows_license',
         'is_antivirus',
-        'is_vcpu',
         'is_linux_license',
         'is_additional_spla',
         'idserver'
