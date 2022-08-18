@@ -112,14 +112,11 @@ class HydrateDatabaseController extends Controller
 
         $servers = Server::all();
 
-        $servers = array_diff($servers->toArray(), $servers_registered);
-
-        json_decode(json_encode($servers));
+        $servers = $servers->diff($servers_registered);
 
         foreach ($servers as $server) {
-            $server_ = Server::find($server['idserver']);
-            $server_->is_deleted = true;
-            $server_->save();
+            $server->is_deleted = true;
+            $server->save();
         }
     }
 
