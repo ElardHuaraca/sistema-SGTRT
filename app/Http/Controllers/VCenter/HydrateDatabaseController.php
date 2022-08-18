@@ -21,6 +21,8 @@ class HydrateDatabaseController extends Controller
             $project = HydrateDatabaseController::registerProject('999999', 'GENERIC PROJECT');
         }
 
+        $servers_registered = [];
+
         foreach ($diskFile as $vcenter) {
 
             $connection = DatabaseConnectionHelper::setConnection($vcenter);
@@ -103,7 +105,17 @@ class HydrateDatabaseController extends Controller
                 $resource_comsuption_disk->amount = round(($vm->aggr_unshared_storage_space + $vm->aggr_uncommited_storage_space) / 1073741824);
                 $resource_comsuption_disk->date = Carbon::now();
                 $resource_comsuption_disk->save();
+
+                array_push($servers_registered, $server);
             }
+        }
+
+        $servers = Server::all();
+
+        $servers = array_diff($servers->toArray(), $servers_registered);
+        foreach ($servers as $server) {
+            $server->is_deleted = true;
+            $server->save();
         }
     }
 
