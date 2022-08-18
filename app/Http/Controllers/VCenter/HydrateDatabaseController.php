@@ -117,7 +117,7 @@ class HydrateDatabaseController extends Controller
         json_decode(json_encode($servers));
 
         foreach ($servers as $server) {
-            $server_ = Server::find($server->idserver);
+            $server_ = Server::find($server['idserver']);
             $server_->is_deleted = true;
             $server_->save();
         }
