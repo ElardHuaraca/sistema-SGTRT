@@ -61,7 +61,7 @@ class HydrateDatabaseController extends Controller
 
                     $server = new Server();
                     $server->name = strtoupper($vm->name);
-                    $server->active = strtoupper($project->name . $vm->name);
+                    $server->active = strtoupper($project->idproject . $vm->name);
                     $server->machine_name = strtoupper($vm->name);
                     $server->hostname = strtoupper($vm->name);
                     $server->service = $service;
