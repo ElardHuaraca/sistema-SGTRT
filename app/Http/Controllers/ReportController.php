@@ -117,7 +117,7 @@ class ReportController extends Controller
 
     public function resource_consumption_it_tariff_by_project($id, $date_start, $date_end)
     {
-        if ($date_start === 'null' && $date_end === 'null') [$date_start, $date_end] = $this->getDatesCalculed();
+        if ($date_start === 'na' && $date_end === 'na') [$date_start, $date_end] = $this->getDatesCalculed();
 
         $project = Project::find($id);
 
