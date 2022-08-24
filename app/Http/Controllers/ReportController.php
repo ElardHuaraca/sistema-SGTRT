@@ -107,6 +107,9 @@ class ReportController extends Controller
 
         [$date_start, $date_end] = $this->getDatesCalculed();
 
+
+        return $date_start . ' ' . $date_end;
+
         [$servers, $sows, $spla_assigned_discounts, $cost_maintenance] = $this->getServersAndSowsForCalculateCosts($date_start, $date_end, null);
         [$filters, $resources] = $this->get_servers_and_resources_filters($servers);
 
@@ -553,12 +556,12 @@ class ReportController extends Controller
     {
         $date = Carbon::now();
 
-        $date_start = date('15/m/Y', strtotime(date('15/m/Y') . '-1 month'));
+        $date_start = date('15/m/Y', strtotime(date('Y-m-15') . '-1 month'));
         $date_end = date('15/m/Y');
 
         if ($date->format('l') >= 16) {
             $date_start = date('15/m/Y');
-            $date_end = date('15/m/Y', strtotime(date('15/m/Y') . '+1 month'));
+            $date_end = date('15/m/Y', strtotime(date('Y-m-15') . '+1 month'));
         }
         return [$date_start, $date_end];
     }
