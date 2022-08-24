@@ -107,9 +107,6 @@ class ReportController extends Controller
 
         [$date_start, $date_end] = $this->getDatesCalculed();
 
-
-        return $date_start . ' ' . $date_end;
-
         [$servers, $sows, $spla_assigned_discounts, $cost_maintenance] = $this->getServersAndSowsForCalculateCosts($date_start, $date_end, null);
         [$filters, $resources] = $this->get_servers_and_resources_filters($servers);
 
