@@ -25,6 +25,7 @@ mix.js('resources/js/maintenance/sow.js', 'public/js/maintenance')
 mix.js('resources/js/maintenance/licence_spla.js', 'public/js/maintenance')
 mix.js('resources/js/report/server_summary.js', 'public/js/report')
 mix.js('resources/js/maintenance/cost_additionals.js', 'public/js/maintenance')
+mix.js('resources/js/report/it_tariff.js', 'public/js/report')
 
 mix.postCss('resources/css/auth.css', 'public/css');
 mix.postCss('resources/css/navigation.css', 'public/css');

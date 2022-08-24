@@ -33,7 +33,9 @@
                         </a>
                     </div>
                     <div class="sidebar-menu d-block" data-widget="tree">
-                        @if (Auth::user()->role == 'Administrador' || Auth::user()->role == 'Analista' || Auth::user()->role == 'Visitante')
+                        @if (Auth::user()->role == 'Administrador' ||
+                            Auth::user()->role == 'Analista' ||
+                            Auth::user()->role == 'Visitante')
                             <div class="list-group list-group-flush border-bottom border-white">
                                 <a class="list-group-item list-group-item-action collapsed bg-transparent py-2 text-white-navigation inner-addon"
                                     href="/">
@@ -57,7 +59,7 @@
                                         </a>
                                     </li>
                                     <li class="list-group-item py-1 bg-transparent">
-                                        <a href="" class="text-reset">
+                                        <a href="{{ route('reports.it_tariff') }}" class="text-reset">
                                             <i class="fa-solid fa-share"></i>
                                             <span>Tarifario TI</span>
                                         </a>
@@ -140,7 +142,8 @@
                         <ul class="navbar-nav ms-auto d-flex flex-row h-100 ">
                             <li class="nav-item dropdown h-100 pe-2">
                                 <a class="dropdown-toggle d-flex align-items-center text-white-navigation h-100"
-                                    data-bs-toggle="dropdown" role="button" aria-expanded="false" id="options-profile ">
+                                    data-bs-toggle="dropdown" role="button" aria-expanded="false"
+                                    id="options-profile ">
                                     <img src="{{ asset('images/user-anonimo.png') }}"
                                         class="rounded-circle mx-2 bg-transparent" height="30" width="30"
                                         alt="profile_image">
