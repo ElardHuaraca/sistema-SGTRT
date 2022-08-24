@@ -72,7 +72,7 @@
                                     <td>$ {{ $cost->cost_total }}</td>
                                     <td>
                                         <a class="btn btn-success"
-                                            href="{{ route('reports.it_tariff_servers', $cost->idproject, null, null) }}"
+                                            href="{{ route('reports.it_tariff_servers', [$cost->idproject, 'null', 'null']) }}"
                                             role="button">
                                             Ver Detalle
                                         </a>
