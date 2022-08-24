@@ -25,7 +25,6 @@ $(function () {
             'date_end': date_end
           }
         }).then(function (response) {
-          console.log(response);
           if (response.length === 0) return $('.odd td').html('No se encontraron registros');
           removeOnTextIsEmptyOrLoadComplete('');
           var data = formatResponseByProject(response);
