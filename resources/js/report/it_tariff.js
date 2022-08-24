@@ -21,11 +21,11 @@ $(function () {
                         'date_end': date_end
                     }
                 }).then(function (response) {
+                    console.log(response)
                     if (response.length === 0) return $('.odd td').html('No se encontraron registros');
                     removeOnTextIsEmptyOrLoadComplete('')
                     const data = formatResponseByProject(response)
                     $.dataTableInit.rows.add(data).draw();
-                    console.log(response)
                 }).catch(function (error) {
                     $.dataTableInit.rows.add([]).draw();
                     console.log(error)
@@ -37,7 +37,6 @@ $(function () {
 
     /* Function to reestructure data for dataTable*/
     function formatResponseByProject(response) {
-        console.log(response)
         return response.map(item => {
             return {
                 0: item.idproject,
