@@ -17,18 +17,14 @@
                         <h6 id="h6-1" class="col-md-4 col-3 py-2 m-0 pe-2">
                             <b>Fecha Inicio:</b>
                         </h6>
-                        <input type="text" class="form-control" placeholder="Seleccione una fecha"
-                            onkeydown="return false" aria-label="Seleccione una fecha" aria-describedby="basic-addon1"
-                            name="date_start" id="date_start_resources" autocomplete="off">
+                        <p class="form-control text-center">{{ date('d/m/Y', strtotime($date_start)) }}</p>
                     </div>
                     <div class="d-inline-flex px-md-3 py-md-2 px-lg-0 col-xl-3 col-lg-3 col-12 pt-sm-0 pt-2">
                         {{-- <!-- Fecha fin--> --}}
                         <h6 id="h6-fin-1" class="col-md-4 col-3 py-2 m-0 pe-2">
                             <b>Fecha Fin:</b>
                         </h6>
-                        <input type="text" class="form-control" placeholder="Seleccione una fecha"
-                            onkeydown="return false" aria-label="Seleccione una fecha" aria-describedby="basic-addon1"
-                            name="date_end" id="date_end_resources" autocomplete="off">
+                        <p class="form-control text-center">{{ date('d/m/Y', strtotime($date_start)) }}</p>
                     </div>
                 </div>
 

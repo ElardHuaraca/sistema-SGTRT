@@ -125,7 +125,7 @@ class ReportController extends Controller
         [$filters, $resources] = $this->get_servers_and_resources_filters($servers);
         $costs = $this->getCostsByServer($filters, $resources, $sows, $spla_assigned_discounts, null, null);
 
-        return view('reports.IT-tariff-server', ['costs' => $costs, 'project_name' => $project->name]);
+        return view('reports.IT-tariff-server', ['costs' => $costs, 'project_name' => $project->name, 'date_start' => $date_start, 'date_end' => $date_end]);
     }
 
     public function resource_consumption_it_tariff_btween_dates(Request $request)
