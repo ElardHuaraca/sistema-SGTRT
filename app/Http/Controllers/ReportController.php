@@ -121,7 +121,6 @@ class ReportController extends Controller
                servers.name, resources_history.name as resource_name ,resources_history.amount,resources_history.date
            ')->join('resources_history', function ($join) {
                 $join->on('resources_history.idserver', '=', 'servers.idserver');
-                $join->orderBy('resources_history.date', 'desc');
             })->where('servers.idserver', $id)->get();
         }
 
