@@ -31,12 +31,7 @@
                 </div>
                 <div
                     class="d-flex flex-sm-row flex-column justify-content-lg-between align-items-center flex-md-wrap justify-content-md-evenly py-3 px-2 border-top border-secondary col-xl-12">
-                    <div class="px-md-3 px-lg-0 px-xl-3 col-xl-2 col-lg-3 col-12">
-                        <a role="button" href="{{ route('generate_excel') }}"
-                            class="btn btn-secondary disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
-                            id="btn-generate-report">Generar reporte</a>
-                    </div>
-                    <div class="d-inline-flex  px-md-3 py-md-2 px-lg-0 col-xl-3 col-lg-3 col-12 pt-sm-0 pt-2">
+                    <div class="d-inline-flex  px-md-3 py-md-2 px-lg-0 col-xl-4 col-lg-4 col-12 pt-sm-0 pt-2">
                         {{-- <!-- Fecha inicio--> --}}
                         <h6 id="h6-1" class="col-md-4 col-3 py-2 m-0 pe-2">
                             <b>Fecha Inicio:</b>
@@ -45,16 +40,16 @@
                             onkeydown="return false" aria-label="Seleccione una fecha" aria-describedby="basic-addon1"
                             name="date_start" id="date_start_resources" autocomplete="off">
                     </div>
-                    <div class="d-inline-flex px-md-3 py-md-2 px-lg-0 col-xl-3 col-lg-3 col-12 pt-sm-0 pt-2">
+                    <div class="d-inline-flex px-md-3 py-md-2 px-lg-0 col-xl-4 col-lg-4 col-12 pt-sm-0 pt-2">
                         {{-- <!-- Fecha fin--> --}}
-                        <h6 id="h6-fin-1" class="col-md-4 col-3 py-2 m-0 pe-2">
+                        <h6 id="h6-fin-1" class="col-md-4 col-3 py-xl-2 py-lg-3 py-sm-2 py-3 m-0 pe-2">
                             <b>Fecha Fin:</b>
                         </h6>
                         <input type="text" class="form-control" placeholder="Seleccione una fecha"
                             onkeydown="return false" aria-label="Seleccione una fecha" aria-describedby="basic-addon1"
                             name="date_end" id="date_end_resources" autocomplete="off">
                     </div>
-                    <div class="px-md-3 px-lg-0 col-xl-1 col-lg-2 col-12 pt-sm-0 pt-2">
+                    <div class="px-md-3 px-lg-0 col-xl-1 col-lg-2 col-12 pt-sm-0 pt-2 text-center">
                         <button class="btn btn-primary" id="btn-consult">Consultar</button>
                     </div>
                 </div>
@@ -91,7 +86,7 @@
                                     <td>{{ $server->service }}</td>
                                     <td>
                                         <a class="btn btn-info" role="button"
-                                            href="{{ route('reports.grafic', $server->idserver) }}">
+                                            href="{{ route('reports.grafic', [$server->idserver, 'na', 'na']) }}">
                                             <i class="fa-solid fa-chart-simple"></i>
                                         </a>
                                     </td>

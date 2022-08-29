@@ -30899,9 +30899,12 @@ var _require2 = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.
 
 var timeout = null;
 var oldData = null;
+var newData = null;
 $(function () {
   /* Register default drivers */
   Chart.register.apply(Chart, _toConsumableArray(registerables));
+  oldData = $.dataTableInit.rows().data();
+  newData = oldData.toArray();
 });
 /* Add values to table */
 
@@ -30916,7 +30919,7 @@ $(function () {
   var xValues = server.filter(function (x) {
     return x.resource_name === 'CPU';
   }).map(function (x) {
-    return x.date;
+    return $.refactorDateNotMinutes(x.date);
   });
   var chart = new Chart(canva, {
     type: 'line',
@@ -30940,14 +30943,70 @@ $(function () {
         legend: {
           display: false
         }
-      }
+      },
+      responsive: true
     }
   });
   $('#picker-resource').on('change', function (e) {
     var selected = $('option:selected', this).val();
     chart.options.plugins.title.text = selected.toString();
 
-    if (selected === 'CPU') {}
+    switch (selected) {
+      case 'RAM':
+        chart.data.labels = server.filter(function (x) {
+          return x.resource_name === 'RAM';
+        }).map(function (x) {
+          return $.refactorDateNotMinutes(x.date);
+        });
+        chart.data.datasets[0].data = server.filter(function (x) {
+          return x.resource_name === 'RAM';
+        }).map(function (x) {
+          return x.amount;
+        });
+        break;
+
+      case 'DISCO':
+        server_disk = server.filter(function (x) {
+          return x.resource_name === 'HDD' || x.resource_name === 'SSD';
+        }).reduce(function (acc, cur) {
+          if (acc[cur.date] != null || acc[cur.date] != undefined) {
+            acc[cur.date] += cur.amount;
+          } else {
+            acc[cur.date] = cur.amount;
+          }
+
+          return acc;
+        }, []);
+        /* refactor server_disk to [{resource_name:'DISK',date:date,mount}] */
+
+        server_disk = Object.keys(server_disk).map(function (x) {
+          return {
+            resource_name: 'DISK',
+            date: x,
+            amount: server_disk[x]
+          };
+        });
+        chart.data.labels = server_disk.map(function (x) {
+          return $.refactorDateNotMinutes(x.date);
+        });
+        chart.data.datasets[0].data = server_disk.map(function (x) {
+          return x.amount;
+        });
+        break;
+
+      default:
+        chart.data.labels = server.filter(function (x) {
+          return x.resource_name === 'CPU';
+        }).map(function (x) {
+          return $.refactorDateNotMinutes(x.date);
+        });
+        chart.data.datasets[0].data = server.filter(function (x) {
+          return x.resource_name === 'CPU';
+        }).map(function (x) {
+          return x.amount;
+        });
+        break;
+    }
 
     chart.update();
   });
@@ -30957,21 +31016,12 @@ $(function () {
   $('#input-buscar-cliente').on('keyup', function (e) {
     var text = $(this).val();
     $(this).searchData(text, function (text, removeOnTextIsEmptyOrLoadComplete) {
-      $.ajax({
-        url: '/reports/filter/project/name',
-        type: 'GET',
-        data: {
-          'name': text
-        }
-      }).then(function (response) {
-        if (response.length === 0) return $('.odd td').html('No se encontraron registros');
-        removeOnTextIsEmptyOrLoadComplete('');
-        var data = formatResponse(response);
-        $.dataTableInit.rows.add(data).draw();
-      })["catch"](function (error) {
-        $('.odd td').html('No se encontraron registros');
-        console.log(error);
+      var filter = newData.filter(function (x) {
+        return x[3].match(text.toUpperCase());
       });
+      removeOnTextIsEmptyOrLoadComplete('');
+      if (filter.length > 0) return oldData.rows.add(filter).draw();
+      return $('.odd td').html('No se encontraron registros');
     });
   });
   $('#input-buscar-hostname').on('keyup', function (e) {
@@ -30981,7 +31031,9 @@ $(function () {
         url: '/reports/filter/hostname/vmware',
         type: 'GET',
         data: {
-          'name': text
+          'name': text,
+          'date_start': $('input[name="date_start"]').val(),
+          'date_end': $('input[name="date_end"]').val()
         }
       }).then(function (response) {
         if (response.length === 0) return $('.odd td').html('No se encontraron registros');
@@ -30997,30 +31049,31 @@ $(function () {
   /* Filter by date */
 
   $('#btn-consult').on('click', function (e) {
-    var start = $('input[name="date_start"]');
-    var end = $('input[name="date_end"]');
-    removeDangerClassOrAddDagerClass(start, true);
-    removeDangerClassOrAddDagerClass(end, true);
+    start = $('input[name="date_start"]').val();
+    end = $('input[name="date_end"]').val();
+    removeDangerClassOrAddDagerClass($('input[name="date_start"]'), true);
+    removeDangerClassOrAddDagerClass($('input[name="date_end"]'), true);
 
-    if (start.val() === '' && end.val() === '') {
+    if (start === '' && end === '') {
+      newData = oldData.toArray();
       $(this).searchData('', function () {});
       return;
     }
 
-    if (start.val() === '') {
+    if (start === '') {
       alert('Seleccione una fecha de inicio');
-      removeDangerClassOrAddDagerClass(start, false);
+      removeDangerClassOrAddDagerClass($('input[name="date_start"]'), false);
       return;
     }
 
-    if (end.val() === '') {
+    if (end === '') {
       alert('Seleccione una fecha de fin');
-      removeDangerClassOrAddDagerClass(end, false);
+      removeDangerClassOrAddDagerClass($('input[name="date_end"]'), false);
       return;
     }
 
-    var date_start = reestructureDate(start.val());
-    var date_end = reestructureDate(end.val());
+    var date_start = reestructureDate(start);
+    var date_end = reestructureDate(end);
 
     if (!(date_end >= date_start)) {
       alert('La fecha de fin debe ser mayor o igual a la fecha de inicio');
@@ -31032,14 +31085,15 @@ $(function () {
         url: '/reports/filter/btween/dates',
         type: 'GET',
         data: {
-          'date_start': start.val(),
-          'date_end': end.val()
+          'date_start': start,
+          'date_end': end
         }
       }).then(function (response) {
         if (response.length === 0) return $('.odd td').html('No se encontraron registros');
         removeOnTextIsEmptyOrLoadComplete('');
         var data = formatResponse(response);
         $.dataTableInit.rows.add(data).draw();
+        newData = $.dataTableInit.rows().data().toArray();
       })["catch"](function (error) {
         console.log(error);
       });
@@ -31059,7 +31113,7 @@ $(function () {
         6: resources.RAM === undefined ? '0' : resources.RAM,
         7: (resources.HDD === undefined ? 0 : resources.HDD) + (resources.SSD === undefined ? 0 : resources.SSD),
         8: item.service,
-        9: "<a class=\"btn btn-info\" role=\"button\"\n                        href=\"/reports/".concat(item.idserver, "\">\n                        <i class=\"fa-solid fa-chart-simple\"></i>\n                    </a>")
+        9: "<a class=\"btn btn-info\" role=\"button\"\n                        href=\"/reports/".concat(item.idserver, "/").concat(start.replaceAll('/', '-'), "/").concat(end.replaceAll('/', '-'), "\">\n                        <i class=\"fa-solid fa-chart-simple\"></i>\n                    </a>")
       };
     });
   }

@@ -213,8 +213,8 @@ $(function () {
             if (text !== '') {
                 $.dataTableInit.clear().draw()
                 $('.odd td').html('<div class="spinner"></div>')
-
                 _function(text, removeOnTextIsEmptyOrLoadComplete)
+
             } else {
                 $.dataTableInit.clear().draw()
                 $.dataTableInit.rows.add(oldData).draw()
@@ -226,6 +226,12 @@ $(function () {
 
     function removeOnTextIsEmptyOrLoadComplete(text) {
         text === '' ? $('#table-resources-it .spinner').last().addClass('d-none') : ''
+    }
+
+    /* Tranform ('yyyy-mm-dd HH:mm:ss') to ('dd/mm/yyyy') */
+    $.refactorDateNotMinutes = function (date) {
+        const date_ = new Date(date)
+        return ("00" + date_.getDate()).slice(-2) + "/" + ("00" + (date_.getMonth() + 1)).slice(-2) + "/" + date_.getFullYear()
     }
 
 })

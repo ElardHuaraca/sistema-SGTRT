@@ -26,7 +26,8 @@ class ReportController extends Controller
         })->join('resources_history', function ($join) {
             $join->on('resources_history.idserver', '=', 'servers.idserver');
             $join->limit(4);
-        })->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service'])->get();
+        })->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service', 'resources_history.date'])
+            ->orderBy('resources_history.date', 'asc')->get()->unique();
 
         return view('reports.IT-resources-consumption', ['servers' => $servers]);
     }
@@ -44,7 +45,8 @@ class ReportController extends Controller
             $join->on('resources_history.idserver', '=', 'servers.idserver');
             $join->limit(4);
         })->where('projects.name', 'like', '%' . strtoupper($request->name) . '%')
-            ->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service'])->get();
+            ->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service', 'resources_history.date'])
+            ->orderBy('resources_history.date', 'asc')->get()->unique();
 
         return response()->json($servers);
     }
@@ -62,8 +64,13 @@ class ReportController extends Controller
             $join->on('resources_history.idserver', '=', 'servers.idserver');
             $join->limit(4);
         })->where('servers.hostname', 'like', '%' . strtoupper($request->name) . '%')
-            ->orWhere('servers.machine_name', 'like', '%' . strtoupper($request->name) . '%')
-            ->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service'])->get();
+            ->orWhere('servers.machine_name', 'like', '%' . strtoupper($request->name) . '%');
+
+        if ($request->date_start != '' && $request->date_end != '') {
+            $servers->whereBetween('resources_history.date', [$request->date_start, $request->date_end]);
+        }
+        $servers = $servers->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service', 'resources_history.date'])
+            ->orderBy('resources_history.date', 'asc')->get()->unique();
 
         return response()->json($servers);
     }
@@ -79,9 +86,11 @@ class ReportController extends Controller
             $join->on('projects.idproject', '=', 'servers.idproject');
         })->join('resources_history', function ($join) {
             $join->on('resources_history.idserver', '=', 'servers.idserver');
+            $join->orderBy('resources_history.date', 'desc');
             $join->limit(4);
         })->whereBetween('resources_history.date', [$request->date_start, $request->date_end])
-            ->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service'])->get();
+            ->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service', 'resources_history.date'])
+            ->orderBy('resources_history.date', 'asc')->get()->unique();
 
         return response()->json($servers);
     }
@@ -91,15 +100,32 @@ class ReportController extends Controller
         return Excel::download([], 'Reporte ' . Carbon::now()->format('Y-m-d H:i:s') . '.xlsx');
     }
 
-    public function resource_consumption_grafic($id)
+    public function resource_consumption_grafic($id, $date_start, $date_end)
     {
+
+        if ($date_start == 'na' || $date_end == 'na') {
+            $date_ = date('01/m/Y', strtotime(date('Y-m-d') . '-1 month'));
+            [$date_start, $date_end] = [$date_, date('d/m/Y')];
+        }
+
         $server = Server::selectRaw('
             servers.name, resources_history.name as resource_name ,resources_history.amount,resources_history.date
-        ')->join('resources_history', function ($join) {
+        ')->join('resources_history', function ($join) use ($date_start, $date_end) {
             $join->on('resources_history.idserver', '=', 'servers.idserver');
             $join->orderBy('resources_history.date', 'desc');
+            $join->whereBetween('resources_history.date', [$date_start, $date_end]);
         })->where('servers.idserver', $id)->get();
-        return view('reports.grafics', ['server' => $server, 'name' => $server[0]->name]);
+
+        if (sizeof($server) == 0) {
+            $server = Server::selectRaw('
+               servers.name, resources_history.name as resource_name ,resources_history.amount,resources_history.date
+           ')->join('resources_history', function ($join) {
+                $join->on('resources_history.idserver', '=', 'servers.idserver');
+                $join->orderBy('resources_history.date', 'desc');
+            })->where('servers.idserver', $id)->get();
+        }
+
+        return view('reports.grafics', ['server' => $server, 'name' => $server[0]->name, 'date_start' => $date_start, 'date_end' => $date_end]);
     }
 
     public function resource_consumption_it_tariff()
