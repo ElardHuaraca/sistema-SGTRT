@@ -5905,10 +5905,9 @@ $(function () {
   /* Tranform ('yyyy-mm-dd HH:mm:ss') to ('dd/mm/yyyy') */
 
 
-  $.refactorDateNotMinutes = function (date) {
-    console.log(date);
-    var date_ = new Date(date);
-    console.log(date_);
+  $.refactorDateNotMinutes = function (date_refactor) {
+    var date = date_refactor.split('-');
+    var date_ = new Date(date[0], date[1] - 1, date[2]);
     return ("00" + date_.getDate()).slice(-2) + "/" + ("00" + (date_.getMonth() + 1)).slice(-2) + "/" + date_.getFullYear();
   };
 });
