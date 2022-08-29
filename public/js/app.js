@@ -5906,7 +5906,9 @@ $(function () {
 
 
   $.refactorDateNotMinutes = function (date) {
+    console.log(date);
     var date_ = new Date(date);
+    console.log(date_);
     return ("00" + date_.getDate()).slice(-2) + "/" + ("00" + (date_.getMonth() + 1)).slice(-2) + "/" + date_.getFullYear();
   };
 });
