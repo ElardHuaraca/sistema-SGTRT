@@ -16,6 +16,7 @@ $(function () {
 /* Add values to table */
 $(function () {
     if ((typeof server === 'undefined')) return
+    server.sort((a, b) => new Date(a.date) - new Date(b.date))
     var canva = $('#chart-grafic')
     var yValues = server.filter(x => x.resource_name === 'CPU').map(x => x.amount)
     var xValues = server.filter(x => x.resource_name === 'CPU').map(x => $.refactorDateNotMinutes(x.date))
