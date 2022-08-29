@@ -30910,11 +30910,9 @@ $(function () {
 
 $(function () {
   if (typeof server === 'undefined') return;
-  console.log(server);
   server.sort(function (a, b) {
     return new Date(a.date) - new Date(b.date);
   });
-  console.log(server);
   var canva = $('#chart-grafic');
   var yValues = server.filter(function (x) {
     return x.resource_name === 'CPU';

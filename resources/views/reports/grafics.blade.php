@@ -15,12 +15,12 @@
                     <div class="d-inline-flex px-md-3 py-md-2 px-lg-0 col-xl-4 col-lg-5 col-12">
                         {{-- <!-- Fecha inicio--> --}}
                         <h6 id="h6-1" class="py-2 m-0 pe-2 col-lg-4 col-md-3 col-2"><b>Fecha Inicio:</b></h6>
-                        <p class="form-control text-center">{{ $date_start }}</p>
+                        <p class="form-control text-center">{{ str_replace('-', '/', $date_start) }}</p>
                     </div>
                     <div class="d-inline-flex px-md-3 py-md-2 px-lg-0 col-xl-4 col-lg-5 col-12">
                         {{-- <!-- Fecha fin--> --}}
                         <h6 id="h6-fin-1" class="py-2 m-0 pe-2 col-lg-4 col-md-3 col-2"><b>Fecha Fin:</b></h6>
-                        <p class="form-control text-center">{{ $date_end }}</p>
+                        <p class="form-control text-center">{{ str_replace('-', '/', $date_end) }}</p>
                     </div>
                 </div>
                 <div
