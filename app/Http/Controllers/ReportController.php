@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ResourceHistoryExport;
 use App\Models\AssignService;
+use App\Models\Export\ResourceHistory;
 use App\Models\Project;
 use App\Models\Server;
 use App\Models\Sow;
@@ -11,6 +13,13 @@ use App\Models\SplaLicense;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Chart\Chart;
+use PhpOffice\PhpSpreadsheet\Chart\DataSeries;
+use PhpOffice\PhpSpreadsheet\Chart\DataSeriesValues;
+use PhpOffice\PhpSpreadsheet\Chart\Legend;
+use PhpOffice\PhpSpreadsheet\Chart\PlotArea;
+use PhpOffice\PhpSpreadsheet\Chart\Title;
+use Symfony\Polyfill\Intl\Idn\Info;
 
 class ReportController extends Controller
 {
@@ -86,7 +95,6 @@ class ReportController extends Controller
             $join->on('projects.idproject', '=', 'servers.idproject');
         })->join('resources_history', function ($join) {
             $join->on('resources_history.idserver', '=', 'servers.idserver');
-            $join->orderBy('resources_history.date', 'desc');
             $join->limit(4);
         })->whereBetween('resources_history.date', [$request->date_start, $request->date_end])
             ->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service', 'resources_history.date'])
@@ -95,10 +103,15 @@ class ReportController extends Controller
         return response()->json($servers);
     }
 
-    public function generate_excel()
+    public function generate_report_resource_history($date_start, $date_end, $idserver)
     {
-        return Excel::download([], 'Reporte ' . Carbon::now()->format('Y-m-d H:i:s') . '.xlsx');
+        return Excel::download(new ResourceHistoryExport($date_start, $date_end, $idserver), 'resource_history.xlsx');
     }
+
+    /* public function generate_excel()
+    {
+        return Excel::download(new ResourceHistoryExport, 'Reporte ' . Carbon::now()->format('Y-m-d H:i:s') . '.xlsx');
+    } */
 
     public function resource_consumption_grafic($id, $date_start, $date_end)
     {
@@ -124,7 +137,7 @@ class ReportController extends Controller
             })->where('servers.idserver', $id)->get();
         }
 
-        return view('reports.grafics', ['server' => $server, 'name' => $server[0]->name, 'date_start' => $date_start, 'date_end' => $date_end]);
+        return view('reports.grafics', ['server' => $server, 'name' => $server[0]->name, 'date_start' => $date_start, 'date_end' => $date_end, 'idserver' => $id]);
     }
 
     public function resource_consumption_it_tariff()

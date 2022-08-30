@@ -29,7 +29,9 @@
                         <a class="btn btn-secondary" role="button" href="{{ url()->previous() }}">Volver</a>
                     </div>
                     <div class="px-lg-1 h-100 col-lg-3 col-md-3 col-5">
-                        <button class="btn btn-secondary" role="button">Generar Reporte</button>
+                        <a class="btn btn-secondary" role="button"
+                            href="{{ route('reports.grafic.export.resource_history', [str_replace('/', '-', $date_start), str_replace('/', '-', $date_end), $idserver]) }}">Generar
+                            Reporte</a>
                     </div>
                     <div class="px-md-3 py-md-2 col-3">
                         <select class="form-select border-info" aria-label="Selecciona" id="picker-resource">
