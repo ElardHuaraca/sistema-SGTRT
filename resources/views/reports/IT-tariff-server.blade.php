@@ -17,14 +17,14 @@
                         <h6 id="h6-1" class="col-md-4 col-3 py-2 m-0 pe-2">
                             <b>Fecha Inicio:</b>
                         </h6>
-                        <p class="form-control text-center">{{ date('d/m/Y', strtotime($date_start)) }}</p>
+                        <p class="form-control text-center">{{ $date_start }}</p>
                     </div>
                     <div class="d-inline-flex px-md-3 py-md-2 px-lg-0 col-xl-3 col-lg-3 col-12 pt-sm-0 pt-2">
                         {{-- <!-- Fecha fin--> --}}
                         <h6 id="h6-fin-1" class="col-md-4 col-3 py-2 m-0 pe-2">
                             <b>Fecha Fin:</b>
                         </h6>
-                        <p class="form-control text-center">{{ date('d/m/Y', strtotime($date_end)) }}</p>
+                        <p class="form-control text-center">{{ $date_end }}</p>
                     </div>
                 </div>
 
@@ -63,7 +63,7 @@
                 <div class="w-100 pb-3">
                     <div class="text-center">
                         <a role="button"
-                            href="{{ route('generate.report.it_tariff', [$date_start, $date_end, $idproject]) }}"
+                            href="{{ route('generate.report.it_tariff', [str_replace('/', '-', $date_start), str_replace('/', '-', $date_end), $idproject]) }}"
                             class="btn btn-success disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
                             id="btn-generate-report">Generar reporte</a>
                     </div>

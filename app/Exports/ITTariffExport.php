@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Export\TariffTi;
+use App\Models\Export\TariffTiByProject;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -21,6 +22,27 @@ class ITTariffExport implements FromArray, WithStrictNullComparison, WithHeading
     {
         $this->ittariff = $ittariff;
         $this->exange_rate = $exange_rate;
+    }
+
+    public function array(): array
+    {
+        return array_map(function ($item) {
+
+            $tariffit = new TariffTi();
+            $tariffit->ALP = $item->idproject;
+            $tariffit->project_name = $item->project_name;
+            $tariffit->CPU = $item->CPU * $this->exange_rate->value;
+            $tariffit->DISK = $item->DISK * $this->exange_rate->value;
+            $tariffit->RAM = $item->RAM * $this->exange_rate->value;
+            $tariffit->lic_spla = $item->cost_splas * $this->exange_rate->value;
+            $tariffit->lic_cloud = $item->lic_cloud * $this->exange_rate->value;
+            $tariffit->backup = $item->backup * $this->exange_rate->value;
+            $tariffit->mo = $item->mo * $this->exange_rate->value;
+            $tariffit->maintenance = $item->cost_maintenance * $this->exange_rate->value;
+            $tariffit->total = $item->cost_total * $this->exange_rate->value;
+
+            return $tariffit;
+        }, $this->ittariff);
     }
 
     public function title(): string
@@ -43,27 +65,6 @@ class ITTariffExport implements FromArray, WithStrictNullComparison, WithHeading
             'Costo Mantenimiento',
             'Costo Total',
         ];
-    }
-
-    public function array(): array
-    {
-        return array_map(function ($item) {
-
-            $tariffit = new TariffTi();
-            $tariffit->ALP = $item->idproject;
-            $tariffit->project_name = $item->project_name;
-            $tariffit->CPU = $item->CPU * $this->exange_rate->value;
-            $tariffit->DISK = $item->DISK * $this->exange_rate->value;
-            $tariffit->RAM = $item->RAM * $this->exange_rate->value;
-            $tariffit->lic_spla = $item->cost_splas * $this->exange_rate->value;
-            $tariffit->lic_cloud = $item->lic_cloud * $this->exange_rate->value;
-            $tariffit->backup = $item->backup * $this->exange_rate->value;
-            $tariffit->mo = $item->mo * $this->exange_rate->value;
-            $tariffit->maintenance = $item->cost_maintenance * $this->exange_rate->value;
-            $tariffit->total = $item->cost_total * $this->exange_rate->value;
-
-            return $tariffit;
-        }, $this->ittariff);
     }
 
     public function registerEvents(): array

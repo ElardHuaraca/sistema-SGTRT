@@ -8,7 +8,6 @@ $(function () {
   $('#btn-consult').on('click', function (e) {
     date_start = $('input[name="date_start"]').val();
     date_end = $('input[name="date_end"]').val();
-    console.log(date_start);
 
     if (date_start != '' && date_end == '' || date_start == '' && date_end != '') {
       return alert('Por favor seleccione un rango de fechas');
@@ -30,6 +29,7 @@ $(function () {
           removeOnTextIsEmptyOrLoadComplete('');
           var data = formatResponseByProject(response);
           $.dataTableInit.rows.add(data).draw();
+          $('#btn-generate-report').attr('href', '/reports/export/ittariff/' + date_start.replaceAll('/', '-') + '/' + date_end.replaceAll('/', '-') + '/na');
         })["catch"](function (error) {
           $.dataTableInit.rows.add([]).draw();
           console.log(error);

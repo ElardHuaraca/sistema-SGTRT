@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ITTariffByProjectExport;
 use App\Exports\ITTariffExport;
 use App\Exports\ResourceHistoryExport;
 use App\Models\AssignService;
@@ -13,7 +14,11 @@ use App\Models\SplaAssignedDiscount;
 use App\Models\SplaLicense;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
+use Psy\Readline\Hoa\Console;
+use Symfony\Component\HttpKernel\Log\Logger;
+use Symfony\Polyfill\Intl\Idn\Info;
 
 class ReportController extends Controller
 {
@@ -109,13 +114,19 @@ class ReportController extends Controller
         $date_start_ = str_replace('-', '/', $date_start);
         $date_end_ = str_replace('-', '/', $date_end);
 
+        /* return [$date_start_, $date_end_, $id_project]; */
+
         [$servers, $sows, $spla_assigned_discounts, $cost_maintenance] = $this->getServersAndSowsForCalculateCosts($date_start_, $date_end_, $id_project);
         [$filters, $resources] = $this->get_servers_and_resources_filters($servers);
-        $costs = $this->getCostsByProject($filters, $resources, $sows, $spla_assigned_discounts, $cost_maintenance, $date_start_, $date_end_);
+        $costs = $idproject == 'na' ?
+            $this->getCostsByProject($filters, $resources, $sows, $spla_assigned_discounts, $cost_maintenance, $date_start_, $date_end_) :
+            $this->getCostsByServer($filters, $resources, $sows, $spla_assigned_discounts, $date_start_, $date_end_);
 
         $exchange_rate = ExchangeRates::all()->first();
 
-        return Excel::download(new ITTariffExport($costs, $exchange_rate), 'tarifario.xlsx');
+        return $idproject == 'na' ?
+            Excel::download(new ITTariffExport($costs, $exchange_rate), 'tarifario1.xlsx') :
+            Excel::download(new ITTariffByProjectExport($costs, $exchange_rate), 'tarifario2.xlsx');
     }
 
     public function resource_consumption_grafic($id, $date_start, $date_end)
@@ -402,12 +413,15 @@ class ReportController extends Controller
     {
         $costs = [];
 
-        if ($date_start === null && $date_end === null) [$date_start, $date_end] = $this->getDatesCalculed();
+        if ($date_start == null && $date_end == null) [$date_start, $date_end] = $this->getDatesCalculed();
+
+        Log::info('date_start: ' . $date_start . ' date_end: ' . $date_end);
 
         $days = Carbon::createFromFormat('d/m/Y', $date_start)->diffInDays(Carbon::createFromFormat('d/m/Y', $date_end));
         if ($days > 31 || $days < 28) $days = 30;
 
         foreach ($filters as $key => $filter) {
+            $sow = collect($sows)->where('idsow', $filter['idsow'])->first();
             array_push($costs, [
                 'idproject' => $filter['idproject'],
                 'project_name' => $filter['project_name'],
@@ -427,10 +441,12 @@ class ReportController extends Controller
                 'cost_nexus' => 0,
                 'cost_4_wall' => 0,
                 'cost_hp_dccare' => 0,
+                'sow_name' => 'N.A.',
             ]);
 
-            $sow = collect($sows)->where('idsow', $filter['idsow'])->first();
             if ($sow->is_deleted) continue;
+
+            $costs[$key]['sow_name'] = $sow->version . ' ' . $sow->type . ' ' . $sow->name;
             /*  $days = cal_days_in_month(CAL_GREGORIAN, date('m'), date('Y')); */
             $days_off = collect($resources[$filter['idserver']])->where('resource_name', 'RAM')->where('amount', 0)->count();
 
@@ -558,6 +574,7 @@ class ReportController extends Controller
                 'idproject' => $cost['idproject'],
                 'project_name' => $cost['project_name'],
                 'server_name' => $cost['server_name'],
+                'sow_name' => $cost['sow_name'],
                 'CPU' => 0,
                 'RAM' => 0,
                 'DISK' => 0,
