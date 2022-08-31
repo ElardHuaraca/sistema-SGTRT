@@ -47,14 +47,14 @@
                             @foreach ($costs as $cost)
                                 <tr>
                                     <td>{{ $cost->server_name }}</td>
-                                    <td>$ {{ $cost->CPU }}</td>
-                                    <td>$ {{ $cost->DISK }}</td>
-                                    <td>$ {{ $cost->RAM }} </td>
-                                    <td>$ {{ $cost->cost_splas }}</td>
-                                    <td>{{ $cost->lic_cloud }}</td>
-                                    <td>$ {{ $cost->backup }}</td>
-                                    <td>$ {{ $cost->mo }}</td>
-                                    <td>$ {{ $cost->cost_total }}</td>
+                                    <td>S/. {{ number_format($cost->CPU * $exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ number_format($cost->DISK * $exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ number_format($cost->RAM * $exchangeRates_footer->value, 2) }} </td>
+                                    <td>S/. {{ number_format($cost->cost_splas * $exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ number_format($cost->lic_cloud * $exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ number_format($cost->backup * $exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ number_format($cost->mo * $exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ number_format($cost->cost_total * $exchangeRates_footer->value, 2) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

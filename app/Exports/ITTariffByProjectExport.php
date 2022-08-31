@@ -24,7 +24,7 @@ class ITTariffByProjectExport implements FromArray, WithTitle, WithHeadings, Wit
 
     public function array(): array
     {
-        return array_map(function ($item) {
+        $items = array_map(function ($item) {
             $ittariffByProject = new TariffTiByProject();
             $ittariffByProject->idproject = $item->idproject;
             $ittariffByProject->project_name = $item->project_name;
@@ -40,6 +40,19 @@ class ITTariffByProjectExport implements FromArray, WithTitle, WithHeadings, Wit
             $ittariffByProject->total = $item->cost_total * $this->exange_rate->value;
             return $ittariffByProject;
         }, $this->ittariff);
+
+        array_walk($items, function (&$item) {
+            $item->CPU = number_format($item->CPU, 2);
+            $item->RAM = number_format($item->RAM, 2);
+            $item->DISK = number_format($item->DISK, 2);
+            $item->lic_spla = number_format($item->lic_spla, 2);
+            $item->lic_cloud = number_format($item->lic_cloud, 2);
+            $item->backup = number_format($item->backup, 2);
+            $item->mo = number_format($item->mo, 2);
+            $item->total = number_format($item->total, 2);
+        });
+
+        return $items;
     }
 
     public function title(): string
