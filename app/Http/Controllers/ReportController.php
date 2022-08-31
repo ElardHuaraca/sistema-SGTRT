@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ITTariffExport;
 use App\Exports\ResourceHistoryExport;
 use App\Models\AssignService;
-use App\Models\Export\ResourceHistory;
+use App\Models\ExchangeRates;
 use App\Models\Project;
 use App\Models\Server;
 use App\Models\Sow;
@@ -13,13 +14,6 @@ use App\Models\SplaLicense;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use PhpOffice\PhpSpreadsheet\Chart\Chart;
-use PhpOffice\PhpSpreadsheet\Chart\DataSeries;
-use PhpOffice\PhpSpreadsheet\Chart\DataSeriesValues;
-use PhpOffice\PhpSpreadsheet\Chart\Legend;
-use PhpOffice\PhpSpreadsheet\Chart\PlotArea;
-use PhpOffice\PhpSpreadsheet\Chart\Title;
-use Symfony\Polyfill\Intl\Idn\Info;
 
 class ReportController extends Controller
 {
@@ -105,13 +99,24 @@ class ReportController extends Controller
 
     public function generate_report_resource_history($date_start, $date_end, $idserver)
     {
-        return Excel::download(new ResourceHistoryExport($date_start, $date_end, $idserver), 'resource_history.xlsx');
+        return Excel::download(new ResourceHistoryExport($date_start, $date_end, $idserver), 'historial_de_recursos_generado_' . Carbon::now()->format('d_m_Y') . '_.xlsx');
     }
 
-    /* public function generate_excel()
+    public function generate_report_it_tariff($date_start, $date_end, $idproject)
     {
-        return Excel::download(new ResourceHistoryExport, 'Reporte ' . Carbon::now()->format('Y-m-d H:i:s') . '.xlsx');
-    } */
+        $id_project = $idproject == 'na' ? null : $idproject;
+
+        $date_start_ = str_replace('-', '/', $date_start);
+        $date_end_ = str_replace('-', '/', $date_end);
+
+        [$servers, $sows, $spla_assigned_discounts, $cost_maintenance] = $this->getServersAndSowsForCalculateCosts($date_start_, $date_end_, $id_project);
+        [$filters, $resources] = $this->get_servers_and_resources_filters($servers);
+        $costs = $this->getCostsByProject($filters, $resources, $sows, $spla_assigned_discounts, $cost_maintenance, $date_start_, $date_end_);
+
+        $exchange_rate = ExchangeRates::all()->first();
+
+        return Excel::download(new ITTariffExport($costs, $exchange_rate), 'tarifario.xlsx');
+    }
 
     public function resource_consumption_grafic($id, $date_start, $date_end)
     {
@@ -150,7 +155,7 @@ class ReportController extends Controller
 
         $costs = $this->getCostsByProject($filters, $resources, $sows, $spla_assigned_discounts, $cost_maintenance, null, null);
 
-        return view('reports.IT-tariff', ['costs' => $costs]);
+        return view('reports.IT-tariff', ['costs' => $costs, 'date_start' => $date_start, 'date_end' => $date_end]);
     }
 
     public function resource_consumption_it_tariff_by_project($id, $date_start, $date_end)
@@ -163,7 +168,7 @@ class ReportController extends Controller
         [$filters, $resources] = $this->get_servers_and_resources_filters($servers);
         $costs = $this->getCostsByServer($filters, $resources, $sows, $spla_assigned_discounts, null, null);
 
-        return view('reports.IT-tariff-server', ['costs' => $costs, 'project_name' => $project->name, 'date_start' => $date_start, 'date_end' => $date_end]);
+        return view('reports.IT-tariff-server', ['costs' => $costs, 'project_name' => $project->name, 'date_start' => $date_start, 'date_end' => $date_end, 'idproject' => $id]);
     }
 
     public function resource_consumption_it_tariff_btween_dates(Request $request)

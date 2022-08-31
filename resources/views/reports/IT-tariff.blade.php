@@ -61,15 +61,16 @@
                                 <tr>
                                     <td>{{ $cost->idproject }}</td>
                                     <td>{{ $cost->project_name }}</td>
-                                    <td>$ {{ $cost->CPU }}</td>
-                                    <td>$ {{ $cost->DISK }}</td>
-                                    <td>$ {{ $cost->RAM }} </td>
-                                    <td>$ {{ $cost->cost_splas }}</td>
-                                    <td>{{ $cost->lic_cloud }}</td>
-                                    <td>$ {{ $cost->backup }}</td>
-                                    <td>$ {{ $cost->mo }}</td>
-                                    <td>$ {{ $cost->cost_maintenance }}</td>
-                                    <td>$ {{ $cost->cost_total }}</td>
+                                    <td>S/. {{ $cost->CPU * number_format($exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ $cost->DISK * number_format($exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ $cost->RAM * number_format($exchangeRates_footer->value, 2) }} </td>
+                                    <td>S/. {{ $cost->cost_splas * number_format($exchangeRates_footer->value, 2) }}</td>
+                                    <td>{{ $cost->lic_cloud * number_format($exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ $cost->backup * number_format($exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ $cost->mo * number_format($exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ $cost->cost_maintenance * number_format($exchangeRates_footer->value, 2) }}
+                                    </td>
+                                    <td>S/. {{ $cost->cost_total * number_format($exchangeRates_footer->value, 2) }}</td>
                                     <td>
                                         <a class="btn btn-success"
                                             href="{{ route('reports.it_tariff_servers', [$cost->idproject, 'na', 'na']) }}"
@@ -85,7 +86,8 @@
 
                 <div class="w-100 pb-3">
                     <div class="text-center">
-                        <a role="button" href="{{ route('generate_excel') }}"
+                        <a role="button"
+                            href="{{ route('generate.report.it_tariff', [str_replace('/', '-', $date_start), str_replace('/', '-', $date_end), 'na']) }}"
                             class="btn btn-success disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
                             id="btn-generate-report">Generar reporte</a>
                     </div>

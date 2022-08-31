@@ -152,7 +152,6 @@ $(function () {
             alert('La fecha de fin debe ser mayor o igual a la fecha de inicio')
             return
         }
-
         $(this).searchData('GET', (text, removeOnTextIsEmptyOrLoadComplete) => {
             $.ajax({
                 url: '/reports/filter/btween/dates',

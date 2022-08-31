@@ -62,7 +62,8 @@
                 </div>
                 <div class="w-100 pb-3">
                     <div class="text-center">
-                        <a role="button" href="{{ route('generate_excel') }}"
+                        <a role="button"
+                            href="{{ route('generate.report.it_tariff', [$date_start, $date_end, $idproject]) }}"
                             class="btn btn-success disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
                             id="btn-generate-report">Generar reporte</a>
                     </div>

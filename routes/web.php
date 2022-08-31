@@ -34,12 +34,12 @@ Route::controller(ReportController::class)->group(function () {
     Route::get('/reports/filter/project/name', 'resource_consumption_for_project_name')->middleware('auth');
     Route::get('/reports/filter/hostname/vmware', 'resource_consumption_for_hostname_or_vmware')->middleware('auth');
     Route::get('/reports/filter/btween/dates', 'resource_consumption_btween_dates')->middleware('auth');
-    Route::get('/reports/generate/excel', 'generate_excel')->middleware('auth')->name('generate_excel');
     Route::get('/reports/{id}/{date_start}/{dante_end}', 'resource_consumption_grafic')->middleware('auth')->name('reports.grafic');
     Route::get('/reports/export/{date_start}/{dante_end}/{idserver}', 'generate_report_resource_history')->middleware('auth')->name('reports.grafic.export.resource_history');
     Route::get('/reports/it/tariff', 'resource_consumption_it_tariff')->middleware('auth')->name('reports.it_tariff');
     Route::get('/reports/it/tariff/project/{id}/{date_start}/{date_end}', 'resource_consumption_it_tariff_by_project')->middleware('auth')->name('reports.it_tariff_servers');
     Route::get('/reports/it/tariff/bwteen/dates', 'resource_consumption_it_tariff_btween_dates')->middleware('auth');
+    Route::get('/reports/export/ittariff/{date_start}/{date_end}/{idproject}', 'generate_report_it_tariff')->middleware('auth')->name('generate.report.it_tariff');
     Route::get('/reports/server/summary', 'server_summary')->middleware('auth')->name('reports.server.summary');
     Route::get('/reports/filter/server/project/name', 'server_summary_for_proyect')->middleware('auth');
     Route::get('/reports/filter/server/hostname/vmware', 'server_summary_for_hostname_or_vmware')->middleware('auth');
