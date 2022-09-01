@@ -614,7 +614,7 @@ class ReportController extends Controller
         $date_start = date('15/m/Y', strtotime(date('Y-m-15') . '-1 month'));
         $date_end = date('15/m/Y');
 
-        if ($date->format('l') >= 16) {
+        if ($date->day() >= 16) {
             $date_start = date('15/m/Y');
             $date_end = date('15/m/Y', strtotime(date('Y-m-15') . '+1 month'));
         }
