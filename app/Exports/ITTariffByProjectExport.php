@@ -42,14 +42,14 @@ class ITTariffByProjectExport implements FromArray, WithTitle, WithHeadings, Wit
         }, $this->ittariff);
 
         array_walk($items, function (&$item) {
-            $item->CPU = number_format($item->CPU, 2);
-            $item->RAM = number_format($item->RAM, 2);
-            $item->DISK = number_format($item->DISK, 2);
-            $item->lic_spla = number_format($item->lic_spla, 2);
-            $item->lic_cloud = number_format($item->lic_cloud, 2);
-            $item->backup = number_format($item->backup, 2);
-            $item->mo = number_format($item->mo, 2);
-            $item->total = number_format($item->total, 2);
+            $item->CPU = 'S/. ' . number_format($item->CPU, 2);
+            $item->RAM = 'S/. ' . number_format($item->RAM, 2);
+            $item->DISK = 'S/. ' . number_format($item->DISK, 2);
+            $item->lic_spla = 'S/. ' . number_format($item->lic_spla, 2);
+            $item->lic_cloud = 'S/. ' . number_format($item->lic_cloud, 2);
+            $item->backup = 'S/. ' . number_format($item->backup, 2);
+            $item->mo = 'S/. ' . number_format($item->mo, 2);
+            $item->total = 'S/. ' . number_format($item->total, 2);
         });
 
         return $items;
@@ -102,6 +102,7 @@ class ITTariffByProjectExport implements FromArray, WithTitle, WithHeadings, Wit
                 $event->sheet->getDelegate()->getStyle('I:I')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getDelegate()->getStyle('J:J')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
                 $event->sheet->getDelegate()->getStyle('K:K')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+                $event->sheet->getDelegate()->getStyle('L2:L' . $event->sheet->getDelegate()->getHighestRow())->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
 
                 /* information exchange rates- */
                 $event->sheet->getDelegate()->mergeCells('O2:P2');
