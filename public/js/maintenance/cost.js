@@ -56,6 +56,113 @@ $(function () {
   $('input[name="codigo_alp"').on('keydown', function (e) {
     removeDivWithRecomendations();
   });
+  $('#modalCreateCost').on('input', 'input[name="codigo_alp"]', function () {
+    var _this4 = this;
+
+    if ($(this).val().length === 0) return;
+    var codigo_alp = projects.filter(function (project) {
+      return project.idproject.toString().indexOf($(_this4).val()) > -1;
+    });
+    if (codigo_alp.length === 0) return;else if (codigo_alp.length === 1) {
+      if (codigo_alp[0].idproject.toString() === $(this).val()) {
+        removeDivWithRecomendations();
+        return;
+      }
+    }
+    addDivWithRecomendations(codigo_alp, 0);
+  });
+  $('select[name="cost_type"]').on('change', function () {
+    value = $(this).val();
+    enableInputs(['serie_fourwall', 'date_start', 'date_end']);
+
+    switch (value) {
+      case 'fourwall':
+        changeTexts(['Equipo 4wall', 'Serie 4wall', 'Costo 4wall']);
+        break;
+
+      case 'nexus':
+        changeTexts(['Punto de Red', '', 'Costo Nexus']);
+        disableInputs(['serie_fourwall', 'date_start', 'date_end']);
+        break;
+
+      case 'hp':
+        changeTexts(['Equipo HP', 'Serie HP', 'Costo HP']);
+        break;
+    }
+  });
+  $('#save_cost').on('click', function () {
+    $('#btn-sumbit-cost').trigger('click');
+  });
+  $('#form_costs').on('submit', function (e) {
+    e.preventDefault();
+    /* serialize form */
+
+    var form = $(this).serializeArray();
+    var data = {};
+    var url = '';
+    var type = 0;
+
+    switch ($('select[name="cost_type"]').val()) {
+      case 'fourwall':
+        data = {
+          'idproject': form[1].value,
+          'equipment': form[2].value,
+          'serie': form[3].value,
+          'cost': form[4].value,
+          'date_start': form[5].value,
+          'date_end': form[6].value
+        };
+        url = '/maintenance/costs/fourwalls/create';
+        type = 0;
+        break;
+
+      case 'nexus':
+        data = {
+          'idproject': form[1].value,
+          'network_point': form[2].value,
+          'cost': form[3].value
+        };
+        url = '/maintenance/costs/nexus/create';
+        type = 1;
+        break;
+
+      case 'hp':
+        data = {
+          'idproject': form[1].value,
+          'equipment': form[2].value,
+          'serie': form[3].value,
+          'cost': form[4].value,
+          'date_start': form[5].value,
+          'date_end': form[6].value
+        };
+        url = '/maintenance/costs/hps/create';
+        type = 2;
+        break;
+    }
+
+    $.ajax({
+      headers: {
+        'X-CSRF-TOKEN': $('input[name="_token"]').val()
+      },
+      url: url,
+      type: 'POST',
+      data: data,
+      dataType: 'json',
+      beforeSend: function beforeSend() {
+        $('#btn-succes-loading').trigger('click');
+      }
+    }).then(function (response) {
+      $('#btn-succes').trigger('click');
+      updateCost(response, type);
+      $(this).trigger('reset');
+    })["catch"](function (error) {
+      $('#btn-succes-error').trigger('click');
+      console.log(error);
+    }).always(function () {
+      $('#modal-succes-loading').modal('toggle');
+      $('#btn-close-loading, .btn-close-loading').trigger('click');
+    });
+  });
 });
 
 function addDivWithRecomendations(codigo_alp, index) {
@@ -82,12 +189,8 @@ function addDivWithRecomendations(codigo_alp, index) {
     });
     div_recomendation.addEventListener("click", function (e) {
       var div_target = $(e.target);
-
-      if (typeof div_target.find("input").val() === "undefined") {
-        div_target = div_target.parent();
-      }
-
-      var input = $('input[name="codigo_alp"]')[index];
+      if (typeof div_target.find("input").val() === "undefined") div_target = div_target.parent();
+      var input = index != 0 ? $('input[name="codigo_alp"]')[index] : $('input[name="codigo_alp"]');
       $(input).val(div_target.find("input").val());
       _id = 1;
       removeDivWithRecomendations();
@@ -95,7 +198,7 @@ function addDivWithRecomendations(codigo_alp, index) {
     div.appendChild(div_recomendation);
   });
   var recomendations = document.getElementsByClassName("recomendations");
-  recomendations[index].appendChild(div);
+  index != 0 ? recomendations[index].appendChild(div) : recomendations[index + 1].appendChild(div);
 }
 /* function remove recomendation div */
 
@@ -271,6 +374,24 @@ function deleteDolarAndHreft(row) {
 function deleteDolar(row) {
   var replace = row.replace('$', '');
   return parseFloat(replace.replaceAll(' ', ''));
+}
+
+function changeTexts(texts) {
+  $('#first_text').text(texts[0]);
+  $('#second_text').text(texts[1] != '' ? texts[1] : $('#second_text').text());
+  $('#third_text').text(texts[2]);
+}
+
+function disableInputs(inputs) {
+  inputs.forEach(function (input) {
+    $('input[name="' + input + '"]').attr('disabled', true);
+  });
+}
+
+function enableInputs(inputs) {
+  inputs.forEach(function (input) {
+    $('input[name="' + input + '"]').attr('disabled', false);
+  });
 }
 /******/ })()
 ;

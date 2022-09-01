@@ -5,7 +5,7 @@
         {{-- <!-- Content Header (Page header) --> --}}
         <section class="content-header text-center">
             <h1 class="h1-titulo">
-                MANTENIMIENTO - HP
+                MANTENIMIENTO - HP DC CARE
             </h1>
         </section>
         <section class="content">
@@ -67,7 +67,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" id="content-mod">
                 <div class="modal-header bg-primary-custom">
-                    <h5 class="modal-title text-white modal-title-4" id="staticBackdropLabel">Añadir Hp</h5>
+                    <h5 class="modal-title text-white w-100 text-center" id="staticBackdropLabel">Editar Hp DC Care</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

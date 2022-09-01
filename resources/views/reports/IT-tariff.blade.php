@@ -12,7 +12,7 @@
             <div class="box" id="box-consumo">
                 <div
                     class="d-flex flex-sm-row flex-column justify-content-lg-evenly align-items-center flex-md-wrap justify-content-md-evenly py-3 px-2 border-top border-secondary col-xl-12">
-                    <div class="d-inline-flex  px-md-3 py-md-2 px-lg-0 col-xl-3 col-lg-3 col-12 pt-sm-0 pt-2">
+                    <div class="d-inline-flex  px-md-3 py-md-2 px-lg-0 col-xl-3 col-lg-5 col-12 pt-sm-0 pt-2">
                         {{-- <!-- Fecha inicio--> --}}
                         <h6 id="h6-1" class="col-md-4 col-3 py-2 m-0 pe-2">
                             <b>Fecha Inicio:</b>
@@ -21,7 +21,7 @@
                             onkeydown="return false" aria-label="Seleccione una fecha" aria-describedby="basic-addon1"
                             name="date_start" id="date_start_resources" autocomplete="off">
                     </div>
-                    <div class="d-inline-flex px-md-3 py-md-2 px-lg-0 col-xl-3 col-lg-3 col-12 pt-sm-0 pt-2">
+                    <div class="d-inline-flex px-md-3 py-md-2 px-lg-0 col-xl-3 col-lg-5 col-12 pt-sm-0 pt-2">
                         {{-- <!-- Fecha fin--> --}}
                         <h6 id="h6-fin-1" class="col-md-4 col-3 py-2 m-0 pe-2">
                             <b>Fecha Fin:</b>

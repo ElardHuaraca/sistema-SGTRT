@@ -59,7 +59,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" id="content-mod">
                 <div class="modal-header bg-primary-custom">
-                    <h5 class="modal-title text-white modal-title-3" id="staticBackdropLabel">Añadir Nexus</h5>
+                    <h5 class="modal-title text-white text-center w-100" id="staticBackdropLabel">Editar Nexus</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
