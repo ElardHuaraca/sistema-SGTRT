@@ -1,3 +1,4 @@
+const { start } = require("@popperjs/core");
 const { Chart, registerables } = require("chart.js");
 const { result } = require("lodash");
 
@@ -97,19 +98,21 @@ $(function () {
 
     $('#input-buscar-hostname').on('keyup', function (e) {
         const text = $(this).val()
+        const date_start = $('input[name="date_start"]').val()
+        const date_end = $('input[name="date_end"]').val()
         $(this).searchData(text, (text, removeOnTextIsEmptyOrLoadComplete) => {
             $.ajax({
                 url: '/reports/filter/hostname/vmware',
                 type: 'GET',
                 data: {
                     'name': text,
-                    'date_start': $('input[name="date_start"]').val(),
-                    'date_end': $('input[name="date_end"]').val()
+                    'date_start': date_start,
+                    'date_end': date_end
                 }
             }).then(function (response) {
                 if (response.length === 0) return $('.odd td').html('No se encontraron registros')
                 removeOnTextIsEmptyOrLoadComplete('')
-                var data = formatResponse(response)
+                var data = formatResponse(response, date_start, date_end)
                 $.dataTableInit.rows.add(data).draw()
             }).catch(function (error) {
                 $('.odd td').html('No se encontraron registros')
@@ -121,8 +124,8 @@ $(function () {
 
     /* Filter by date */
     $('#btn-consult').on('click', function (e) {
-        start = $('input[name="date_start"]').val()
-        end = $('input[name="date_end"]').val()
+        const start = $('input[name="date_start"]').val()
+        const end = $('input[name="date_end"]').val()
 
         removeDangerClassOrAddDagerClass($('input[name="date_start"]'), true)
         removeDangerClassOrAddDagerClass($('input[name="date_end"]'), true)
@@ -160,7 +163,7 @@ $(function () {
             }).then(function (response) {
                 if (response.length === 0) return $('.odd td').html('No se encontraron registros')
                 removeOnTextIsEmptyOrLoadComplete('')
-                var data = formatResponse(response)
+                var data = formatResponse(response, start, end)
                 $.dataTableInit.rows.add(data).draw()
                 newData = $.dataTableInit.rows().data().toArray()
             }).catch(function (error) {
@@ -169,7 +172,7 @@ $(function () {
         })
     })
 
-    function formatResponse(response) {
+    function formatResponse(response, date_start, date_end) {
         return response.map(function (item, index) {
             resources = JSON.parse(item.resources);
             return {
@@ -183,7 +186,7 @@ $(function () {
                 7: (resources.HDD === undefined ? 0 : resources.HDD) + (resources.SSD === undefined ? 0 : resources.SSD),
                 8: item.service,
                 9: `<a class="btn btn-info" role="button"
-                        href="/reports/${item.idserver}/${start.replaceAll('/', '-')}/${end.replaceAll('/', '-')}">
+                        href="/reports/${item.idserver}/${date_start.replaceAll('/', '-')}/${date_end.replaceAll('/', '-')}">
                         <i class="fa-solid fa-chart-simple"></i>
                     </a>`
             };
