@@ -27,7 +27,7 @@ class HydrateDatabaseController extends Controller
 
             $connection = DatabaseConnectionHelper::setConnection($vcenter);
             $vms = $connection->select('SELECT
-                                            vpx_vm.id,vpx_non_orm_vm_config_info."name",vpx_vm.num_vcpu,
+                                            vpx_vm.id,vpx_vm.dns_name,vpx_non_orm_vm_config_info."name",vpx_vm.num_vcpu,
                                             vpx_vm.aggr_unshared_storage_space, vpx_vm.aggr_uncommited_storage_space,
                                             vpx_vm.power_state,vpx_non_orm_vm_config_info.hardware_memory AS memory_ram,
                                             vpx_non_orm_vm_config_info.annotation,vpx_datastore.name AS disk_name
@@ -38,36 +38,30 @@ class HydrateDatabaseController extends Controller
             foreach ($vms as $vm) {
                 $server = Server::where('name', strtoupper($vm->name))->first();
 
+                $dns_name = $vm->name;
+
+                if ($vm->dns_name != null && $vm->dns_name != 'None') $dns_name = $vm->dns_name;
+
                 if (!$server) {
-                    $project = $vm->annotation;
 
-                    $explode_project = sizeof(explode('-', $project)) === 0 ? explode('_', $project) : explode('-', $project);
-                    $explode_project[0] = trim($explode_project[0]);
-
-                    $service = null;
-                    $project = null;
-
-                    if (count($explode_project) !== 3 ||  !is_numeric($explode_project[0]) || strlen($explode_project[0]) !== 6) {
-                        $project = $project_generic;
-                        $service = 'BRONCE';
-                    } else {
-                        $explode_project[1] = trim($explode_project[1]);
-                        $explode_project[2] = strtoupper(trim($explode_project[2]));
-
-                        $project = Project::find($explode_project[0]);
-
-                        if (!$project) $project = HydrateDatabaseController::registerProject($explode_project[0], $explode_project[2]);
-
-                        $service = $explode_project[1];
-                    }
+                    [$service, $project] = HydrateDatabaseController::getService($vm->annotation, $project_generic);
 
                     $server = new Server();
                     $server->name = strtoupper($vm->name);
                     $server->active = strtoupper($project->idproject . $vm->name);
                     $server->machine_name = strtoupper($vm->name);
-                    $server->hostname = strtoupper($vm->name);
+                    $server->hostname = strtoupper($dns_name);
                     $server->service = $service;
                     $server->idproject = $project->idproject;
+                    $server->save();
+                } else {
+
+                    [$service, $project] = HydrateDatabaseController::getService($vm->annotation, $project_generic);
+
+                    $server->name = strtoupper($vm->name);
+                    $server->active = strtoupper($server->idproject . $vm->name);
+                    $server->hostname = strtoupper($dns_name);
+                    $server->service = $service;
                     $server->save();
                 }
 
@@ -142,6 +136,31 @@ class HydrateDatabaseController extends Controller
         /* get path from databases.json */
         $path = Storage::disk('json')->get('databases.json');
         return json_decode($path);
+    }
+
+    private function getService($project, $project_generic)
+    {
+        $explode_project = sizeof(explode('-', $project)) === 0 ? explode('_', $project) : explode('-', $project);
+        $explode_project[0] = trim($explode_project[0]);
+
+        $service = null;
+        $project = null;
+
+        if (count($explode_project) !== 3 ||  !is_numeric($explode_project[0]) || strlen($explode_project[0]) !== 6) {
+            $project = $project_generic;
+            $service = 'BRONCE';
+        } else {
+            $explode_project[1] = trim($explode_project[1]);
+            $explode_project[2] = strtoupper(trim($explode_project[2]));
+
+            $project = Project::find($explode_project[0]);
+
+            if (!$project) $project = HydrateDatabaseController::registerProject($explode_project[0], $explode_project[2]);
+
+            $service = $explode_project[1];
+        }
+
+        return [$service, $project];
     }
 
     private static function registerProject($alp, $name)
