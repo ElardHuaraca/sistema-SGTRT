@@ -114,8 +114,6 @@ class ReportController extends Controller
         $date_start_ = str_replace('-', '/', $date_start);
         $date_end_ = str_replace('-', '/', $date_end);
 
-        /* return [$date_start_, $date_end_, $id_project]; */
-
         [$servers, $sows, $spla_assigned_discounts, $cost_maintenance] = $this->getServersAndSowsForCalculateCosts($date_start_, $date_end_, $id_project);
         [$filters, $resources] = $this->get_servers_and_resources_filters($servers);
         $costs = $idproject == 'na' ?
@@ -125,8 +123,8 @@ class ReportController extends Controller
         $exchange_rate = ExchangeRates::all()->first();
 
         return $idproject == 'na' ?
-            Excel::download(new ITTariffExport($costs, $exchange_rate), 'tarifario1.xlsx') :
-            Excel::download(new ITTariffByProjectExport($costs, $exchange_rate), 'tarifario2.xlsx');
+            Excel::download(new ITTariffExport($costs, $exchange_rate), 'tarifario_generado_' . Carbon::now()->format('d_m_Y') . '_.xlsx') :
+            Excel::download(new ITTariffByProjectExport($costs, $exchange_rate), 'tarifario_generado_' . Carbon::now()->format('d_m_Y') . '_.xlsx');
     }
 
     public function resource_consumption_grafic($id, $date_start, $date_end)
