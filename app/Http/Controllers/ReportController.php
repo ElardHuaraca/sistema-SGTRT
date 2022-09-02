@@ -205,12 +205,13 @@ class ReportController extends Controller
         $licenses = SplaLicense::select('idspla', 'name', 'type')->where('is_deleted', '=', false)->orderBy('type', 'asc')->get();
         $sows = Sow::select('idsow', 'name', 'version', 'type')->where('is_deleted', '=', false)->get();
 
-        $resources = $resources = Server::selectRaw('servers.idserver,jsonb_object_agg(resources_history.name,resources_history.amount) as resources')
-            ->join('resources_history', function ($join) {
-                $join->on('resources_history.idserver', '=', 'servers.idserver');
-                $join->orderBy('resources_history.date', 'desc');
-                $join->limit(4);
-            })->groupBy('servers.idserver')->get();
+        $resources = Server::selectRaw('
+                servers.idserver, resources_history.date,
+                jsonb_object_agg(resources_history.name,resources_history.amount) as resources
+        ')->join('resources_history', function ($join) {
+            $join->on('resources_history.idserver', '=', 'servers.idserver');
+        })->groupBy(['servers.idserver', 'resources_history.date'])
+            ->orderBy('resources_history.date', 'asc')->get()->unique();
 
         $assign_services = AssignService::select('assign_services.idserver', 'is_backup', 'is_additional', 'is_additional_spla', 'is_windows_license', 'is_antivirus', 'is_linux_license')
             ->join('servers', function ($join) {
