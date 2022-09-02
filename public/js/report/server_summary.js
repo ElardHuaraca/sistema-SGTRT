@@ -46,7 +46,9 @@ $(function () {
     $('#hostname').text(server.hostname);
     $('#cpu').text(resource.CPU === undefined ? 0 : resource.CPU);
     $('#ram').text(resource.RAM === undefined ? 0 : resource.RAM);
-    var disk = resource.HDD === undefined ? 0 : resource.HDD + resource.SSD === undefined ? 0 : resource.SSD;
+    console.log(resource.SSD);
+    console.log(resource.HDD);
+    var disk = (resource.HDD === undefined ? 0 : resource.HDD) + (resource.SSD === undefined ? 0 : resource.SSD);
     $('#disk').text(isNaN(disk) ? 0 : disk);
     $('#service').text(server.service);
     /* detect if have sow */
