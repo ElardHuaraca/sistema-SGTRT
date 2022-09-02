@@ -138,7 +138,7 @@ class HydrateDatabaseController extends Controller
         return json_decode($path);
     }
 
-    private function getService($project, $project_generic)
+    private static function getService($project, $project_generic)
     {
         $explode_project = sizeof(explode('-', $project)) === 0 ? explode('_', $project) : explode('-', $project);
         $explode_project[0] = trim($explode_project[0]);
