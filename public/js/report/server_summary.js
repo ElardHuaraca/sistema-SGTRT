@@ -33,6 +33,7 @@ $(function () {
     var resource = resources.filter(function (x) {
       return x.idserver == server.idserver;
     })[0];
+    console.log(resource);
 
     if (resource === undefined) {
       resource = {
@@ -40,6 +41,7 @@ $(function () {
       };
     }
 
+    console.log(resource);
     resource = JSON.parse(resource.resources);
     $('#server_title').text(server.server_name);
     $('#machine_name').text(server.machine_name);

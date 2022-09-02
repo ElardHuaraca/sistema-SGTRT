@@ -29,7 +29,9 @@ $(function () {
         }
 
         var resource = resources.filter(x => x.idserver == server.idserver)[0]
+        console.log(resource)
         if (resource === undefined) { resource = { resources: '{ "HDD": 0, "SSD": 0, "RAM": 0, "CPU": 0 }' } }
+        console.log(resource)
         resource = JSON.parse(resource.resources)
 
         $('#server_title').text(server.server_name);
