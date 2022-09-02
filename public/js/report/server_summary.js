@@ -33,7 +33,6 @@ $(function () {
     var resource = resources.filter(function (x) {
       return x.idserver == server.idserver;
     })[0];
-    console.log(resource);
 
     if (resource === undefined) {
       resource = {
@@ -41,14 +40,13 @@ $(function () {
       };
     }
 
-    console.log(resource);
     resource = JSON.parse(resource.resources);
     $('#server_title').text(server.server_name);
     $('#machine_name').text(server.machine_name);
     $('#hostname').text(server.hostname);
     $('#cpu').text(resource.CPU === undefined ? 0 : resource.CPU);
     $('#ram').text(resource.RAM === undefined ? 0 : resource.RAM);
-    var disk = resource.HDD + resource.SSD;
+    var disk = resource.HDD === undefined ? 0 : resource.HDD + resource.SSD === undefined ? 0 : resource.SSD;
     $('#disk').text(isNaN(disk) ? 0 : disk);
     $('#service').text(server.service);
     /* detect if have sow */
