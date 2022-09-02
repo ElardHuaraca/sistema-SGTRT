@@ -46,7 +46,11 @@ class TaskCollectDataFromDatabase extends Command
         try {
             HydrateDatabaseController::hydrateDatabase($diskFile);
         } catch (QueryException $th) {
-            $this->error('Ocurred error ' . $th);
+            $this->error('Ocurred error ' . PHP_EOL . $th);
+
+            /* save resource history to 0 for all servers active*/
+            HydrateDatabaseController::hydrateWithException();
+
             return -1;
         }
         /* Print into log file end task*/

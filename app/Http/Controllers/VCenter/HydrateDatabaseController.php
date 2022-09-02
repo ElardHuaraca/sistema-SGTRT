@@ -138,6 +138,33 @@ class HydrateDatabaseController extends Controller
         return json_decode($path);
     }
 
+    public static function hydrateWithException()
+    {
+        $servers = Server::where('is_deleted', false)->get();
+        foreach ($servers as $server) {
+            $resource_comsuption_ram = new ResourceHistory();
+            $resource_comsuption_ram->idserver = $server->idserver;
+            $resource_comsuption_ram->name = 'RAM';
+            $resource_comsuption_ram->amount = 0;
+            $resource_comsuption_ram->date = Carbon::now();
+            $resource_comsuption_ram->save();
+
+            $resource_comsuption_vcpu = new ResourceHistory();
+            $resource_comsuption_vcpu->idserver = $server->idserver;
+            $resource_comsuption_vcpu->name = 'CPU';
+            $resource_comsuption_vcpu->amount = 0;
+            $resource_comsuption_vcpu->date = Carbon::now();
+            $resource_comsuption_vcpu->save();
+
+            $resource_comsuption_disk = new ResourceHistory();
+            $resource_comsuption_disk->idserver = $server->idserver;
+            $resource_comsuption_disk->name = 'HDD';
+            $resource_comsuption_disk->amount = 0;
+            $resource_comsuption_disk->date = Carbon::now();
+            $resource_comsuption_disk->save();
+        }
+    }
+
     private static function getService($project, $project_generic)
     {
         $explode_project = sizeof(explode('-', $project)) === 0 ? explode('_', $project) : explode('-', $project);
