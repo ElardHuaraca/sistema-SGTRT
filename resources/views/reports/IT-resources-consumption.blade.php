@@ -26,7 +26,8 @@
                         {{-- <!-- Buscador Hostname --> --}}
                         <h6 id="h6-buscador-hostname" class="py-2 m-0 pe-2">Hostname/VMware:</h6>
                         <input id="input-buscar-hostname" class="form-control form-control-sm ml-5 w-30 rounded-pill"
-                            type="text" placeholder="  Buscar por VMware" aria-label="Search" autocomplete="off">
+                            type="text" placeholder="  Buscar por VMware" aria-label="Search" autocomplete="off"
+                            value="{{ isset($name) ? $name : '' }}">
                     </div>
                 </div>
                 <div
@@ -38,7 +39,8 @@
                         </h6>
                         <input type="text" class="form-control" placeholder="Seleccione una fecha"
                             onkeydown="return false" aria-label="Seleccione una fecha" aria-describedby="basic-addon1"
-                            name="date_start" id="date_start_resources" autocomplete="off">
+                            name="date_start" id="date_start_resources" autocomplete="off"
+                            value="{{ isset($date_start) ? $date_start : '' }}">
                     </div>
                     <div class="d-inline-flex px-md-3 py-md-2 px-lg-0 col-xl-4 col-lg-4 col-12 pt-sm-0 pt-2">
                         {{-- <!-- Fecha fin--> --}}
@@ -47,7 +49,8 @@
                         </h6>
                         <input type="text" class="form-control" placeholder="Seleccione una fecha"
                             onkeydown="return false" aria-label="Seleccione una fecha" aria-describedby="basic-addon1"
-                            name="date_end" id="date_end_resources" autocomplete="off">
+                            name="date_end" id="date_end_resources" autocomplete="off"
+                            value="{{ isset($date_end) ? $date_end : '' }}"">
                     </div>
                     <div class="px-md-3 px-lg-0 col-xl-1 col-lg-2 col-12 pt-sm-0 pt-2 text-center">
                         <button class="btn btn-primary" id="btn-consult">Consultar</button>
@@ -70,28 +73,30 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($servers as $server)
-                                <tr>
-                                    <th scope="row">{{ $loop->index + 1 }}</th>
-                                    <td>{{ $server->active }}</td>
-                                    <td>{{ $server->idproject }}</td>
-                                    <td>{{ $server->project_name }}</td>
-                                    <td>{{ $server->name }}</td>
-                                    <?php $resources = json_decode($server->resources); ?>
-                                    <td>{{ isset($resources->CPU) ? $resources->CPU : 0 }}</td>
-                                    <td>{{ isset($resources->RAM) ? $resources->RAM : 0 }}</td>
-                                    <?php $SSD = isset($resources->SSD) ? $resources->SSD : 0;
-                                    $HDD = isset($resources->HDD) ? $resources->HDD : 0; ?>
-                                    <td>{{ $SSD + $HDD }}</td>
-                                    <td>{{ $server->service }}</td>
-                                    <td>
-                                        <a class="btn btn-info" role="button"
-                                            href="{{ route('reports.grafic', [$server->idserver, 'na', 'na']) }}">
-                                            <i class="fa-solid fa-chart-simple"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
+                            @if (isset($servers))
+                                @foreach ($servers as $server)
+                                    <tr>
+                                        <th scope="row">{{ $loop->index + 1 }}</th>
+                                        <td>{{ $server->active }}</td>
+                                        <td>{{ $server->idproject }}</td>
+                                        <td>{{ $server->project_name }}</td>
+                                        <td>{{ $server->name }}</td>
+                                        <?php $resources = json_decode($server->resources); ?>
+                                        <td>{{ isset($resources->CPU) ? $resources->CPU : 0 }}</td>
+                                        <td>{{ isset($resources->RAM) ? $resources->RAM : 0 }}</td>
+                                        <?php $SSD = isset($resources->SSD) ? $resources->SSD : 0;
+                                        $HDD = isset($resources->HDD) ? $resources->HDD : 0; ?>
+                                        <td>{{ $SSD + $HDD }}</td>
+                                        <td>{{ $server->service }}</td>
+                                        <td>
+                                            <a class="btn btn-info" role="button"
+                                                href="{{ route('reports.grafic', [$server->idserver, isset($date_start) ? str_replace('/', '-', $date_start) : 'na', isset($date_end) ? str_replace('/', '-', $date_end) : 'na']) }}">
+                                                <i class="fa-solid fa-chart-simple"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                         {{-- <div class="w-100 d-flex justify-content-center d-none" id="spin_load">
                             <div class="spinner"></div>

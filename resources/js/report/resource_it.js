@@ -1,6 +1,6 @@
 const { start } = require("@popperjs/core");
 const { Chart, registerables } = require("chart.js");
-const { result } = require("lodash");
+const { result, pullAt } = require("lodash");
 
 var timeout = null;
 let oldData = null;
@@ -98,6 +98,7 @@ $(function () {
 
     $('#input-buscar-hostname').on('keyup', function (e) {
         const text = $(this).val()
+
         const date_start = $('input[name="date_start"]').val()
         const date_end = $('input[name="date_end"]').val()
         $(this).searchData(text, (text, removeOnTextIsEmptyOrLoadComplete) => {
@@ -131,8 +132,21 @@ $(function () {
         removeDangerClassOrAddDagerClass($('input[name="date_end"]'), true)
 
         if (start === '' && end === '') {
-            newData = oldData.toArray()
-            $(this).searchData('', () => { })
+            $(this).searchData('GET', (text, removeOnTextIsEmptyOrLoadComplete) => {
+                $.ajax({
+                    url: '/reports/filter/btween/dates',
+                    type: 'GET',
+                }).then(function (response) {
+                    if (response.length === 0) return $('.odd td').html('No se encontraron registros')
+                    removeOnTextIsEmptyOrLoadComplete('')
+                    var data = formatResponse(response, 'na', 'na')
+                    $.dataTableInit.rows.add(data).draw()
+                    $.oldData = $.dataTableInit.rows().data()
+                    newData = $.dataTableInit.rows().data().toArray()
+                }).catch(function (error) {
+                    console.log(error)
+                })
+            })
             return
         }
 

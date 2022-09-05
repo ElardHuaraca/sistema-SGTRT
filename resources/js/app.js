@@ -202,7 +202,7 @@ $(function () {
     }
 
     /* Only firs on load data */
-    oldData = $.dataTableInit.rows().data()
+    $.oldData = $.dataTableInit.rows().data()
 
     /* function on search */
     $.fn.searchData = function loadDataOnDataTable(text, _function) {
@@ -217,7 +217,7 @@ $(function () {
 
             } else {
                 $.dataTableInit.clear().draw()
-                $.dataTableInit.rows.add(oldData).draw()
+                $.dataTableInit.rows.add($.oldData).draw()
             }
 
             clearTimeout(timeout)

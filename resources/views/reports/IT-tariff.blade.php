@@ -19,7 +19,7 @@
                         </h6>
                         <input type="text" class="form-control" placeholder="Seleccione una fecha"
                             onkeydown="return false" aria-label="Seleccione una fecha" aria-describedby="basic-addon1"
-                            name="date_start" id="date_start_resources" autocomplete="off">
+                            name="date_start" id="date_start_resources" autocomplete="off" value="{{ $date_start }}">
                     </div>
                     <div class="d-inline-flex px-md-3 py-md-2 px-lg-0 col-xl-3 col-lg-5 col-12 pt-sm-0 pt-2">
                         {{-- <!-- Fecha fin--> --}}
@@ -28,7 +28,7 @@
                         </h6>
                         <input type="text" class="form-control" placeholder="Seleccione una fecha"
                             onkeydown="return false" aria-label="Seleccione una fecha" aria-describedby="basic-addon1"
-                            name="date_end" id="date_end_resources" autocomplete="off">
+                            name="date_end" id="date_end_resources" autocomplete="off" value="{{ $date_end }}">
                     </div>
                 </div>
 
@@ -73,7 +73,7 @@
                                     <td>S/. {{ number_format($cost->cost_total * $exchangeRates_footer->value, 2) }}</td>
                                     <td>
                                         <a class="btn btn-success"
-                                            href="{{ route('reports.it_tariff_servers', [$cost->idproject, 'na', 'na']) }}"
+                                            href="{{ route('reports.it_tariff_servers', [$cost->idproject, str_replace('/', '-', $date_start), str_replace('/', '-', $date_end)]) }}"
                                             role="button">
                                             Ver Detalle
                                         </a>

@@ -14,16 +14,26 @@ use App\Models\SplaAssignedDiscount;
 use App\Models\SplaLicense;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
-use Psy\Readline\Hoa\Console;
-use Symfony\Component\HttpKernel\Log\Logger;
-use Symfony\Polyfill\Intl\Idn\Info;
 
 class ReportController extends Controller
 {
     public function resource_consumption()
     {
+        /* get url previous accest this */
+        $url = url()->previous();
+        $split_url = explode('/', $url);
+
+        [$servers, $date_start, $date_end, $name_vm_or_hm] = $this->getCacheSavedOrSaveCacheOrDeleteCache(['servers', 'date_start', 'date_end', 'name_vm_or_hm'], [], '');
+
+        $this->getCacheSavedOrSaveCacheOrDeleteCache([], ['servers', 'date_start', 'date_end', 'name_vm_or_hm'], [], 'DELETE');
+
+        if (sizeof($split_url) === 7 && $split_url[3] === 'reports' && isset($servers)) {
+            return view('reports.IT-resources-consumption', ['servers' => $servers, 'date_start' => $date_start, 'date_end' => $date_end, 'name' => $name_vm_or_hm]);
+        }
+
         $servers = Server::selectRaw(
             'servers.idserver, servers.name,
             servers.active, servers.idproject,
@@ -33,14 +43,13 @@ class ReportController extends Controller
             $join->on('projects.idproject', '=', 'servers.idproject');
         })->join('resources_history', function ($join) {
             $join->on('resources_history.idserver', '=', 'servers.idserver');
-            $join->limit(4);
         })->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service', 'resources_history.date'])
             ->orderBy('resources_history.date', 'asc')->get()->unique();
 
         return view('reports.IT-resources-consumption', ['servers' => $servers]);
     }
 
-    public function resource_consumption_for_project_name(Request $request)
+    /* public function resource_consumption_for_project_name(Request $request)
     {
         $servers = Server::selectRaw(
             'servers.idserver, servers.name,
@@ -52,12 +61,23 @@ class ReportController extends Controller
         })->join('resources_history', function ($join) {
             $join->on('resources_history.idserver', '=', 'servers.idserver');
             $join->limit(4);
-        })->where('projects.name', 'like', '%' . strtoupper($request->name) . '%')
-            ->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service', 'resources_history.date'])
+        })->where('projects.name', 'like', '%' . strtoupper($request->name) . '%');
+
+        if ($request->date_start != '' && $request->date_end != '') {
+            $servers->whereBetween('resources_history.date', [$request->date_start, $request->date_end]);
+        }
+        $servers = $servers->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service', 'resources_history.date'])
             ->orderBy('resources_history.date', 'asc')->get()->unique();
 
+        $this->getCacheSavedOrSaveCache(['servers', 'date_start', 'date_end', 'name_project'], [$servers, $request->date_start, $request->date_end, $request->name, $request->name], 'save');
+
+        Cache::put('servers', $servers, 60 * 60);
+        Cache::put('date_start', $request->date_start, 60 * 60);
+        Cache::put('date_end', $request->date_end, 60 * 60);
+        Cache::put('name_project', $request->name, 60 * 60);
+
         return response()->json($servers);
-    }
+    } */
 
     public function resource_consumption_for_hostname_or_vmware(Request $request)
     {
@@ -70,7 +90,6 @@ class ReportController extends Controller
             $join->on('projects.idproject', '=', 'servers.idproject');
         })->join('resources_history', function ($join) {
             $join->on('resources_history.idserver', '=', 'servers.idserver');
-            $join->limit(4);
         })->where('servers.hostname', 'like', '%' . strtoupper($request->name) . '%')
             ->orWhere('servers.machine_name', 'like', '%' . strtoupper($request->name) . '%');
 
@@ -79,6 +98,8 @@ class ReportController extends Controller
         }
         $servers = $servers->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service', 'resources_history.date'])
             ->orderBy('resources_history.date', 'asc')->get()->unique();
+
+        $this->getCacheSavedOrSaveCacheOrDeleteCache(['servers', 'date_start', 'date_end', 'name_vm_or_hm'], [$servers, $request->date_start, $request->date_end, $request->name], 'SAVE');
 
         return response()->json($servers);
     }
@@ -94,10 +115,16 @@ class ReportController extends Controller
             $join->on('projects.idproject', '=', 'servers.idproject');
         })->join('resources_history', function ($join) {
             $join->on('resources_history.idserver', '=', 'servers.idserver');
-            $join->limit(4);
-        })->whereBetween('resources_history.date', [$request->date_start, $request->date_end])
-            ->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service', 'resources_history.date'])
+        });
+
+        if (isset($request->date_start) && isset($request->date_end)) {
+            $servers = $servers->whereBetween('resources_history.date', [$request->date_start, $request->date_end]);
+        }
+
+        $servers = $servers->groupBy(['servers.idserver', 'servers.name', 'servers.active', 'servers.idproject', 'project_name', 'service', 'resources_history.date'])
             ->orderBy('resources_history.date', 'asc')->get()->unique();
+
+        $this->getCacheSavedOrSaveCacheOrDeleteCache(['servers', 'date_start', 'date_end'], [$servers, $request->date_start, $request->date_end], 'SAVE');
 
         return response()->json($servers);
     }
@@ -139,7 +166,6 @@ class ReportController extends Controller
             servers.name, resources_history.name as resource_name ,resources_history.amount,resources_history.date
         ')->join('resources_history', function ($join) use ($date_start, $date_end) {
             $join->on('resources_history.idserver', '=', 'servers.idserver');
-            $join->orderBy('resources_history.date', 'desc');
             $join->whereBetween('resources_history.date', [$date_start, $date_end]);
         })->where('servers.idserver', $id)->get();
 
@@ -148,7 +174,8 @@ class ReportController extends Controller
                servers.name, resources_history.name as resource_name ,resources_history.amount,resources_history.date
            ')->join('resources_history', function ($join) {
                 $join->on('resources_history.idserver', '=', 'servers.idserver');
-            })->where('servers.idserver', $id)->get();
+            })->where('servers.idserver', $id)
+                ->orderBy('resources_history.date', 'desc')->limit(32)->get();
         }
 
         return view('reports.grafics', ['server' => $server, 'name' => $server[0]->name, 'date_start' => $date_start, 'date_end' => $date_end, 'idserver' => $id]);
@@ -156,6 +183,18 @@ class ReportController extends Controller
 
     public function resource_consumption_it_tariff()
     {
+
+        /* get url previous accest this */
+        $url = url()->previous();
+        $split_url = explode('/', $url);
+
+        [$costs, $date_start, $date_end] = $this->getCacheSavedOrSaveCacheOrDeleteCache(['costs', 'date_start', 'date_end'], [], 'GET');
+
+        $this->getCacheSavedOrSaveCacheOrDeleteCache(['costs', 'date_start', 'date_end'], [], 'DELETE');
+
+        if (sizeof($split_url) === 10 && $split_url[5] === 'tariff' && $split_url[6] === 'project' && isset($costs)) {
+            return view('reports.IT-tariff', ['costs' => $costs, 'date_start' => $date_start, 'date_end' => $date_end]);
+        }
 
         [$date_start, $date_end] = $this->getDatesCalculed();
 
@@ -170,12 +209,16 @@ class ReportController extends Controller
     public function resource_consumption_it_tariff_by_project($id, $date_start, $date_end)
     {
         if ($date_start === 'na' && $date_end === 'na') [$date_start, $date_end] = $this->getDatesCalculed();
+        else [$date_start, $date_end] = [str_replace('-', '/', $date_start), str_replace('-', '/', $date_end)];
 
         $project = Project::find($id);
 
         [$servers, $sows, $spla_assigned_discounts] = $this->getServersAndSowsForCalculateCosts($date_start, $date_end, $id);
         [$filters, $resources] = $this->get_servers_and_resources_filters($servers);
         $costs = $this->getCostsByServer($filters, $resources, $sows, $spla_assigned_discounts, null, null);
+
+        $request = new Request(['date_start' => $date_start, 'date_end' => $date_end]);
+        $this->resource_consumption_it_tariff_btween_dates($request);
 
         return view('reports.IT-tariff-server', ['costs' => $costs, 'project_name' => $project->name, 'date_start' => $date_start, 'date_end' => $date_end, 'idproject' => $id]);
     }
@@ -186,6 +229,8 @@ class ReportController extends Controller
         [$servers, $sows, $spla_assigned_discounts, $cost_maintenance] = $this->getServersAndSowsForCalculateCosts($request->date_start, $request->date_end, null);
         [$filters, $resources] = $this->get_servers_and_resources_filters($servers);
         $costs = $this->getCostsByProject($filters, $resources, $sows, $spla_assigned_discounts, $cost_maintenance, $request->date_start, $request->date_end);
+
+        $this->getCacheSavedOrSaveCacheOrDeleteCache(['costs', 'date_start', 'date_end'], [$costs, $request->date_start, $request->date_end], 'SAVE');
 
         return response()->json($costs);
     }
@@ -620,5 +665,24 @@ class ReportController extends Controller
             $date_end = date('15/m/Y', strtotime(date('Y-m-15') . '+1 month'));
         }
         return [$date_start, $date_end];
+    }
+
+    private function getCacheSavedOrSaveCacheOrDeleteCache($keys, $values, $type)
+    {
+        if ($type === 'SAVE') {
+            foreach ($keys as $i => $key) {
+                Cache::put($key, $values[$i], 60);
+            }
+        } else if ($type === 'DELETE') {
+            foreach ($keys as $key) {
+                Cache::forget($key);
+            }
+        } else {
+            $caches = [];
+            foreach ($keys as $key) {
+                array_push($caches, Cache::get($key));
+            }
+            return $caches;
+        }
     }
 }

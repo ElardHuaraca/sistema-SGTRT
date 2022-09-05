@@ -12,6 +12,9 @@
             <div class="box" id="box-consumo">
                 <div
                     class="d-flex flex-sm-row flex-column justify-content-lg-evenly align-items-center flex-md-wrap justify-content-md-evenly py-3 px-2 border-top border-secondary col-xl-12">
+                    <div class="d-inline-flex  px-lg-1 col-lg-2 col-md-3 col-3">
+                        <a class="btn btn-secondary" role="button" href="{{ url()->previous() }}">Volver</a>
+                    </div>
                     <div class="d-inline-flex  px-md-3 py-md-2 px-lg-0 col-xl-3 col-lg-3 col-12 pt-sm-0 pt-2">
                         {{-- <!-- Fecha inicio--> --}}
                         <h6 id="h6-1" class="col-md-4 col-3 py-2 m-0 pe-2">

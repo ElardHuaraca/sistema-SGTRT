@@ -34099,7 +34099,8 @@ var _require2 = __webpack_require__(/*! chart.js */ "./node_modules/chart.js/dis
     registerables = _require2.registerables;
 
 var _require3 = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js"),
-    result = _require3.result;
+    result = _require3.result,
+    pullAt = _require3.pullAt;
 
 var timeout = null;
 var oldData = null;
@@ -34264,8 +34265,21 @@ $(function () {
     removeDangerClassOrAddDagerClass($('input[name="date_end"]'), true);
 
     if (start === '' && end === '') {
-      newData = oldData.toArray();
-      $(this).searchData('', function () {});
+      $(this).searchData('GET', function (text, removeOnTextIsEmptyOrLoadComplete) {
+        $.ajax({
+          url: '/reports/filter/btween/dates',
+          type: 'GET'
+        }).then(function (response) {
+          if (response.length === 0) return $('.odd td').html('No se encontraron registros');
+          removeOnTextIsEmptyOrLoadComplete('');
+          var data = formatResponse(response, 'na', 'na');
+          $.dataTableInit.rows.add(data).draw();
+          $.oldData = $.dataTableInit.rows().data();
+          newData = $.dataTableInit.rows().data().toArray();
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      });
       return;
     }
 
