@@ -147,6 +147,26 @@ $(function () {
         })
     })
 
+    /* Consult cost by month */
+    $('#btn-consult-date').on('click', function () {
+        const date = $('#date_selected').val()
+
+        $(this).searchData('GET', (text, removeOnTextIsEmptyOrLoadComplete) => {
+            $.ajax({
+                type: 'GET',
+                url: '/maintenance/costs/filter/' + (date === '' ? 'na' : date.replaceAll('/', '-')),
+            }).then(function (response) {
+                if (response.length === 0) return $('.odd td').html('No se encontraron registros')
+                removeOnTextIsEmptyOrLoadComplete('')
+                const data = formatResponse(response)
+                $.dataTableInit.rows.add(data).draw()
+            }).catch(function (error) {
+                $('.odd td').html('No se encontraron registros')
+                console.log(error)
+            })
+        })
+    })
+
 })
 
 function addDivWithRecomendations(codigo_alp, index) {
@@ -374,4 +394,35 @@ function enableInputs(inputs) {
     inputs.forEach(function (input) {
         $('input[name="' + input + '"]').attr('disabled', false)
     })
+}
+
+function formatResponse(response) {
+    return response.map((item, index) => {
+        return {
+            0: index + 1,
+            1: item.idproject,
+            2: item.name,
+            3: item.costfourwall === null ?
+                `<a href="/maintenance/costs/fourwall/${item.idproject}">0.00</a>` :
+                `<a href="/maintenance/costs/fourwall/${item.idproject}">$ ${getNumber(item.costfourwalls)}</a>`,
+            4: item.costnexus === null ?
+                `<a href="/maintenance/costs/nexus/${item.idproject}">0.00</a>` :
+                `<a href="/maintenance/costs/nexus/${item.idproject}">$ ${getNumber(item.costnexus)}</a>`,
+            5: item.costhp === null ?
+                `<a href="/maintenance/costs/hps/${item.idproject}">0.00</a>` :
+                `<a href="/maintenance/costs/hps/${item.idproject}">$ ${getNumber(item.costhp)}</a>`,
+            6: `$ ${getNumber(JSON.parse(item.costfourwalls === null ? 0.00 : item.costfourwalls) +
+                JSON.parse(item.costnexus === null ? 0.00 : item.costnexus) +
+                JSON.parse(item.costhp === null ? 0.00 : item.costhp))
+                }`,
+            7: `S/. ${getNumber((JSON.parse(item.costfourwalls === null ? 0.00 : item.costfourwalls) +
+                JSON.parse(item.costnexus === null ? 0.00 : item.costnexus) +
+                JSON.parse(item.costhp === null ? 0.00 : item.costhp)) * tchange)}`
+        }
+    })
+}
+
+/* get number two values */
+function getNumber(number) {
+    return Number(number).toFixed(2)
 }

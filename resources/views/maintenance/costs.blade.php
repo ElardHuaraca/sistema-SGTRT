@@ -34,7 +34,7 @@
                     <div class="d-flex align-items-center col-auto">
                         {{-- getTime now --}}
                         <input class="form-control me-3 text-indent-1 px-3" type="text" id="date_selected"
-                            placeholder="Seleccione una Fecha" onkeydown="return false">
+                            placeholder="Seleccione una Fecha" onkeydown="return false" value="{{ $date_start }}">
                         <button class="btn btn-success col-4" type="button" id="btn-consult-date">Consultar</button>
                     </div>
 
@@ -62,25 +62,25 @@
                                     <td>
                                         <a href="{{ route('fourwall.details', $project->idproject) }}">
                                             $
-                                            {{ $project->costofourwalls == 0 ? number_format(0, 2) : number_format($project->costofourwalls, 2) }}
+                                            {{ $project->costfourwalls == 0 ? number_format(0, 2) : number_format($project->costfourwalls, 2) }}
                                         </a>
                                     </td>
                                     <td>
                                         <a href="{{ route('nexus.details', $project->idproject) }}">
                                             $
-                                            {{ $project->costonexus == 0 ? number_format(0, 2) : number_format($project->costonexus, 2) }}
+                                            {{ $project->costnexus == 0 ? number_format(0, 2) : number_format($project->costnexus, 2) }}
                                         </a>
                                     </td>
                                     <td>
                                         <a href="{{ route('hp.details', $project->idproject) }}">
                                             $
-                                            {{ $project->costohp == 0 ? number_format(0, 2) : number_format($project->costohp, 2) }}
+                                            {{ $project->costhp == 0 ? number_format(0, 2) : number_format($project->costhp, 2) }}
                                         </a>
                                     </td>
                                     <td>$
-                                        {{ number_format($project->costofourwalls + $project->costonexus + $project->costohp, 2) }}
+                                        {{ number_format($project->costfourwalls + $project->costnexus + $project->costhp, 2) }}
                                     </td>
-                                    <?php $sum = $project->costofourwalls + $project->costonexus + $project->costohp; ?>
+                                    <?php $sum = $project->costfourwalls + $project->costnexus + $project->costhp; ?>
                                     <td> S/.
                                         {{ $sum == 0 ? number_format(0, 2) : number_format($sum * $exchangeRates_footer->value, 2) }}
                                     </td>
@@ -195,6 +195,7 @@
 <script>
     var projects = @json($projects);
     var tchange = @json($exchangeRates_footer->value);
+    const exchange = {{ number_format($exchangeRates_footer->value, 2) }}
 </script>
 @push('scripts')
     <script src="{{ asset('js/maintenance/cost.js') }}"></script>

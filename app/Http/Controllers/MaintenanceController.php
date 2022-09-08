@@ -147,15 +147,64 @@ class MaintenanceController extends Controller
 	    FROM proyecto AS p; transform to eloquent laravel  */
     public function maintenance_cost()
     {
-        $projects = Project::select(
-            'projects.idproject',
-            'projects.name',
-            \DB::raw('(SELECT SUM(fourwalls.cost) FROM fourwalls WHERE projects.idproject = fourwalls.idproject AND fourwalls.is_deleted = false) AS costoFourwalls'),
-            \DB::raw('(SELECT SUM(nexus.cost) FROM nexus WHERE projects.idproject = nexus.idproject AND nexus.is_deleted = false) AS costoNexus'),
-            \DB::raw('(SELECT SUM(hps.cost) FROM hps WHERE projects.idproject = hps.idproject AND hps.is_deleted = false) AS costoHp')
-        )->get();
+        [$date_start, $date_end] = ReportController::getDatesCalculed();
 
-        return view('maintenance.costs', ['projects' => $projects]);
+        [$date_start, $date_end] = [Carbon::createFromFormat('d/m/Y', $date_start)->format('01/m/Y'), Carbon::createFromFormat('d/m/Y', $date_start)->format('t/m/Y')];
+
+        $projects = Project::selectRaw('
+            projects.idproject,
+            projects.name,
+            SUM(fourwalls.cost) AS costFourwalls,
+            SUM(nexus.cost) AS costNexus,
+            SUM(hps.cost) AS costHp
+        ')->leftJoin('fourwalls', function ($join) use ($date_start, $date_end) {
+            $join->on('projects.idproject', '=', 'fourwalls.idproject');
+            $join->whereBetween('fourwalls.created_at', [$date_start, $date_end]);
+            $join->where('fourwalls.is_deleted', '=', false);
+        })->leftJoin('nexus', function ($join) use ($date_start, $date_end) {
+            $join->on('projects.idproject', '=', 'nexus.idproject');
+            $join->whereBetween('fourwalls.created_at', [$date_start, $date_end]);
+            $join->where('nexus.is_deleted', '=', false);
+        })->leftJoin('hps', function ($join) use ($date_start, $date_end) {
+            $join->on('projects.idproject', '=', 'hps.idproject');
+            $join->whereBetween('fourwalls.created_at', [$date_start, $date_end]);
+            $join->where('hps.is_deleted', '=', false);
+        })->groupBy('projects.idproject', 'projects.name')->get();
+
+        return view('maintenance.costs', ['projects' => $projects, 'date_start' => $date_start]);
+    }
+
+    public function maintenance_cost_by_month($date)
+    {
+        if ($date === 'na') {
+            [$date_start, $date_end] = ReportController::getDatesCalculed();
+            [$date_start, $date_end] = [date('01/m/Y', strtotime($date_start)), date('t/m/Y', strtotime($date_start))];
+        } else {
+            $date_start = date('01/m/Y', strtotime($date));
+            $date_end = date('t/m/Y ', strtotime($date));
+        }
+
+        $projects = Project::selectRaw('
+            projects.idproject,
+            projects.name,
+            SUM(fourwalls.cost) AS costFourwalls,
+            SUM(nexus.cost) AS costNexus,
+            SUM(hps.cost) AS costHp
+        ')->leftJoin('fourwalls', function ($join) use ($date_start, $date_end) {
+            $join->on('projects.idproject', '=', 'fourwalls.idproject');
+            $join->whereBetween('fourwalls.created_at', [$date_start, $date_end]);
+            $join->where('fourwalls.is_deleted', '=', false);
+        })->leftJoin('nexus', function ($join) use ($date_start, $date_end) {
+            $join->on('projects.idproject', '=', 'nexus.idproject');
+            $join->whereBetween('fourwalls.created_at', [$date_start, $date_end]);
+            $join->where('nexus.is_deleted', '=', false);
+        })->leftJoin('hps', function ($join) use ($date_start, $date_end) {
+            $join->on('projects.idproject', '=', 'hps.idproject');
+            $join->whereBetween('fourwalls.created_at', [$date_start, $date_end]);
+            $join->where('hps.is_deleted', '=', false);
+        })->groupBy('projects.idproject', 'projects.name')->get();
+
+        return response()->json($projects);
     }
 
     public function store_fourwall(Request $request)

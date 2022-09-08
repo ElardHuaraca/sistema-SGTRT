@@ -65,6 +65,7 @@ Route::controller(MaintenanceController::class)->group(function () {
     Route::put('/maintenance/projects/update/{id}', 'update_project')->middleware('auth');
     Route::put('/maintenance/projects/update/status/{id}', 'update_project_status')->middleware('auth');
     Route::get('/maintenance/costs', 'maintenance_cost')->middleware('auth')->name('maintenance.costs');
+    Route::get('/maintenance/costs/filter/{date}', 'maintenance_cost_by_month')->middleware('auth');
     Route::post('/maintenance/costs/fourwalls/create', 'store_fourwall')->middleware('auth');
     Route::post('/maintenance/costs/nexus/create', 'store_nexus')->middleware('auth');
     Route::post('/maintenance/costs/hps/create', 'store_hp')->middleware('auth');

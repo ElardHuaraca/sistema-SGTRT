@@ -5924,7 +5924,7 @@ $(function () {
     new Datepicker(element, {
       minDate: new Date(2019, 0, 1),
       maxDate: new Date(2030, 11, 31),
-      pickLevel: 0,
+      pickLevel: 1,
       startView: 1,
       language: 'es',
       todayHighlight: true
