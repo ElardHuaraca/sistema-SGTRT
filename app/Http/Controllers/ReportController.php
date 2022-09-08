@@ -196,7 +196,7 @@ class ReportController extends Controller
             return view('reports.IT-tariff', ['costs' => $costs, 'date_start' => $date_start, 'date_end' => $date_end]);
         }
 
-        [$date_start, $date_end] = $this->getDatesCalculed();
+        [$date_start, $date_end] = $this::getDatesCalculed();
 
         [$servers, $sows, $spla_assigned_discounts, $cost_maintenance] = $this->getServersAndSowsForCalculateCosts($date_start, $date_end, null);
         [$filters, $resources] = $this->get_servers_and_resources_filters($servers);
@@ -208,7 +208,7 @@ class ReportController extends Controller
 
     public function resource_consumption_it_tariff_by_project($id, $date_start, $date_end)
     {
-        if ($date_start === 'na' && $date_end === 'na') [$date_start, $date_end] = $this->getDatesCalculed();
+        if ($date_start === 'na' && $date_end === 'na') [$date_start, $date_end] = $this::getDatesCalculed();
         else [$date_start, $date_end] = [str_replace('-', '/', $date_start), str_replace('-', '/', $date_end)];
 
         $project = Project::find($id);
@@ -457,7 +457,7 @@ class ReportController extends Controller
     {
         $costs = [];
 
-        if ($date_start == null && $date_end == null) [$date_start, $date_end] = $this->getDatesCalculed();
+        if ($date_start == null && $date_end == null) [$date_start, $date_end] = $this::getDatesCalculed();
 
         Log::info('date_start: ' . $date_start . ' date_end: ' . $date_end);
 
@@ -653,7 +653,7 @@ class ReportController extends Controller
         return json_decode(json_encode($costs_servers), false);
     }
 
-    private function getDatesCalculed()
+    public static function getDatesCalculed()
     {
         $date = Carbon::now();
 
