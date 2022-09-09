@@ -65,9 +65,12 @@ class HydrateDatabaseController extends Controller
                     $server->save();
                 }
 
+                $disk = round(($vm->aggr_unshared_storage_space + $vm->aggr_uncommited_storage_space) / 1073741824);
+
                 if ($vm->power_state === 0) {
                     $vm->num_vcpu = 0;
                     $vm->memory_ram = 0;
+                    $disk = round($vm->aggr_unshared_storage_space / 1073741824);
                 }
 
 
@@ -96,7 +99,7 @@ class HydrateDatabaseController extends Controller
                 $resource_comsuption_disk = new ResourceHistory();
                 $resource_comsuption_disk->idserver = $server->idserver;
                 $resource_comsuption_disk->name = $disk_type;
-                $resource_comsuption_disk->amount = round(($vm->aggr_unshared_storage_space + $vm->aggr_uncommited_storage_space) / 1073741824);
+                $resource_comsuption_disk->amount = $disk;
                 $resource_comsuption_disk->date = Carbon::now();
                 $resource_comsuption_disk->save();
 
