@@ -196,11 +196,11 @@ class MaintenanceController extends Controller
             $join->where('fourwalls.is_deleted', '=', false);
         })->leftJoin('nexus', function ($join) use ($date_start, $date_end) {
             $join->on('projects.idproject', '=', 'nexus.idproject');
-            $join->whereBetween('fourwalls.created_at', [$date_start, $date_end]);
+            $join->whereBetween('nexus.created_at', [$date_start, $date_end]);
             $join->where('nexus.is_deleted', '=', false);
         })->leftJoin('hps', function ($join) use ($date_start, $date_end) {
             $join->on('projects.idproject', '=', 'hps.idproject');
-            $join->whereBetween('fourwalls.created_at', [$date_start, $date_end]);
+            $join->whereBetween('hps.created_at', [$date_start, $date_end]);
             $join->where('hps.is_deleted', '=', false);
         })->groupBy('projects.idproject', 'projects.name')->get();
 
