@@ -96,11 +96,44 @@
                             <input type="text" class="form-control col-8" placeholder="Costo Nexus"
                                 aria-label="Costo Nexus" aria-describedby="basic-addon1" name="cost_nexus" required>
                         </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend col-4">
+                                <span class="input-group-text h-100" id="basic-addon1">
+                                    <i class="fa-solid fa-barcode pe-2"></i>
+                                    Serie Nexus
+                                </span>
+                            </div>
+                            <input type="text" class="form-control col-8" placeholder="Serie HP" aria-label="Serie HP"
+                                aria-describedby="basic-addon1" name="serie_nexus" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend col-4">
+                                <span class="input-group-text h-100" id="basic-addon1">
+                                    <i class="fa-regular fa-calendar-days pe-2"></i>
+                                    Fecha de inicio
+                                </span>
+                            </div>
+                            <input type="text" class="form-control col-8" placeholder="Seleccione una fecha"
+                                onkeydown="return false" aria-label="Seleccione una fecha"
+                                aria-describedby="basic-addon1" name="date_start" id="date_start_hp" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend col-4">
+                                <span class="input-group-text h-100" id="basic-addon1">
+                                    <i class="fa-regular fa-calendar-days pe-2"></i>
+                                    Fecha fin
+                                </span>
+                            </div>
+                            <input type="text" class="form-control col-8" placeholder="Seleccione una fecha"
+                                onkeydown="return false" aria-label="Seleccione una fecha"
+                                aria-describedby="basic-addon1" name="date_end" id="date_end_hp">
+                        </div>
                         <button class="d-none" id="btn-sumbit-nexus" type="submit"></button>
                     </form>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="btn-close">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="btn-close">Cerrar</button>
                     <button type="button" class="btn btn-primary" id="btn-update-nexus">Guardar</button>
                 </div>
             </div>

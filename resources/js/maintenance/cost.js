@@ -68,8 +68,7 @@ $(function () {
                 changeTexts(['Equipo 4wall', 'Serie 4wall', 'Costo 4wall'])
                 break;
             case 'nexus':
-                changeTexts(['Punto de Red', '', 'Costo Nexus'])
-                disableInputs(['serie_fourwall', 'date_start', 'date_end'])
+                changeTexts(['Punto de Red', 'Serie Nexus', 'Costo Nexus'])
                 break;
 
             case 'hp':
@@ -97,7 +96,7 @@ $(function () {
                     'serie': form[3].value,
                     'cost': form[4].value,
                     'date_start': form[5].value,
-                    'date_end': form[6].value
+                    'date_end': form[6].value == '' ? null : form[6].value,
                 }
                 url = '/maintenance/costs/fourwalls/create'
                 type = 0
@@ -107,6 +106,9 @@ $(function () {
                     'idproject': form[1].value,
                     'network_point': form[2].value,
                     'cost': form[3].value,
+                    'serie': form[4].value,
+                    'date_start': form[5].value,
+                    'date_end': form[6].value == '' ? null : form[6].value
                 }
                 url = '/maintenance/costs/nexus/create'
                 type = 1
@@ -118,7 +120,7 @@ $(function () {
                     'serie': form[3].value,
                     'cost': form[4].value,
                     'date_start': form[5].value,
-                    'date_end': form[6].value
+                    'date_end': form[6].value == '' ? null : form[6].value
                 }
                 url = '/maintenance/costs/hps/create'
                 type = 2
@@ -135,6 +137,7 @@ $(function () {
                 $('#btn-succes-loading').trigger('click')
             }
         }).then(function (response) {
+            console.log(response)
             $('#btn-succes').trigger('click')
             updateCost(response, type)
             $(this).trigger('reset')
@@ -354,7 +357,8 @@ function setRequiredInputs(modal) {
 
 /* Update cost in datatable */
 function updateCost(data, type) {
-    var index = $.dataTableInit.data().toArray().findIndex(element => element[1] === data.idproject)
+    var index = $.dataTableInit.data().toArray().findIndex(element => element[1] === JSON.parse(data.idproject))
+    console.log(index)
     var row = $.dataTableInit.row(index).data()
     let href = $(row[type + 3]).attr('href')
     row[type + 3] = (deleteDolarAndHreft(row[type + 3]) + parseFloat(data.cost))

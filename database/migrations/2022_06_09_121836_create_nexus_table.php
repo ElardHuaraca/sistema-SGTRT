@@ -16,7 +16,10 @@ return new class extends Migration
         Schema::create('nexus', function (Blueprint $table) {
             $table->id('idnexus');
             $table->string('network_point');
+            $table->string('serie');
             $table->decimal('cost', 8, 2);
+            $table->timestamp('date_start');
+            $table->timestamp('date_end')->nullable(true);
             $table->integer('idproject')->unsigned();
             $table->boolean('is_deleted')->default(false);
             $table->timestamps();

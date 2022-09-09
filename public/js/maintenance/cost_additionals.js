@@ -41,6 +41,9 @@ $(function () {
     $('input[name="codigo_alp"').val(nexu.idproject);
     $('input[name="point_red_nexus"').val(nexu.network_point);
     $('input[name="cost_nexus"').val(nexu.cost);
+    $('input[name="serie_nexus"').val(nexu.serie);
+    setDate('date_start', nexu.date_start);
+    if (nexu.date_end !== null) setDate('date_end', nexu.date_end);
     _id = nexu.idnexus;
     _row = $(relatedTarget).parents('tr')[0];
     _idproject = nexu.idproject;
@@ -144,7 +147,7 @@ $(function () {
           x.serie = response.serie;
           x.cost = response.cost;
           x.date_start = response_date_start.toLocaleDateString('en-US');
-          x.date_end = response_date_end === null ? null : response_date_end;
+          x.date_end = response_date_end === null ? null : response_date_end.toLocaleDateString('en-US');
         }
 
         return x;
@@ -176,6 +179,17 @@ $(function () {
         })[0].value,
         'cost': form.filter(function (x) {
           return x.name == 'cost_nexus';
+        })[0].value,
+        'serie': form.filter(function (x) {
+          return x.name == 'serie_nexus';
+        })[0].value,
+        'date_start': form.filter(function (x) {
+          return x.name == 'date_start';
+        })[0].value,
+        'date_end': form.filter(function (x) {
+          return x.name == 'date_end';
+        })[0].value === '' ? null : form.filter(function (x) {
+          return x.name == 'date_end';
         })[0].value
       },
       beforeSend: function beforeSend() {
@@ -183,12 +197,22 @@ $(function () {
       }
     }).then(function (response) {
       $('#btn-succes').trigger('click');
+      response_date_start = reestructureDate(response.date_start);
+      response_date_end = response.date_end === null ? null : reestructureDate(response.date_end);
       var rowData = $.dataTableInit.row(_row).data();
       rowData[3] = response.network_point;
       rowData[4] = "$ ".concat(response.cost);
       $.dataTableInit.row(_row).data(rowData);
       nexus = nexus.map(function (x) {
-        return x.idnexus === _id ? response : x;
+        if (x.idnexus === _id) {
+          x.network_point = response.network_point;
+          x.cost = response.cost;
+          x.serie = response.serie;
+          x.date_start = response_date_start.toLocaleDateString('en-US');
+          x.date_end = response_date_end === null ? null : response_date_end.toLocaleDateString('en-US');
+        }
+
+        return x;
       });
     })["catch"](function (error) {
       $('#btn-succes-error').trigger('click');
@@ -250,7 +274,7 @@ $(function () {
           x.serie = response.serie;
           x.cost = response.cost;
           x.date_start = response_date_start.toLocaleDateString('en-US');
-          x.date_end = response_date_end === null ? null : response_date_end;
+          x.date_end = response_date_end === null ? null : response_date_end.toLocaleDateString('en-US');
         }
 
         return x;

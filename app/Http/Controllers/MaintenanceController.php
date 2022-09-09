@@ -226,6 +226,9 @@ class MaintenanceController extends Controller
         $nexus->idproject = $request->idproject;
         $nexus->network_point = $request->network_point;
         $nexus->cost = $request->cost;
+        $nexus->serie = $request->serie;
+        $nexus->date_start = $request->date_start;
+        if ($request->date_end != null) $nexus->date_end = $request->date_end;
         $nexus->save();
         return response()->json($nexus, 200);
     }
@@ -296,7 +299,7 @@ class MaintenanceController extends Controller
     public function nexus_details($id)
     {
         $nexus = Nexus::selectRaw('
-            idnexus,network_point,cost,nexus.idproject,nexus.is_deleted,name
+            idnexus,network_point,cost,serie,date_start,date_end,nexus.idproject,nexus.is_deleted,name
         ')->join('projects', 'projects.idproject', '=', 'nexus.idproject')
             ->where('projects.idproject', $id)
             ->orderBy('is_deleted')->get();
@@ -331,6 +334,9 @@ class MaintenanceController extends Controller
         $nexus = Nexus::find($id);
         $nexus->network_point = $request->network_point;
         $nexus->cost = $request->cost;
+        $nexus->serie = $request->serie;
+        $nexus->date_start = $request->date_start;
+        $nexus->date_end = $request->date_end;
         $nexus->save();
 
         return response()->json($nexus, 200);
