@@ -413,8 +413,8 @@ function formatResponse(response) {
                 `<a href="/maintenance/costs/nexus/${item.idproject}">0.00</a>` :
                 `<a href="/maintenance/costs/nexus/${item.idproject}">$ ${getNumber(item.costnexus)}</a>`,
             5: item.costhp === null ?
-                `<a href="/maintenance/costs/hps/${item.idproject}">0.00</a>` :
-                `<a href="/maintenance/costs/hps/${item.idproject}">$ ${getNumber(item.costhp)}</a>`,
+                `<a href="/maintenance/costs/hp/${item.idproject}">0.00</a>` :
+                `<a href="/maintenance/costs/hp/${item.idproject}">$ ${getNumber(item.costhp)}</a>`,
             6: `$ ${getNumber(JSON.parse(item.costfourwalls === null ? 0.00 : item.costfourwalls) +
                 JSON.parse(item.costnexus === null ? 0.00 : item.costnexus) +
                 JSON.parse(item.costhp === null ? 0.00 : item.costhp))
