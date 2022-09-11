@@ -357,8 +357,10 @@ function setRequiredInputs(modal) {
 
 /* Update cost in datatable */
 function updateCost(data, type) {
-    var index = $.dataTableInit.data().toArray().findIndex(element => element[1] === JSON.parse(data.idproject))
+    console.log($.dataTableInit.data().toArray())
+    var index = $.dataTableInit.data().toArray().findIndex(element => element[1] == data.idproject)
     console.log(index)
+    console.log(data)
     var row = $.dataTableInit.row(index).data()
     let href = $(row[type + 3]).attr('href')
     row[type + 3] = (deleteDolarAndHreft(row[type + 3]) + parseFloat(data.cost))
