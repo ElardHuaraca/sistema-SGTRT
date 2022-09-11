@@ -11,8 +11,7 @@
             <div class="box" id="box-consumo">
                 <div class="d-flex align-items-center px-lg-3 px-md-4 py-3">
                     <div class="col-lg-4 col-md-4 d-inline-flex">
-                        <button
-                            class="btn btn-info disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                        <button class="btn btn-info disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
                             type="button" data-bs-toggle="modal" data-bs-target="#modalCreateEditSow"
                             id="btn-update-create-project">Agregar nuevo SOW</button>
                     </div>
@@ -36,8 +35,8 @@
                                     <th scope="row">{{ $loop->index + 1 }}</th>
                                     <td>{{ $sow->version }}</td>
                                     <td>{{ $sow->name . ' ' . $sow->type . ' ' . $sow->version }}</td>
-                                    <td>{{ $sow->created_at }}</td>
-                                    <td>{{ $sow->updated_at }}</td>
+                                    <td>{{ date('d/m/Y H:m:s', strtotime($sow->created_at)) }}</td>
+                                    <td>{{ date('d/m/Y H:m:s', strtotime($sow->updated_at)) }}</td>
                                     <td>
                                         <button class="btn btn-warning" id="btn-edit-sow" data-bs-toggle="modal"
                                             data-bs-target="#modalCreateEditSow" value="{{ $sow->idsow }}">Editar</button>

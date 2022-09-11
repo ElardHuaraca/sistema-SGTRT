@@ -268,7 +268,7 @@ function saveNewSow() {
       $('#btn-succes-loading').trigger('click');
     }
   }).then(function (response) {
-    addSowsToDataTable(response, 'create');
+    addSowsToDataTable(response);
     $('#btn-succes').trigger('click');
     resetForms();
   })["catch"](function (error) {
@@ -294,7 +294,7 @@ function updateSow(data) {
       $('#btn-succes-loading').trigger('click');
     }
   }).then(function (response) {
-    addSowsToDataTable(response, 'update');
+    addSowsToDataTable(response);
     $('#btn-succes').trigger('click');
     _id = null;
     row = null;
@@ -310,52 +310,27 @@ function updateSow(data) {
   });
 }
 
-function addSowsToDataTable(response, type) {
-  if (type === 'create') {
-    var row_data = $.dataTableInit.row(0).data();
-
-    for (var index = 0; index < 3; index++) {
-      var sow = null;
-      if (index === 0) sow = response.bronce;else if (index === 1) sow = response.silver;else sow = response.gold;
-      row_data[0] = $.dataTableInit.data().length + 1;
-      row_data[1] = sow.version;
-      row_data[2] = sow.name + ' ' + sow.type + ' ' + sow.version;
-      row_data[3] = transformDate(new Date(sow.created_at));
-      row_data[4] = transformDate(new Date(sow.updated_at));
-      row_data[5] = "<button class=\"btn btn-warning\" id=\"btn-edit-sow\" data-bs-toggle=\"modal\" data-bs-target=\"#modalCreateEditSow\" value=\"".concat(sow.idsow, "\">\n                                Editar\n                            </button>");
-      row_data[6] = "<button type=\"button\" class=\"btn btn-success fs-6 btn-status-sow\"  value=\"".concat(sow.idsow, "\">\n                                Activo\n                            </button>");
-      $.dataTableInit.row.add(row_data).draw();
-      sows.push(sow);
-    }
-  } else if (type === 'update') {
-    var row_data = $.dataTableInit.row(row).data();
-    row_data[1] = response.version;
-    row_data[2] = response.name + ' ' + response.type + ' ' + response.version;
-    row_data[3] = transformDate(new Date(response.created_at));
-    row_data[4] = transformDate(new Date(response.updated_at));
-    row_data[6] = "<button type=\"button\" class=\"btn ".concat(response.is_deleted === false ? 'btn-success' : 'btn-danger', " fs-6 btn-status-sow\"  value=\"").concat(response.idsow, "\">\n                            ").concat(response.is_deleted === false ? 'Activo' : 'Inactivo', "\n                        </button>");
-    $.dataTableInit.row(row).data(row_data).draw(false);
-    sows.map(function (sow, index) {
-      if (sow.idsow === response.idsow) {
-        sows[index] = response;
-      }
-    });
-  }
+function addSowsToDataTable(response) {
+  sows = response;
+  var reformat = response.map(function (item, index) {
+    return {
+      0: index + 1,
+      1: item.version,
+      2: item.name + ' ' + item.type + ' ' + item.version,
+      3: $.refactorDateMinutes(item.created_at),
+      4: $.refactorDateMinutes(item.updated_at),
+      5: "<button class=\"btn btn-warning\" id=\"btn-edit-sow\" data-bs-toggle=\"modal\" data-bs-target=\"#modalCreateEditSow\" value=\"".concat(item.idsow, "\">\n                    Editar\n                </button>"),
+      6: "<button class=\"btn ".concat(item.is_deleted ? 'btn-danger' : 'btn-success', " fs-6 btn-status-sow\" id=\"btn-delete-sow\" value=\"").concat(item.idsow, "\">\n                    ").concat(item.is_deleted ? 'Inactivo' : 'Activo', "\n                </button>")
+    };
+  });
+  $.dataTableInit.clear().draw();
+  $.dataTableInit.rows.add(reformat).draw();
 }
 /* capitalize only first character and end lower */
 
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
-}
-/* transform date to YYYY-MM-DD HH:mm:ss  and format hours,minutes,seconds 1 to 01*/
-
-
-function transformDate(date) {
-  var hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
-  var minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
-  var seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-  return date.getFullYear() + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + date.getDate() + ' ' + hours + ':' + minutes + ':' + seconds;
 }
 
 $(function () {
@@ -402,9 +377,6 @@ $(function () {
   $('#table-resources-it').on('click', '.btn-status-sow', function () {
     var btn = $(this);
     var id = btn.val();
-    var sow = sows.filter(function (sow) {
-      return sow.idsow.toString() === id;
-    })[0];
     $.ajax({
       headers: {
         'X-CSRF-TOKEN': $('input[name="_token"]').val()
@@ -418,15 +390,7 @@ $(function () {
         $('#btn-succes-loading').trigger('click');
       }
     }).then(function (response) {
-      if (response.is_deleted === 'false') {
-        btn.removeClass('btn-danger');
-        btn.addClass('btn-success');
-        btn.text('Activo');
-      } else {
-        btn.removeClass('btn-success');
-        btn.addClass('btn-danger');
-        btn.text('Inactivo');
-      }
+      addSowsToDataTable(response);
     })["catch"](function (error) {
       $('#btn-close-loading').trigger('click');
       $('#btn-succes-error').trigger('click');

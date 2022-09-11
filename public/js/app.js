@@ -5910,6 +5910,13 @@ $(function () {
     var date_ = new Date(date[0], date[1] - 1, date[2]);
     return ("00" + date_.getDate()).slice(-2) + "/" + ("00" + (date_.getMonth() + 1)).slice(-2) + "/" + date_.getFullYear();
   };
+  /* Transform ('yyyy-mm-dd HH:mm:ss to dd/mm/yyyy HH:mm:ss') */
+
+
+  $.refactorDateMinutes = function (date_refactor) {
+    var date = new Date(date_refactor);
+    return ("00" + date.getDate()).slice(-2) + "/" + ("00" + (date.getMonth() + 1)).slice(-2) + "/" + date.getFullYear() + " " + ("00" + date.getHours()).slice(-2) + ":" + ("00" + date.getMinutes()).slice(-2) + ":" + ("00" + date.getSeconds()).slice(-2);
+  };
 });
 $(function () {
   Object.assign(Datepicker.locales, language);

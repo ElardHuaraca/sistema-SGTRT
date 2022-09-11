@@ -59,7 +59,9 @@ class MaintenanceController extends Controller
             $result[strtolower($sow->type)] = $sow;
         }
 
-        return response()->json($result, 200);
+        $sows = Sow::orderBy('is_deleted', 'desc')->get();
+
+        return response()->json($sows, 200);
     }
 
     public function update_sow($id, Request $request)
@@ -91,18 +93,19 @@ class MaintenanceController extends Controller
         $sow->cost_backup_db = $request->cost_backup_db;
         $sow->save();
 
+        $sows = Sow::orderBy('is_deleted', 'desc')->get();
 
-
-        return response()->json($sow, 200);
+        return response()->json($sows, 200);
     }
 
     public function update_sow_status($id, Request $request)
     {
         $sow = Sow::find($id);
-        $sow->is_deleted = $request->is_deleted;
-        $sow->save();
+        Sow::where('name', $sow->name)->where('version', $sow->version)->update(['is_deleted' => $request->is_deleted]);
 
-        return response()->json($sow, 200);
+        $sows = Sow::orderBy('is_deleted', 'desc')->get();
+
+        return response()->json($sows, 200);
     }
 
     public function project()
