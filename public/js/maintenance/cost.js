@@ -154,7 +154,6 @@ $(function () {
         $('#btn-succes-loading').trigger('click');
       }
     }).then(function (response) {
-      console.log(response);
       $('#btn-succes').trigger('click');
       updateCost(response, type);
       $('#form_costs').trigger('reset');
@@ -230,131 +229,6 @@ function removeDivWithRecomendations() {
   if (recomendations == null) return;
   recomendations.remove();
 }
-/* prepare form for the submit */
-
-
-$(function () {
-  $('#modalCreateFourwall').on('show.bs.modal', function (event) {
-    setRequiredInputs($(event.currentTarget));
-  });
-  $('#btn-update-create-fourwall').on('click', function () {
-    $('#btn-sumbit-fourwall').trigger('click');
-  });
-  $('#modalCreateNexus').on('show.bs.modal', function (event) {
-    setRequiredInputs($(event.currentTarget));
-  });
-  $('#btn-update-create-nexus').on('click', function () {
-    $('#btn-sumbit-nexus').trigger('click');
-  });
-  $('#modalCreateHp').on('show.bs.modal', function (event) {
-    setRequiredInputs($(event.currentTarget));
-  });
-  $('#btn-update-create-hp').on('click', function () {
-    $('#btn-sumbit-hp').trigger('click');
-  });
-  $('.form-create-fourwall').on('submit', function (e) {
-    e.preventDefault();
-    var form = $(this);
-    var data = form.serializeArray();
-    var token = $('input[name="_token"]').val();
-    $.ajax({
-      headers: {
-        'X-CSRF-TOKEN': token
-      },
-      url: '/maintenance/costs/fourwalls/create',
-      type: 'POST',
-      data: {
-        'idproject': data[0].value,
-        'equipment': data[1].value,
-        'serie': data[2].value,
-        'cost': data[3].value,
-        'date_start': data[4].value,
-        'date_end': data[5].value
-      },
-      beforeSend: function beforeSend() {
-        $('#btn-succes-loading').trigger('click');
-      }
-    }).then(function (data) {
-      $('#btn-succes').trigger('click');
-      updateCost(data, 0);
-      form.trigger('reset');
-    })["catch"](function (data) {
-      $('#btn-close-loading').trigger('click');
-      $('#btn-succes-error').trigger('click');
-      console.log(data.responseJSON);
-    }).always(function () {
-      $('#modal-succes-loading').modal('toggle');
-      $('#btn-close-loading, .btn-close-loading').trigger('click');
-    });
-  });
-  $('.form-create-nexus').on('submit', function (e) {
-    e.preventDefault();
-    var form = $(this);
-    var data = form.serializeArray();
-    var token = $('input[name="_token"]').val();
-    $.ajax({
-      headers: {
-        'X-CSRF-TOKEN': token
-      },
-      url: '/maintenance/costs/nexus/create',
-      type: 'POST',
-      data: {
-        'idproject': data[0].value,
-        'network_point': data[1].value,
-        'cost': data[2].value
-      },
-      beforeSend: function beforeSend() {
-        $('#btn-succes-loading').trigger('click');
-      }
-    }).then(function (data) {
-      $('#btn-succes').trigger('click');
-      updateCost(data, 1);
-      form.trigger('reset');
-    })["catch"](function (data) {
-      $('#btn-close-loading').trigger('click');
-      $('#btn-succes-error').trigger('click');
-      console.log(data.responseJSON);
-    }).always(function () {
-      $('#modal-succes-loading').modal('toggle');
-      $('#btn-close-loading, .btn-close-loading').trigger('click');
-    });
-  });
-  $('.form-create-hp').on('submit', function (e) {
-    e.preventDefault();
-    var form = $(this);
-    var data = form.serializeArray();
-    var token = $('input[name="_token"]').val();
-    $.ajax({
-      headers: {
-        'X-CSRF-TOKEN': token
-      },
-      url: '/maintenance/costs/hps/create',
-      type: 'POST',
-      data: {
-        'idproject': data[0].value,
-        'equipment': data[1].value,
-        'serie': data[2].value,
-        'cost': data[3].value,
-        'date_start': data[4].value,
-        'date_end': data[5].value
-      },
-      beforeSend: function beforeSend() {
-        $('#btn-succes-loading').trigger('click');
-      }
-    }).then(function (data) {
-      $('#btn-succes').trigger('click');
-      updateCost(data, 2);
-      form.trigger('reset');
-    })["catch"](function (data) {
-      $('#btn-close-loading').trigger('click');
-      $('#btn-succes-error').trigger('click');
-      console.log(data.responseJSON);
-    }).always(function () {
-      $('#modal-succes-loading').modal('toggle');
-      $('#btn-close-loading, .btn-close-loading').trigger('click');
-    });
-  });
-});
 
 function setRequiredInputs(modal) {
   modal.find('input[name="codigo_alp"]').attr('required', true);
