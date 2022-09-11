@@ -157,7 +157,7 @@ $(function () {
       console.log(response);
       $('#btn-succes').trigger('click');
       updateCost(response, type);
-      $(this).trigger('reset');
+      $('#form_costs').trigger('reset');
     })["catch"](function (error) {
       $('#btn-succes-error').trigger('click');
       console.log(error);
@@ -372,12 +372,9 @@ function setRequiredInputs(modal) {
 
 
 function updateCost(data, type) {
-  console.log($.dataTableInit.data().toArray());
   var index = $.dataTableInit.data().toArray().findIndex(function (element) {
     return element[1] == data.idproject;
   });
-  console.log(index);
-  console.log(data);
   var row = $.dataTableInit.row(index).data();
   var href = $(row[type + 3]).attr('href');
   row[type + 3] = deleteDolarAndHreft(row[type + 3]) + parseFloat(data.cost);
