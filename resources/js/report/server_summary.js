@@ -176,8 +176,7 @@ $(function () {
             }
         }).then(function (response) {
             change_sow_from_data_table_and_update_server(response.server)
-
-            additional = assign_services.filter(server => server.idserver === response.server.idserver)[0]
+            additional = assign_services.filter(server => server.idserver == response.server.idserver)[0]
             if (additional === undefined) assign_services.push(create_additionals(response.assign_services))
             else assign_services.map(x => { if (x.idserver === additional.idserver) update_additionals(x, response.assign_services) })
 
@@ -291,6 +290,10 @@ $(function () {
                     $(option).prop('selected', true)
                     $('input[name="reduction_sql"]').val(assign_spla.percentage).text(assign_spla.percentage)
                     break;
+                case 'SQL Server 2':
+                    option = $(`select[name="SQL Server"] option[value="${assign_spla.idspla}"]`)[0]
+                    $(option).prop('selected', true)
+                    $('input[name="reduction_sql2"]').val(assign_spla.percentage).text(assign_spla.percentage)
                 case 'Remote Desktop':
                     option = $(`select[name="Remote Desktop"] option[value="${assign_spla.idspla}"]`)[0]
                     $(option).prop('selected', true)
@@ -308,7 +311,7 @@ $(function () {
     function change_sow_from_data_table_and_update_server(server) {
         sow = server.idsow !== null ? sows.filter(x => x.idsow == server.idsow)[0] : ''
         data = $.dataTableInit.row(row).data()
-        data[5] = sow === '' ? 'N.A.' : `<span>${sow.version} ${sow.name}</span>`
+        data[5] = sow === '' ? 'N.A.' : `<span>${sow.version} ${sow.name} ${sow.type}</span>`
         $.dataTableInit.row(row).data(data)
 
         servers.map(x => {

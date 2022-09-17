@@ -12,6 +12,7 @@ use App\Models\Server;
 use App\Models\Sow;
 use App\Models\SplaAssignedDiscount;
 use App\Models\SplaLicense;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -312,7 +313,7 @@ class ReportController extends Controller
         $server->idsow = $request['server']['idsow'] === null ? null : intval($request['server']['idsow']);
         $server->save();
 
-        $assign_services = AssignService::where('idserver', '=', $id)->first();
+        $assign_services = AssignService::where('idserver', $id)->first();
         if ($assign_services === null) {
             $assign_services = new AssignService();
             $assign_services->idserver = $id;
@@ -325,14 +326,19 @@ class ReportController extends Controller
         $assign_services->is_additional_spla = $request['assign_service']['is_additional_spla'];
         $assign_services->save();
 
-        $assign_splas = SplaAssignedDiscount::join('spla_licenses', 'spla_licenses.idspla', '=', 'spla_assigned_discounts.idspla')->where('idserver', '=', $id)->get();
+        $assign_splas = SplaAssignedDiscount::join('spla_licenses', 'spla_licenses.idspla', '=', 'spla_assigned_discounts.idspla')->where('idserver', $id)->get();
+
         $keys = array_keys($request['assign_spla_licences']);
         for ($index = 0; $index < sizeof($keys); $index++) {
             if (sizeof($assign_splas) > 0) {
-                $spla = collect($assign_splas)->where('type', $keys[$index])->first();
-                if ($spla === null) {
-                    $this->save_assign_spla($request, $id, $keys[$index]);
-                } else {
+
+                if ($keys[$index] == 'SQL Server') $spla = collect($assign_splas)->filter(function ($value) {
+                    return $value->type == 'SQL Server' || $value->type == 'SQL Server 2';
+                })->first();
+                else $spla = collect($assign_splas)->where('type', $keys[$index])->first();
+
+                if ($spla === null) $this->save_assign_spla($request, $id, $keys[$index]);
+                else {
                     if ($request['assign_spla_licences'][$keys[$index]]['idspla'] === null) $spla->delete();
                     else {
                         $spla->idspla = $request['assign_spla_licences'][$keys[$index]]['idspla'];
@@ -516,8 +522,18 @@ class ReportController extends Controller
             /* Obtain cost by SPLAs */
             $cost_splas = 0;
             $cost_splas = collect($spla_assigned_discounts)->where('idserver', $filter['idserver']);
+
             foreach ($cost_splas as $cost_spla) {
-                $cost = $cost_spla->amount - ($cost_spla->amount * ($cost_spla->discount / 100));
+                $cost = 0;
+
+                if ($cost_spla->type === 'SQL Server' || $cost_spla->type === 'SQL Server 2') {
+                    $lic_req = $this::licenceRequired($resources[$filter['idserver']]);
+                    $cost = $lic_req * $cost_spla->amount;
+                    $cost = $cost - ($cost * ($cost_spla->discount / 100));
+                } else {
+                    $cost = $cost_spla->amount - ($cost_spla->amount * ($cost_spla->discount / 100));
+                }
+
                 $costs[$key]['cost_splas'] += round($cost, 2);
             }
 
@@ -684,5 +700,19 @@ class ReportController extends Controller
             }
             return $caches;
         }
+    }
+
+    public static function licenceRequired($resources)
+    {
+        /* order by date and select ultimate cpu amount register up to 0 */
+        $cpu = collect($resources)->where('resource_name', 'CPU')->where('amount', '>', 0)->sortByDesc('date')->first();
+        $cpu = is_null($cpu) ? 0 : $cpu['amount'];
+        $lic_req = 0;
+
+        if ($cpu == 2) $lic_req = 1;
+        else if ($cpu < 5) $lic_req = 2;
+        else $lic_req = round($cpu / 2);
+
+        return $lic_req;
     }
 }

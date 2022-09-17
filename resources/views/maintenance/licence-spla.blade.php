@@ -4,15 +4,14 @@
     <div class="content-wrapper">
         <section class="content-header text-center">
             <h1 class="h1-titulo">
-                Licencias SPLA
+                LICENSIAS SPLA
             </h1>
         </section>
         <section class="content">
             <div class="box" id="box-consumo">
                 <div class="d-flex align-items-center px-lg-3 px-md-4 py-3">
                     <div class="col-lg-4 col-md-4 d-inline-flex">
-                        <button
-                            class="btn btn-info disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
+                        <button class="btn btn-info disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
                             type="button" data-bs-toggle="modal" data-bs-target="#modalCreateEditLicenceSpla"
                             id="btn-update-create-project">Agregar nueva Licencia</button>
                     </div>

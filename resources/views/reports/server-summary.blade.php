@@ -233,7 +233,7 @@
                                                     <select class="form-control" name="SQL Server" disabled>
                                                         <option value="" selected>Seleccionar</option>
                                                         @foreach ($licenses as $license)
-                                                            @if ($license->type == 'SQL Server')
+                                                            @if ($license->type == 'SQL Server' || $license->type == 'SQL Server 2')
                                                                 <option value="{{ $license->idspla }}">
                                                                     {{ $license->name }}
                                                                 </option>
