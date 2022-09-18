@@ -11,8 +11,6 @@ use App\Models\ResourceHistory;
 use App\Models\Server;
 use App\Models\Sow;
 use App\Models\SplaLicense;
-use Barryvdh\Debugbar\Facades\Debugbar;
-use Barryvdh\Debugbar\Twig\Extension\Debug;
 use Carbon\Carbon;
 
 class MaintenanceController extends Controller
@@ -406,7 +404,6 @@ class MaintenanceController extends Controller
 
         $resources_by_server = [];
 
-        /* Debugbar::info($servers); */
         foreach ($servers as $server) {
             $spla_licenses = json_decode($server->slpa_licenses, true);
             $resource_desc = collect($resources)->where('idserver', $server->idserver)->all();

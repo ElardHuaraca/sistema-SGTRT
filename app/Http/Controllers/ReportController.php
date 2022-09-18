@@ -12,11 +12,9 @@ use App\Models\Server;
 use App\Models\Sow;
 use App\Models\SplaAssignedDiscount;
 use App\Models\SplaLicense;
-use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
@@ -522,7 +520,6 @@ class ReportController extends Controller
             $cost_splas = collect($spla_assigned_discounts)->where('idserver', $filter['idserver']);
             foreach ($cost_splas as $cost_spla) {
                 $cost = 0;
-                Debugbar::info($cost_spla);
                 if (str_contains($cost_spla->type, 'SQL Server')) {
                     $lic_req = $this::licenceRequired($resources[$filter['idserver']]);
                     $cost = $lic_req * $cost_spla->cost;
@@ -530,8 +527,6 @@ class ReportController extends Controller
                 } else {
                     $cost = $cost_spla->cost - ($cost_spla->cost * ($cost_spla->discount / 100));
                 }
-
-                Debugbar::info($cost);
 
                 $costs[$key]['cost_splas'] += round($cost, 2);
             }
