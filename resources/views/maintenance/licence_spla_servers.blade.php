@@ -35,23 +35,7 @@
                                     <td>{{ $server['license_code'] }}</td>
                                     <td>{{ $server['license_type'] }}</td>
                                     <td>{{ $server['license_req'] }}</td>
-                                    <td>{{ $server['license_cost'] }}</td>
-                                    {{-- <td>
-                                        <button class="btn btn-warning btn-edit-licence-spla" data-bs-toggle="modal"
-                                            data-bs-target="#modalCreateEditLicenceSpla"
-                                            value="{{ $licence->idspla }}">Editar</button>
-                                    </td>
-                                    <td>
-                                        @if ($licence->is_deleted)
-                                            <button
-                                                class="btn btn-danger btn-status-licence-spla disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
-                                                value="{{ $licence->idspla }}">Inactivo</button>
-                                        @else
-                                            <button
-                                                class="btn btn-success btn-status-licence-spla disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
-                                                value="{{ $licence->idspla }}">Activo</button>
-                                        @endif
-                                    </td> --}}
+                                    <td>$ {{ $server['license_cost'] }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
