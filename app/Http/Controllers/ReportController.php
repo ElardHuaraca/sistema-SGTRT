@@ -465,8 +465,6 @@ class ReportController extends Controller
 
         if ($date_start == null && $date_end == null) [$date_start, $date_end] = $this::getDatesCalculed();
 
-        Log::info('date_start: ' . $date_start . ' date_end: ' . $date_end);
-
         $days = Carbon::createFromFormat('d/m/Y', $date_start)->diffInDays(Carbon::createFromFormat('d/m/Y', $date_end));
         if ($days > 31 || $days < 28) $days = 30;
 
@@ -522,17 +520,18 @@ class ReportController extends Controller
             /* Obtain cost by SPLAs */
             $cost_splas = 0;
             $cost_splas = collect($spla_assigned_discounts)->where('idserver', $filter['idserver']);
-
             foreach ($cost_splas as $cost_spla) {
                 $cost = 0;
-
-                if ($cost_spla->type === 'SQL Server' || $cost_spla->type === 'SQL Server 2') {
+                Debugbar::info($cost_spla);
+                if (str_contains($cost_spla->type, 'SQL Server')) {
                     $lic_req = $this::licenceRequired($resources[$filter['idserver']]);
-                    $cost = $lic_req * $cost_spla->amount;
+                    $cost = $lic_req * $cost_spla->cost;
                     $cost = $cost - ($cost * ($cost_spla->discount / 100));
                 } else {
-                    $cost = $cost_spla->amount - ($cost_spla->amount * ($cost_spla->discount / 100));
+                    $cost = $cost_spla->cost - ($cost_spla->cost * ($cost_spla->discount / 100));
                 }
+
+                Debugbar::info($cost);
 
                 $costs[$key]['cost_splas'] += round($cost, 2);
             }
@@ -706,10 +705,12 @@ class ReportController extends Controller
     {
         /* order by date and select ultimate cpu amount register up to 0 */
         $cpu = collect($resources)->where('resource_name', 'CPU')->where('amount', '>', 0)->sortByDesc('date')->first();
+
         $cpu = is_null($cpu) ? 0 : $cpu['amount'];
         $lic_req = 0;
 
         if ($cpu == 2) $lic_req = 1;
+        else if ($cpu == 0) $lic_req = 0;
         else if ($cpu < 5) $lic_req = 2;
         else $lic_req = round($cpu / 2);
 

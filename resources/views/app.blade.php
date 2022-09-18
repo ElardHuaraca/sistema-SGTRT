@@ -124,6 +124,12 @@
                                             <span>Licencia SPLA</span>
                                         </a>
                                     </li>
+                                    <li class="list-group-item py-1 bg-transparent">
+                                        <a href="{{ route('licence.spla.servers') }}" class="text-reset">
+                                            <i class="fa-solid fa-share"></i>
+                                            <span>Servidores Lic. SPLA</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         @endif

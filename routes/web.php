@@ -82,4 +82,5 @@ Route::controller(MaintenanceController::class)->group(function () {
     Route::put('/maintenance/costs/fourwall/update/status/{id}', 'update_fourwall_status')->middleware('auth');
     Route::put('/maintenance/costs/nexus/update/status/{id}', 'update_nexus_status')->middleware('auth');
     Route::put('/maintenance/costs/hp/update/status/{id}', 'update_hp_status')->middleware('auth');
+    Route::get('/maintenance/licence/spla/servers', 'licence_spla_servers')->middleware('auth')->name('licence.spla.servers');
 });

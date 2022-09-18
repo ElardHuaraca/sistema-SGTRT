@@ -7,8 +7,12 @@ use App\Models\Project;
 use App\Models\Fourwall;
 use App\Models\Nexus;
 use App\Models\Hp;
+use App\Models\ResourceHistory;
+use App\Models\Server;
 use App\Models\Sow;
 use App\Models\SplaLicense;
+use Barryvdh\Debugbar\Facades\Debugbar;
+use Barryvdh\Debugbar\Twig\Extension\Debug;
 use Carbon\Carbon;
 
 class MaintenanceController extends Controller
@@ -383,5 +387,57 @@ class MaintenanceController extends Controller
         $hp->save();
 
         return response()->json($hp, 200);
+    }
+
+    public function licence_spla_servers()
+    {
+        $servers = Server::selectRaw("
+            servers.idserver, servers.idproject, servers.name as server_name,projects.name as project_name,
+            JSON_AGG(json_build_object('spla_type', spla_licenses.type, 'spla_code', spla_licenses.code, 'spla_cost', spla_licenses.cost)) AS slpa_licenses
+        ")->join('projects', 'projects.idproject', '=', 'servers.idproject')
+            ->join('spla_assigned_discounts', 'spla_assigned_discounts.idserver', '=', 'servers.idserver')
+            ->join('spla_licenses', 'spla_licenses.idspla', '=', 'spla_assigned_discounts.idspla')
+            ->groupBy(['servers.idserver', 'servers.idproject', 'server_name', 'project_name'])->get();
+
+        $resources = ResourceHistory::selectRaw('
+            resources_history.idserver, resources_history.amount, resources_history.name as resource_name, resources_history.date
+            ')->where('resources_history.name', 'CPU')
+            ->where('resources_history.amount', '>', 0)->get();
+
+        $resources_by_server = [];
+
+        /* Debugbar::info($servers); */
+        foreach ($servers as $server) {
+            $spla_licenses = json_decode($server->slpa_licenses, true);
+            $resource_desc = collect($resources)->where('idserver', $server->idserver)->all();
+
+            if (sizeof($resource_desc) == 0) {
+                $resource = new ResourceHistory();
+                $resource->amount = 0;
+                $resource->name = 'CPU';
+                $resource->date = date('Y-m-d');
+                $resource_desc = [$resource];
+            }
+
+            foreach ($spla_licenses as $spla_license) {
+                $lic_req = 1;
+                $cpu = collect($resource_desc)->sortByDesc('date')->first()->amount;
+                if (str_contains($spla_license['spla_type'], 'SQL Server')) {
+                    $lic_req = ReportController::licenceRequired($resource_desc);
+                }
+                array_push($resources_by_server, [
+                    'idproject' => $server->idproject,
+                    'server_name' => $server->server_name,
+                    'project_name' => $server->project_name,
+                    'CPU' => $cpu,
+                    'license_code' => $spla_license['spla_code'],
+                    'license_type' => $spla_license['spla_type'],
+                    'license_req' => $lic_req,
+                    'license_cost' => $lic_req * $spla_license['spla_cost']
+                ]);
+            }
+        }
+
+        return view('maintenance.licence_spla_servers', ['servers' => $resources_by_server]);
     }
 }
