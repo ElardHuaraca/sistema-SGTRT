@@ -5857,6 +5857,7 @@ $(function () {
       });
       div_recomendation.addEventListener("click", function () {
         var input = index !== null ? $(relatedTarget)[index] : $(relatedTarget);
+        input = input == null ? $(relatedTarget) : input;
         $(input).val(values(element));
         seccond_input !== null ? $(seccond_input).val(second_input_value(element)) : '';
         $(input).removeRecomendations();

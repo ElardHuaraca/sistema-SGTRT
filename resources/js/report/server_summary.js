@@ -33,6 +33,8 @@ $(function () {
         resource = JSON.parse(resource.resources)
 
         $('#server_title').text(server.server_name);
+        $('input[name="codigo_alp"]').val(server.alp)
+        $('input[name="project_name"]').val(server.project_name)
         $('#machine_name').text(server.machine_name);
         $('#hostname').text(server.hostname);
 
@@ -116,7 +118,21 @@ $(function () {
         span = (element) => { return "<span>" + values(element) + "</span>" }
         sow_id = (element) => { return element.idsow }
 
-        $(this).addRecomendations(sow_search, null, this, span, values, null, 5, 'input[name="sow_id"]', sow_id)
+        $(this).addRecomendations(sow_search, 1, this, span, values, null, 5, 'input[name="sow_id"]', sow_id)
+    })
+
+    $('input[name="codigo_alp"]').on('keyup', function () {
+        if ($(this).val().length === 0) return $(this).removeRecomendations()
+        var alp_search = projects.filter(project => {
+            return project.idproject.toString().includes($(this).val())
+        })
+        if (alp_search.length === 0) return
+
+        values = (element) => { return element.idproject }
+        span = (element) => { return "<span>" + element.idproject + ' ' + element.name + "</span>" }
+        project_name = (element) => { return element.name }
+
+        $(this).addRecomendations(alp_search, 0, this, span, values, null, 5, 'input[name="project_name"]', project_name)
     })
 
     $('input[name="sow"]').on('change paste keyup', function () {
@@ -135,7 +151,8 @@ $(function () {
 
         json = {
             'server': {
-                idsow: form[1].value === '' ? null : form[1].value,
+                'idproject': form[0].value === '' ? null : form[0].value,
+                'idsow': form[2].value === '' ? null : form[2].value,
             },
             'assign_service': {
                 'is_backup': form.filter(x => x.name === 'backup').length > 0,
@@ -310,16 +327,23 @@ $(function () {
 
     function change_sow_from_data_table_and_update_server(server) {
         sow = server.idsow !== null ? sows.filter(x => x.idsow == server.idsow)[0] : ''
+        project = projects.filter(x => x.idproject == server.idproject)[0]
         data = $.dataTableInit.row(row).data()
-        data[5] = sow === '' ? 'N.A.' : `<span>${sow.version} ${sow.name} ${sow.type}</span>`
+        data[1] = server.active
+        data[2] = server.idproject
+        data[3] = project.name
+        if (sow != undefined) data[5] = sow === '' ? 'N.A.' : `<span>${sow.version} ${sow.name} ${sow.type}</span>`
         $.dataTableInit.row(row).data(data)
-
         servers.map(x => {
             if (x.idserver == server.idserver) {
-                x.idsow = sow === '' ? null : sow.idsow
-                x.sow_name = sow === '' ? null : sow.name
-                x.type = sow === '' ? null : sow.type
-                x.version = sow === '' ? null : sow.version
+                if (sow != undefined) {
+                    x.idsow = sow === '' ? null : sow.idsow
+                    x.sow_name = sow === '' ? null : sow.name
+                    x.type = sow === '' ? null : sow.type
+                    x.version = sow === '' ? null : sow.version
+                }
+                x.alp = server.idproject
+                x.project_name = project.name
             }
         })
     }

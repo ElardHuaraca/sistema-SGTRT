@@ -267,9 +267,11 @@ class ReportController extends Controller
                 $join->on('spla_licenses.idspla', '=', 'spla_assigned_discounts.idspla');
             })->get();
 
+        $projects = Project::all();
+
         return view('reports.server-summary', [
-            'servers' => $servers, 'licenses' => $licenses,
-            'sows' => $sows, 'resources' => $resources, 'assign_services' => $assign_services, 'assign_splas' => $assign_splas
+            'servers' => $servers, 'licenses' => $licenses, 'sows' => $sows, 'resources' => $resources,
+            'assign_services' => $assign_services, 'assign_splas' => $assign_splas, 'projects' => $projects
         ]);
     }
 
@@ -308,6 +310,9 @@ class ReportController extends Controller
     public function update_server_summary($id, Request $request)
     {
         $server = Server::find($id);
+        $active = str_replace($server->idproject, $request['server']['idproject'], $server->active);
+        $server->idproject = $request['server']['idproject'];
+        $server->active = $active;
         $server->idsow = $request['server']['idsow'] === null ? null : intval($request['server']['idsow']);
         $server->save();
 

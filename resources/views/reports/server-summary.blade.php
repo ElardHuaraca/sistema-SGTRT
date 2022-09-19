@@ -78,6 +78,28 @@
                         <div class="row">
                             <div class="col-12 col-sm-6 px-4">
                                 <div class="row py-1 my-2 border rounded">
+                                    <div class="col-7">ALP</div>
+                                    <div class="col-5 recomendations">
+                                        <div class="input-group input-group-prepend">
+                                            <span>
+                                                : <input type="text" class="border-0" placeholder="Codigo ALP"
+                                                    aria-label="Codigo ALP" aria-describedby="basic-addon1"
+                                                    name="codigo_alp" style="z-index: 102" maxlength="6" required>
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row py-1 my-2 border rounded">
+                                    <div class="col-7">Proyecto</div>
+                                    <div class="col-5">
+                                        : <span>
+                                            <input class="border-0 bg-white" name="project_name" value="Project NAME"
+                                                disabled>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row py-1 my-2 border rounded">
                                     <div class="col-7">Nombre de Maquina</div>
                                     <div class="col-5">
                                         : <span id="machine_name">NAME 1</span>
@@ -344,6 +366,7 @@
     let resources = @json($resources);
     let assign_services = @json($assign_services);
     let assign_splas = @json($assign_splas);
+    let projects = @json($projects);
 </script>
 @push('scripts')
     <script src="{{ asset('js/report/server_summary.js') }}"></script>
