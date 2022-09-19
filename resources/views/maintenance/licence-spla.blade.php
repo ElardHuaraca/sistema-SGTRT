@@ -36,7 +36,7 @@
                                     <td>{{ $licence->code }}</td>
                                     <td>{{ $licence->name }}</td>
                                     <td>{{ $licence->type }}</td>
-                                    <td>$ {{ $licence->cost }}</td>
+                                    <td>$ {{ number_format($licence->cost, 2) }}</td>
                                     <td>
                                         <button class="btn btn-warning btn-edit-licence-spla" data-bs-toggle="modal"
                                             data-bs-target="#modalCreateEditLicenceSpla"

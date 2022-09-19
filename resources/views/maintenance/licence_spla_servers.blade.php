@@ -35,7 +35,7 @@
                                     <td>{{ $server['license_code'] }}</td>
                                     <td>{{ $server['license_type'] }}</td>
                                     <td>{{ $server['license_req'] }}</td>
-                                    <td>$ {{ $server['license_cost'] }}</td>
+                                    <td>$ {{ number_format($server['license_cost'], 2) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -79,6 +79,8 @@ $(function () {
 
     $('#save_cost').on('click', function () { $('#btn-sumbit-cost').trigger('click') })
 
+    $('input[name="cost_fourwall"]').evitWriteTextCost()
+
     $('#form_costs').on('submit', function (e) {
         e.preventDefault()
         /* serialize form */
