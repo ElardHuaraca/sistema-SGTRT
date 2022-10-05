@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\CostsImport;
 use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Fourwall;
@@ -11,7 +12,9 @@ use App\Models\ResourceHistory;
 use App\Models\Server;
 use App\Models\Sow;
 use App\Models\SplaLicense;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MaintenanceController extends Controller
 {
@@ -154,7 +157,7 @@ class MaintenanceController extends Controller
     {
         [$date_start, $date_end] = ReportController::getDatesCalculed();
 
-        [$date_start, $date_end] = [Carbon::createFromFormat('d/m/Y', $date_start)->format('01/m/Y'), Carbon::createFromFormat('d/m/Y', $date_start)->format('t/m/Y')];
+        /* [$date_start, $date_end] = [Carbon::createFromFormat('d/m/Y', $date_start)->format('01/m/Y'), Carbon::createFromFormat('d/m/Y', $date_start)->format('t/m/Y')]; */
 
         $projects = Project::selectRaw('
             projects.idproject,
@@ -168,15 +171,28 @@ class MaintenanceController extends Controller
             $join->where('fourwalls.is_deleted', '=', false);
         })->leftJoin('nexus', function ($join) use ($date_start, $date_end) {
             $join->on('projects.idproject', '=', 'nexus.idproject');
-            $join->whereBetween('fourwalls.created_at', [$date_start, $date_end]);
+            $join->whereBetween('nexus.created_at', [$date_start, $date_end]);
             $join->where('nexus.is_deleted', '=', false);
         })->leftJoin('hps', function ($join) use ($date_start, $date_end) {
             $join->on('projects.idproject', '=', 'hps.idproject');
-            $join->whereBetween('fourwalls.created_at', [$date_start, $date_end]);
+            $join->whereBetween('hps.created_at', [$date_start, $date_end]);
             $join->where('hps.is_deleted', '=', false);
         })->groupBy('projects.idproject', 'projects.name')->get();
 
         return view('maintenance.costs', ['projects' => $projects, 'date_start' => $date_start]);
+    }
+
+    public function import_CSV(Request $request)
+    {
+
+
+        $import = new CostsImport();
+
+        Excel::import($import, $request->file('file'));
+
+        $import->processData();
+
+        return response()->json(200);
     }
 
     public function maintenance_cost_by_month($date)

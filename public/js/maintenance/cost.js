@@ -185,6 +185,73 @@ $(function () {
       });
     });
   });
+  /* verify if input file csv contains file */
+
+  $('#btn-import-csv').on('click', function () {
+    var file = $('#fileUnique');
+    if (file.val() == '') return alert('Es necesario seleccionar un archivo');
+    var formData = new FormData();
+    formData.append('file', file[0].files[0], file[0].files[0].name);
+    formData.append('upload_file', true);
+    $.ajax({
+      headers: {
+        'X-CSRF-TOKEN': $('input[name="_token"]').val()
+      },
+      url: '/maintenance/costs/import',
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      cache: false,
+      timeout: 60000,
+      xhr: function xhr() {
+        var myXhr = $.ajaxSetup().xhr();
+
+        if (myXhr.upload) {
+          myXhr.upload.addEventListener('progress', function (e) {
+            var percent = 0;
+            var position = e.loaded || e.position;
+            var total = e.total;
+            var progress_bar_id = '.progress-bar-striped';
+
+            if (e.lengthComputable) {
+              percent = Math.round(position * 100 / total);
+            }
+
+            $(progress_bar_id).css('width', percent + '%');
+            $(progress_bar_id).text(percent + '%');
+          }, false);
+        }
+
+        return myXhr;
+      },
+      beforeSend: function beforeSend() {
+        $('#btn-succes-loading').trigger('click');
+        var hasClass = $('#progress-bar').hasClass('d-none');
+        if (hasClass) $('#progress-bar').removeClass('d-none');
+      }
+    }).then(function (response) {
+      /* verify status from response */
+      if (response != 200) return $('#btn-succes-error').trigger('click');
+      $('#btn-succes').trigger('click');
+      $('#modal-succes .modal-body h3').text('Se importaron los datos correctamente');
+    })["catch"](function (error) {
+      $('#btn-succes-error').trigger('click');
+      console.log(error);
+    }).always(function () {
+      $('#modal-succes-loading').modal('toggle');
+      $('#btn-close-loading, .btn-close-loading').trigger('click');
+    });
+  });
+  /* After upload file change text h3 from modal succes */
+
+  $('#modal-succes').on('hidden.bs.modal', function () {
+    $('#modal-succes .modal-body h3').text('Cambio realizado con exito');
+    $('#fileUnique').val('');
+    $('#progress-bar').addClass('d-none');
+    $('.progress-bar-striped').css('width', '0%');
+    $('.progress-bar-striped').text('0%');
+  });
 });
 
 function addDivWithRecomendations(codigo_alp, index) {

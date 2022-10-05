@@ -13,6 +13,10 @@
                     <div class="spinner-border text-info" role="status">
                         <span class="sr-only">Loading...</span>
                     </div>
+                    <div class="progress mt-3 d-none" id="progress-bar">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                            aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 5%">5%</div>
+                    </div>
                 </div>
                 <div class="d-none">
                     <button type="button" data-bs-dismiss="modal" id="btn-close-loading">Cerrar</button>

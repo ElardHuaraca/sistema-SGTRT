@@ -28,8 +28,7 @@
                             accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
                         <button
                             class="btn btn-success col-12 col-xl-4 col-lg-6 col-md-6 mb-md-0 mb-3 disabled {{ Auth::user()->role == 'Visitante' ? '' : 'remove-disable' }}"
-                            type="button" data-bs-toggle="modal" data-bs-target="#modalAddNexus"
-                            id="btn-create-nexus">Cargar Datos</button>
+                            type="button" id="btn-import-csv">Cargar Datos</button>
                     </div>
                     <div class="d-flex align-items-center col-auto">
                         {{-- getTime now --}}
