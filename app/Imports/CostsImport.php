@@ -7,6 +7,7 @@ use App\Models\Hp;
 use App\Models\Nexus;
 use App\Models\Project;
 use Barryvdh\Debugbar\Facades\Debugbar;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -58,7 +59,7 @@ class CostsImport implements ToArray, WithHeadingRow
         $fourwall->equipment = $row['equipo'];
         $fourwall->serie = $row['serie'];
         $fourwall->cost = $row['costo'];
-        $fourwall->start_date = $row['fecha_inicio'];
+        $fourwall->start_date = Carbon::createFromFormat('d/m/Y', $row['fecha_inicio']);
         $fourwall->save();
     }
 
@@ -70,7 +71,7 @@ class CostsImport implements ToArray, WithHeadingRow
         $hp->equipment = $row['equipo'];
         $hp->serie = $row['serie'];
         $hp->cost = $row['costo'];
-        $hp->start_date = $row['fecha_inicio'];
+        $hp->start_date = Carbon::createFromFormat('d/m/Y', $row['fecha_inicio']);
         $hp->save();
     }
 
@@ -82,7 +83,7 @@ class CostsImport implements ToArray, WithHeadingRow
         $nexus->equipment = $row['punto_de_red'];
         $nexus->serie = $row['serie'];
         $nexus->cost = $row['costo'];
-        $nexus->start_date = $row['fecha_inicio'];
+        $nexus->start_date = Carbon::createFromFormat('d/m/Y', $row['fecha_inicio']);
         $nexus->save();
     }
 }
