@@ -4,7 +4,7 @@
     <div class="content-wrapper">
         <section class="content-header text-center">
             <h1 class="h1-titulo">
-                LICENSIAS SPLA
+                MANTENIMIENTO - LICENCIAS SPLA
             </h1>
         </section>
         <section class="content">
