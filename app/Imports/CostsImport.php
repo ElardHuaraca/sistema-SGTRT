@@ -61,7 +61,7 @@ class CostsImport implements ToArray, WithHeadingRow
         $fourwall->equipment = $row['equipo'];
         $fourwall->serie = $row['serie'];
         $fourwall->cost = $row['costo'];
-        $fourwall->start_date = $row['fecha_inicio'];
+        $fourwall->date_start = Carbon::createFromFormat('d/m/Y', $row['fecha_inicio']);
         $fourwall->save();
     }
 
@@ -73,7 +73,7 @@ class CostsImport implements ToArray, WithHeadingRow
         $hp->equipment = $row['equipo'];
         $hp->serie = $row['serie'];
         $hp->cost = $row['costo'];
-        $hp->start_date = $row['fecha_inicio'];
+        $hp->date_start = Carbon::createFromFormat('d/m/Y', $row['fecha_inicio']);
         $hp->save();
     }
 
@@ -85,7 +85,7 @@ class CostsImport implements ToArray, WithHeadingRow
         $nexus->equipment = $row['punto_de_red'];
         $nexus->serie = $row['serie'];
         $nexus->cost = $row['costo'];
-        $nexus->start_date = $row['fecha_inicio'];
+        $nexus->date_start = Carbon::createFromFormat('d/m/Y', $row['fecha_inicio']);
         $nexus->save();
     }
 }
