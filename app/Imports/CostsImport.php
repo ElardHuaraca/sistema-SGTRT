@@ -28,13 +28,15 @@ class CostsImport implements ToArray, WithHeadingRow
 
     public function processData()
     {
+        Debugbar::info($this->data);
+
         foreach ($this->data as $row) {
             $idproject = $row['alp'];
 
             $project = Project::find($idproject);
             if (!$project) continue;
 
-            switch ($row['tipo_de_mantimiento']) {
+            switch ($row['tipo_de_mantenimiento']) {
                 case 'F' || 'f':
                     $this->saveFourwall($row, $project);
                     break;
