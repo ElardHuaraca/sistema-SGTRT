@@ -18,6 +18,8 @@ class Nexus extends Model
         'network_point',
         'cost',
         'idproject',
+        'date_start',
+        'date_end',
         'is_deleted'
     ];
 
