@@ -18,6 +18,7 @@
                                 <th scope="col" class="col-2">ALP</th>
                                 <th scope="col" class="col-2">Proyecto</th>
                                 <th scope="col" class="col-2">Punto de red</th>
+                                <th scope="col" class="col-2">Serie</th>
                                 <th scope="col" class="col-1">Costo</th>
                                 <th scope="col" class="col-1">Editar</th>
                                 <th scope="col" class="col-1">Eliminar</th>
@@ -30,7 +31,7 @@
                                     <td> {{ $nexu->idproject }}</td>
                                     <td> {{ $nexu->name }}</td>
                                     <td> {{ $nexu->network_point }}</td>
-                                    <td>{{ $nexus->serie }}</td>
+                                    <td>{{ $nexu->serie }}</td>
                                     <td> $ {{ $nexu->cost }}</td>
                                     <td>
                                         <a data-bs-toggle="modal" href="#modalUpdateNexus"
