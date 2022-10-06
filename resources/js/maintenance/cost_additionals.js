@@ -153,7 +153,8 @@ $(function () {
             response_date_end = response.date_end === null ? null : reestructureDate(response.date_end)
             var rowData = $.dataTableInit.row(_row).data()
             rowData[3] = response.network_point
-            rowData[4] = `$ ${response.cost}`
+            rowData[4] = response.serie
+            rowData[5] = `$ ${response.cost}`
             $.dataTableInit.row(_row).data(rowData)
             nexus = nexus.map(x => {
                 if (x.idnexus === _id) {
