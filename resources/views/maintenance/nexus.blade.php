@@ -30,6 +30,7 @@
                                     <td> {{ $nexu->idproject }}</td>
                                     <td> {{ $nexu->name }}</td>
                                     <td> {{ $nexu->network_point }}</td>
+                                    <td>{{ $nexus->serie }}</td>
                                     <td> $ {{ $nexu->cost }}</td>
                                     <td>
                                         <a data-bs-toggle="modal" href="#modalUpdateNexus"
