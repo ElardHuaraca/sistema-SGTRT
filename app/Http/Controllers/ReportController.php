@@ -599,7 +599,7 @@ class ReportController extends Controller
                     'lic_cloud' => $cost['license_so'] + $cost['license_vspp'] + $cost['license_srm'] + $cost['license_cot'] + $cost['cost_link'] + $cost['antivirus'],
                     'backup' => $cost['backup'],
                     'mo' => $cost['mo_cloud_sw_cot'],
-                    'cost_maintenance' => $maintenance->cost_fourwalls + $maintenance->cost_nexus + $maintenance->cost_hps,
+                    'cost_maintenance' => $maintenance->cost_fourwalls ??= 0 + $maintenance->cost_nexus ??= 0 + $maintenance->cost_hps ??= 0,
                     'cost_total' => 0
                 ];
 
