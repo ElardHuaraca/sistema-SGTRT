@@ -202,8 +202,6 @@ class ReportController extends Controller
 
         $costs = $this->getCostsByProject($filters, $resources, $sows, $spla_assigned_discounts, $cost_maintenance, null, null);
 
-        return $costs;
-
         return view('reports.IT-tariff', ['costs' => $costs, 'date_start' => $date_start, 'date_end' => $date_end]);
     }
 
