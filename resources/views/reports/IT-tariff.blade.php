@@ -61,23 +61,18 @@
                                 <tr>
                                     <td>{{ $cost->idproject }}</td>
                                     <td>{{ $cost->project_name }}</td>
-                                    <td>S/. {{ number_format($cost->CPU * $exchangeRates_footer->value, 2, '.', ',') }}</td>
-                                    <td>S/. {{ number_format($cost->DISK * $exchangeRates_footer->value, 2, '.', ',') }}
-                                    </td>
-                                    <td>S/. {{ number_format($cost->RAM * $exchangeRates_footer->value, 2, '.', ',') }}
-                                    </td>
-                                    <td>S/. {{ number_format($cost->cost_splas * $exchangeRates_footer->value, 2) }}
-                                    </td>
-                                    <td>{{ number_format($cost->lic_cloud * $exchangeRates_footer->value, 2, '.', ',') }}
-                                    </td>
-                                    <td>S/. {{ number_format($cost->backup * $exchangeRates_footer->value, 2, '.', ',') }}
-                                    </td>
-                                    <td>S/. {{ number_format($cost->mo * $exchangeRates_footer->value, 2, '.', ',') }}</td>
+                                    <td>S/. {{ number_format($cost->CPU * $exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ number_format($cost->DISK * $exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ number_format($cost->RAM * $exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ number_format($cost->cost_splas * $exchangeRates_footer->value, 2) }}</td>
+                                    <td>{{ number_format($cost->lic_cloud * $exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ number_format($cost->backup * $exchangeRates_footer->value, 2) }}</td>
+                                    <td>S/. {{ number_format($cost->mo * $exchangeRates_footer->value, 2) }}</td>
                                     <td>S/.
-                                        {{ number_format($cost->cost_maintenance * $exchangeRates_footer->value, 2, '.', ',') }}
+                                        {{ number_format($cost->cost_maintenance * $exchangeRates_footer->value, 2) }}
                                     </td>
                                     <td>S/.
-                                        {{ number_format($cost->cost_total * $exchangeRates_footer->value, 2, '.', ',') }}
+                                        {{ number_format($cost->cost_total * $exchangeRates_footer->value, 2) }}
                                     </td>
                                     <td>
                                         <a class="btn btn-success"
