@@ -603,7 +603,10 @@ class ReportController extends Controller
                     'cost_total' => 0
                 ];
 
-                $costs_projects[$cost['idproject']]['cost_total'] = $costs_projects[$cost['idproject']]['CPU'] + $costs_projects[$cost['idproject']]['RAM'] + $costs_projects[$cost['idproject']]['DISK'] + $costs_projects[$cost['idproject']]['cost_splas'] + $costs_projects[$cost['idproject']]['lic_cloud'] + $costs_projects[$cost['idproject']]['backup'] + $costs_projects[$cost['idproject']]['mo'] + $costs_projects[$cost['idproject']]['cost_maintenance'];
+                $costs_projects[$cost['idproject']]['cost_total'] = $costs_projects[$cost['idproject']]['CPU'] ??= 0 + $costs_projects[$cost['idproject']]['RAM'] ??= 0
+                    + $costs_projects[$cost['idproject']]['DISK'] ??= 0 + $costs_projects[$cost['idproject']]['cost_splas'] ??= 0
+                    + $costs_projects[$cost['idproject']]['lic_cloud'] ??= 0 + $costs_projects[$cost['idproject']]['backup'] ??= 0
+                    + $costs_projects[$cost['idproject']]['mo'] ??= 0 + $costs_projects[$cost['idproject']]['cost_maintenance'] ??= 0;
             }
         }
 
