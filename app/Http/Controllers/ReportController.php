@@ -669,7 +669,7 @@ class ReportController extends Controller
             $item['cost_total'] = number_format(round($item['cost_total'], 2), 2);
         });
 
-        return json_encode($costs_servers);
+        return json_decode(json_encode($costs_servers));
     }
 
     public static function getDatesCalculed()
