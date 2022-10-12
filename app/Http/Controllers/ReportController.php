@@ -502,26 +502,22 @@ class ReportController extends Controller
             $days_off = collect($resources[$filter['idserver']])->where('resource_name', 'RAM')->where('amount', 0)->count();
 
             /* Obtain cost by CPU */
-            $cost_cpu = 0;
             $cpus = collect($resources[$filter['idserver']])->where('resource_name', 'CPU')->sum('amount');
-            $cost_cpu = $cpus * ($sow->cost_cpu / $days);
+            $cost_cpu = ($cpus ??= 0) * ($sow->cost_cpu / $days);
             $costs[$key]['cost_cpu'] = round($cost_cpu, 2);
 
             /* Obtain cost by RAM */
-            $cost_ram = 0;
             $rams = collect($resources[$filter['idserver']])->where('resource_name', 'RAM')->sum('amount');
-            $cost_ram = $rams * ($sow->cost_ram / $days);
+            $cost_ram = ($rams ??= 0) * ($sow->cost_ram / $days);
             $costs[$key]['cost_ram'] = round($cost_ram, 2);
 
             /* Obtain cost by DISK */
-            $cost_disk = 0;
             $disks_hdd = collect($resources[$filter['idserver']])->where('resource_name', 'HDD')->sum('amount');
             $disks_sdd = collect($resources[$filter['idserver']])->where('resource_name', 'SDD')->sum('amount');
-            $cost_disk = ($disks_hdd * ($sow->cost_hdd_mechanical / $days)) + ($disks_sdd * ($sow->cost_hdd_solid / $days));
+            $cost_disk = (($disks_hdd ??= 0) * ($sow->cost_hdd_mechanical / $days)) + (($disks_sdd ??= 0) * ($sow->cost_hdd_solid / $days));
             $costs[$key]['cost_disk'] = round($cost_disk, 2);
 
             /* Obtain cost by SPLAs */
-            $cost_splas = 0;
             $cost_splas = collect($spla_assigned_discounts)->where('idserver', $filter['idserver']);
             foreach ($cost_splas as $cost_spla) {
                 $cost = 0;
@@ -656,10 +652,10 @@ class ReportController extends Controller
             $costs_servers[$key]['lic_cloud'] += $cost['license_so'] + $cost['license_vspp'] + $cost['license_srm'] + $cost['license_cot'] + $cost['cost_link'] + $cost['antivirus'];
             $costs_servers[$key]['backup'] += $cost['backup'];
             $costs_servers[$key]['mo'] += $cost['mo_cloud_sw_cot'];
-            $costs_servers[$key]['cost_total'] += $cost['cost_cpu'] ??= 0 + $cost['cost_ram'] ??= 0 + $cost['cost_disk'] ??= 0
-                + $cost['cost_splas'] ??= 0 + $cost['license_so'] ??= 0 + $cost['license_vspp'] ??= 0 + $cost['license_srm'] ??= 0
-                + $cost['license_cot'] ??= 0 + $cost['cost_link'] ??= 0 + $cost['antivirus'] ??= 0 + $cost['backup'] ??= 0
-                + $cost['mo_cloud_sw_cot'] ??= 0;
+            $costs_servers[$key]['cost_total'] += $cost['cost_cpu'] + $cost['cost_ram'] + $cost['cost_disk']
+                + $cost['cost_splas'] + $cost['license_so'] + $cost['license_vspp'] + $cost['license_srm']
+                + $cost['license_cot'] + $cost['cost_link'] + $cost['antivirus'] + $cost['backup']
+                + $cost['mo_cloud_sw_cot'];
         }
 
         array_walk($costs_servers, function (&$item) {
