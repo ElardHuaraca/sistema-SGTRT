@@ -651,7 +651,10 @@ class ReportController extends Controller
             $costs_servers[$key]['lic_cloud'] += $cost['license_so'] + $cost['license_vspp'] + $cost['license_srm'] + $cost['license_cot'] + $cost['cost_link'] + $cost['antivirus'];
             $costs_servers[$key]['backup'] += $cost['backup'];
             $costs_servers[$key]['mo'] += $cost['mo_cloud_sw_cot'];
-            $costs_servers[$key]['cost_total'] += $cost['cost_cpu'] + $cost['cost_ram'] + $cost['cost_disk'] + $cost['cost_splas'] + $cost['license_so'] + $cost['license_vspp'] + $cost['license_srm'] + $cost['license_cot'] + $cost['cost_link'] + $cost['antivirus'] + $cost['backup'] + $cost['mo_cloud_sw_cot'];
+            $costs_servers[$key]['cost_total'] += $cost['cost_cpu'] ??= 0 + $cost['cost_ram'] ??= 0 + $cost['cost_disk'] ??= 0
+                + $cost['cost_splas'] ??= 0 + $cost['license_so'] ??= 0 + $cost['license_vspp'] ??= 0 + $cost['license_srm'] ??= 0
+                + $cost['license_cot'] ??= 0 + $cost['cost_link'] ??= 0 + $cost['antivirus'] ??= 0 + $cost['backup'] ??= 0
+                + $cost['mo_cloud_sw_cot'] ??= 0;
         }
 
         array_walk($costs_servers, function (&$item) {
