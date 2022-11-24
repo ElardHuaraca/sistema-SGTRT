@@ -17,8 +17,8 @@ $(function () {
                     url: text,
                     type: 'GET',
                     data: {
-                        'date_start': date_start,
-                        'date_end': date_end
+                        'date_start': date_start.replaceAll('/', '-'),
+                        'date_end': date_end.replaceAll('/', '-')
                     }
                 }).then(function (response) {
                     if (response.length === 0) return $('.odd td').html('No se encontraron registros');

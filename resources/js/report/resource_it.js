@@ -107,8 +107,8 @@ $(function () {
                 type: 'GET',
                 data: {
                     'name': text,
-                    'date_start': date_start,
-                    'date_end': date_end
+                    'date_start': date_start.replaceAll('/', '-'),
+                    'date_end': date_end.replaceAll('/', '-')
                 }
             }).then(function (response) {
                 if (response.length === 0) return $('.odd td').html('No se encontraron registros')
@@ -136,6 +136,10 @@ $(function () {
                 $.ajax({
                     url: '/reports/filter/btween/dates',
                     type: 'GET',
+                    data: {
+                        'date_start': start.replaceAll('/', '-'),
+                        'date_end': end.replaceAll('/', '-')
+                    }
                 }).then(function (response) {
                     if (response.length === 0) return $('.odd td').html('No se encontraron registros')
                     removeOnTextIsEmptyOrLoadComplete('')
