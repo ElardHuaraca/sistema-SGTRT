@@ -12,8 +12,6 @@ use App\Models\ResourceHistory;
 use App\Models\Server;
 use App\Models\Sow;
 use App\Models\SplaLicense;
-use Barryvdh\Debugbar\Facades\Debugbar;
-use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 
 class MaintenanceController extends Controller
