@@ -12,6 +12,7 @@ use App\Models\Server;
 use App\Models\Sow;
 use App\Models\SplaAssignedDiscount;
 use App\Models\SplaLicense;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -137,14 +138,11 @@ class ReportController extends Controller
     {
         $id_project = $idproject == 'na' ? null : $idproject;
 
-        $date_start_ = str_replace('-', '/', $date_start);
-        $date_end_ = str_replace('-', '/', $date_end);
-
-        [$servers, $sows, $spla_assigned_discounts, $cost_maintenance] = $this->getServersAndSowsForCalculateCosts($date_start_, $date_end_, $id_project);
+        [$servers, $sows, $spla_assigned_discounts, $cost_maintenance] = $this->getServersAndSowsForCalculateCosts($date_start, $date_end, $id_project);
         [$filters, $resources] = $this->get_servers_and_resources_filters($servers);
         $costs = $idproject == 'na' ?
-            $this->getCostsByProject($filters, $resources, $sows, $spla_assigned_discounts, $cost_maintenance, $date_start_, $date_end_) :
-            $this->getCostsByServer($filters, $resources, $sows, $spla_assigned_discounts, $date_start_, $date_end_);
+            $this->getCostsByProject($filters, $resources, $sows, $spla_assigned_discounts, $cost_maintenance, $date_start, $date_end) :
+            $this->getCostsByServer($filters, $resources, $sows, $spla_assigned_discounts, $date_start, $date_end);
 
         $exchange_rate = ExchangeRates::all()->first();
 
@@ -157,8 +155,8 @@ class ReportController extends Controller
     {
 
         if ($date_start == 'na' || $date_end == 'na') {
-            $date_ = date('01/m/Y', strtotime(date('Y-m-d') . '-1 month'));
-            [$date_start, $date_end] = [$date_, date('d/m/Y')];
+            $date_ = date('Y-m-01', strtotime(date('Y-m-d') . '-1 month'));
+            [$date_start, $date_end] = [$date_, date('Y-m-d')];
         }
 
         $server = Server::selectRaw('
@@ -208,7 +206,7 @@ class ReportController extends Controller
     public function resource_consumption_it_tariff_by_project($id, $date_start, $date_end)
     {
         if ($date_start === 'na' && $date_end === 'na') [$date_start, $date_end] = $this::getDatesCalculed();
-        else [$date_start, $date_end] = [str_replace('-', '/', $date_start), str_replace('-', '/', $date_end)];
+        else [$date_start, $date_end] = [$date_start,  $date_end];
 
         $project = Project::find($id);
 
@@ -467,8 +465,9 @@ class ReportController extends Controller
         $costs = [];
 
         if ($date_start == null && $date_end == null) [$date_start, $date_end] = $this::getDatesCalculed();
+        Debugbar::info($date_start);
+        $days = Carbon::createFromFormat('d-m-Y', $date_start)->diffInDays(Carbon::createFromFormat('d-m-Y', $date_end));
 
-        $days = Carbon::createFromFormat('d/m/Y', $date_start)->diffInDays(Carbon::createFromFormat('d/m/Y', $date_end));
         if ($days > 31 || $days < 28) $days = 30;
 
         foreach ($filters as $key => $filter) {
@@ -676,12 +675,12 @@ class ReportController extends Controller
     {
         $date = Carbon::now();
 
-        $date_start = date('15/m/Y', strtotime(date('Y-m-15') . '-1 month'));
-        $date_end = date('15/m/Y');
+        $date_start = date('Y-m-d', strtotime(date('Y-m-15') . '-1 month'));
+        $date_end = date('Y-m-15');
 
         if ($date->format('d') >= 16) {
-            $date_start = date('15/m/Y');
-            $date_end = date('15/m/Y', strtotime(date('Y-m-15') . '+1 month'));
+            $date_start = date('Y-m-15');
+            $date_end = date('Y-m-d', strtotime(date('Y-m-15') . '+1 month'));
         }
         return [$date_start, $date_end];
     }
