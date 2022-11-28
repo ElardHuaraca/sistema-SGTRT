@@ -465,7 +465,7 @@ class ReportController extends Controller
         $costs = [];
 
         if ($date_start == null && $date_end == null) [$date_start, $date_end] = $this::getDatesCalculed();
-        Debugbar::info($date_start);
+
         $days = Carbon::createFromFormat('d-m-Y', $date_start)->diffInDays(Carbon::createFromFormat('d-m-Y', $date_end));
 
         if ($days > 31 || $days < 28) $days = 30;
