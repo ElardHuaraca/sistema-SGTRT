@@ -14,10 +14,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class CostsImport implements ToArray, WithHeadingRow
 {
 
-    public function __construct()
-    {
-        $this->data = [];
-    }
+    private $data = array();
 
     public function array(array $rows)
     {
@@ -37,16 +34,14 @@ class CostsImport implements ToArray, WithHeadingRow
             if (!$project) continue;
 
             switch ($row['tipo_de_mantenimiento']) {
-                case 'F' || 'f':
+                case "F":
                     $this->saveFourwall($row, $project);
                     break;
-                case 'HP' || 'hp':
+                case "HP":
                     $this->saveHP($row, $project);
                     break;
-                case 'N' || 'n':
+                case "N":
                     $this->saveNexus($row, $project);
-                    break;
-                default:
                     break;
             }
         }
