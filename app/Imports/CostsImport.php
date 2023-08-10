@@ -77,7 +77,7 @@ class CostsImport implements ToArray, WithHeadingRow
         if ($row['punto_de_red'] == null || $row['serie'] == null || $row['costo'] == null || $row['fecha_inicio'] == null) return;
         $nexus = new Nexus();
         $nexus->idproject = $project->idproject;
-        $nexus->equipment = $row['punto_de_red'];
+        $nexus->network_point = $row['punto_de_red'];
         $nexus->serie = $row['serie'];
         $nexus->cost = $row['costo'];
         $nexus->date_start = Carbon::createFromFormat('d/m/Y', $row['fecha_inicio']);
